@@ -1,0 +1,13 @@
+django
+Pillow
+djangorestframework
+markdown
+django-filter
+graphviz
+django-extensions
+pyparsing
+pydot
+
+django-crispy-forms
+django-sekizai
+django-cors-headers
