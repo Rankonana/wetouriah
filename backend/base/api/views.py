@@ -173,11 +173,32 @@ def warehouse_detail(request):
 
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
-def getUserRequestPickups(request,customer):
-    requestpickup = RequestPickup.objects.filter(
+def getUserRequestPickups(request):
+
+    customer = request.GET.get("customer", "")
+    is_picked = request.GET.get("is_picked", "")
+    keyword = request.GET.get("keyword", "")
+
+    requestpickups = []
+    requestpickups = RequestPickup.objects.all()
+
+    if customer != '':
+        requestpickups = requestpickups.filter(
             Q(customer = customer)
             )
-    serializer = RequestPickupSerializer(requestpickup, many=True)
+        
+    if is_picked != '':
+        requestpickups = requestpickups.filter(
+            Q(is_picked = is_picked)
+            )
+    if keyword != '':
+        requestpickups = requestpickups.filter(
+            Q(pickup_location__icontains = keyword)|
+            Q(dropoff_location__icontains= keyword)|
+            Q(parcel_description__icontains= keyword)|
+            Q(special_notes__icontains= keyword)
+            )
+    serializer = RequestPickupSerializer(requestpickups, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
