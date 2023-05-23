@@ -27,6 +27,9 @@ urlpatterns = [
     path('warehouses/<str:pk>/', views.getWareHouse),
     path('add-update-warehouse/', views.warehouse_detail),
 
+    path('all-requestpickups-by-user/<str:customer>/',views.getUserRequestPickups),#view all requestpickups created by warehouse owner
+    path('single-requestpickups-by-user/<str:pk>/',views.getRequestPickup),#view single requestpickups created by warehouse owner
+
     path('requestpickups',views.getRequestPickups),
     path('requestpickups/<str:pk>/', views.getRequestPickup),
     path('add-update-requestpickup/', views.requestpickup_detail),

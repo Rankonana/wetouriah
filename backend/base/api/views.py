@@ -8,15 +8,16 @@ from rest_framework.decorators import api_view, parser_classes
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import *
+from django.db.models import Q
 
 #
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 
 #
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def getRoutes(request):
     routes = [
         'GET /api',
@@ -29,21 +30,21 @@ def getRoutes(request):
     return Response(routes)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def getUsers(request):
     users = UserProfile.objects.all()
     serializer = UserSerializer(users, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def getUser(request,pk):
     user = UserProfile.objects.get(id=pk)
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def create_user(request):
     serializer = CreateUserSerializer(data=request.data)
 
@@ -67,7 +68,7 @@ def create_user(request):
         return Response(userSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT'])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def update_user(request, user_id):
     try:
         user_profile = UserProfile.objects.get(user_id=user_id)
@@ -83,21 +84,21 @@ def update_user(request, user_id):
 
 #car start
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def getCars(request):
     cars = Car.objects.all()
     serializer = CarSerializer(cars, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def getCar(request,pk):
     car = Car.objects.get(id=pk)
     serializer = Car(car, many=False)
     return Response(serializer.data)
 
 @api_view(['POST', 'PUT'])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def car_detail(request):
 
     try:
@@ -126,21 +127,21 @@ def car_detail(request):
 
 #WareHouse start
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def getWareHouses(request):
     warehouse = WareHouse.objects.all()
     serializer = WareHouseSerializer(warehouse, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def getWareHouse(request,pk):
     warehouse = WareHouse.objects.get(id=pk)
     serializer = WareHouseSerializer(warehouse, many=False)
     return Response(serializer.data)
 
 @api_view(['POST', 'PUT'])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def warehouse_detail(request):
 
     try:
@@ -168,22 +169,33 @@ def warehouse_detail(request):
 #WareHouse end
 
 #RequestPickup start
+
+
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
+def getUserRequestPickups(request,customer):
+    requestpickup = RequestPickup.objects.filter(
+            Q(customer = customer)
+            )
+    serializer = RequestPickupSerializer(requestpickup, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+#@permission_classes([IsAuthenticated])
 def getRequestPickups(request):
     requestpickup = RequestPickup.objects.all()
     serializer = RequestPickupSerializer(requestpickup, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def getRequestPickup(request,pk):
     requestpickup = RequestPickup.objects.get(id=pk)
     serializer = RequestPickupSerializer(requestpickup, many=False)
     return Response(serializer.data)
 
 @api_view(['POST', 'PUT'])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def requestpickup_detail(request):
 
     try:
@@ -213,21 +225,21 @@ def requestpickup_detail(request):
 
 #Pickup start
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def getPickups(request):
     pickup = Pickup.objects.all()
     serializer = PickupSerializer(pickup, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def getPickup(request,pk):
     pickup = Pickup.objects.get(id=pk)
     serializer = PickupSerializer(pickup, many=False)
     return Response(serializer.data)
 
 @api_view(['POST', 'PUT'])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def pickup_detail(request):
 
     try:
@@ -257,21 +269,21 @@ def pickup_detail(request):
 
 #PickupMessage start
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def getPickupMessages(request):
     pickupmessage = PickupMessage.objects.all()
     serializer = PickupMessageSerializer(pickupmessage, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def getPickupMessage(request,pk):
     pickupmessage = PickupMessage.objects.get(id=pk)
     serializer = PickupMessageSerializer(pickupmessage, many=False)
     return Response(serializer.data)
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def pickup_message_detail(request):
     serializer = PickupMessageSerializer(data=request.data)
     if serializer.is_valid():

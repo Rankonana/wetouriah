@@ -65,7 +65,7 @@ class RequestPickup(models.Model):
     parcel_description = models.CharField(max_length=200,null=True,blank=True)
     special_notes = models.CharField(max_length=200,null=True,blank=True)
     price_to_pay = models.CharField(max_length=200,null=True,blank=True)
-    #is_pickup = models.BooleanField(default=False)
+    is_picked = models.BooleanField(default=False)
 
     
     def __str__(self):
