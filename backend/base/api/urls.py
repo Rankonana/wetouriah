@@ -1,6 +1,10 @@
 from django.urls import path
 from . import views
 
+#ref https://django-rest-framework-simplejwt.readthedocs.io/en/latest/getting_started.html
+#https://code.tutsplus.com/tutorials/how-to-authenticate-with-jwt-in-django--cms-30460
+#https://www.django-rest-framework.org/api-guide/permissions/
+#http://www.tomchristie.com/rest-framework-2-docs/api-guide/permissions
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,

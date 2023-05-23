@@ -45,7 +45,11 @@ class WareHouse(models.Model):
 
     def __str__(self):
         return self.warehouse_owner + " " + self.address
-        
+
+class RequestPickupImages(models.Model):
+    request_pickup_images = models.ImageField(null=True,blank=True)
+
+
 class RequestPickup(models.Model):
     customer = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
@@ -65,6 +69,8 @@ class RequestPickup(models.Model):
     parcel_description = models.CharField(max_length=200,null=True,blank=True)
     special_notes = models.CharField(max_length=200,null=True,blank=True)
     price_to_pay = models.CharField(max_length=200,null=True,blank=True)
+    images = models.ManyToManyField('RequestPickupImages')
+
     is_picked = models.BooleanField(default=False)
 
     
