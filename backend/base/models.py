@@ -1,29 +1,24 @@
 from django.contrib.auth.models import User
-from django.contrib.auth.models import AbstractUser, AnonymousUser
 from django.db import models
-from django.contrib.auth.models import AbstractUser
 
 
-class User(AbstractUser):
-    username = models.CharField(unique=True,max_length=200,null=True,blank=True)
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_picture = models.ImageField(default="NoImage.jpg",null=True,blank=True)
     title = models.CharField(max_length=200,null=True,blank=True)
-    image = models.ImageField(default="NoImage.jpg",null=True,blank=True)
     firstname = models.CharField(max_length=200,null=True,blank=True)
     lastname = models.CharField(max_length=200,null=True,blank=True)
     address = models.CharField(max_length=200,null=True,blank=True)
-    phone = models.CharField(max_length=200,null=True,blank=True)
+    phone_number  = models.CharField(max_length=200,null=True,blank=True)
     email = models.EmailField(unique=True,null=True,blank=True)
 
-
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email']
-
     def __str__(self):
-        return self.username
+        return self.user.username
+
     
 
 class Car(models.Model):
-    car_owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    car_owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     type = models.CharField(max_length=200,null=True,blank=True)
     capacity = models.CharField(max_length=200,null=True,blank=True)
     color = models.CharField(max_length=200,null=True,blank=True)
@@ -36,7 +31,7 @@ class Car(models.Model):
         return self.car_owner + " " + self.type
 
 class WareHouse(models.Model):
-    warehouse_owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    warehouse_owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     image = models.ImageField(default="NoImage.jpg",null=True,blank=True)
     address = models.CharField(max_length=200,null=True,blank=True)
     volume = models.CharField(max_length=200,null=True,blank=True)
@@ -50,7 +45,7 @@ class WareHouse(models.Model):
         return self.warehouse_owner + " " + self.address
         
 class RequestPickup(models.Model):
-    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    customer = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
     request_time = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -88,7 +83,7 @@ class Pickup(models.Model):
 
 class PickupMessage(models.Model):
     pickup = models.ForeignKey(Pickup, on_delete=models.CASCADE)
-    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    sender = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
 

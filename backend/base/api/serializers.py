@@ -1,9 +1,16 @@
 from rest_framework.serializers import ModelSerializer
 from base.models import *
 
-class UserSerializer(ModelSerializer):
+
+
+class CreateUserSerializer(ModelSerializer):
     class Meta:
         model = User
+        fields = ['username','password']
+        
+class UserSerializer(ModelSerializer):
+    class Meta:
+        model = UserProfile
         fields = '__all__'
 
 class CarSerializer(ModelSerializer):

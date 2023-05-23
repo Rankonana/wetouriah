@@ -23,46 +23,49 @@ def getRoutes(request):
 
 @api_view(['GET'])
 def getUsers(request):
-    users = User.objects.all()
+    users = UserProfile.objects.all()
     serializer = UserSerializer(users, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
 def getUser(request,pk):
-    user = User.objects.get(id=pk)
+    user = UserProfile.objects.get(id=pk)
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 
-@api_view(['POST', 'PUT'])
-@parser_classes((MultiPartParser, FormParser))
-def add_or_update_user(request):
-    try:
-        user = User.objects.get(pk=request.data['id'])
-    except User.DoesNotExist:
-        user = None
+@api_view(['POST'])
+def create_user(request):
+    serializer = CreateUserSerializer(data=request.data)
 
-    if request.method == 'POST':
-        if not user:
-            serializer = UserSerializer(data=request.data)
-            if serializer.is_valid():
-                user = serializer.save()
-            else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    user = None
 
-        image = request.data.get('image')
-        if image:
-            user.image = image
-            user.save()
-            return Response(UserSerializer(user).data)
-
-    elif request.method == 'PUT':
-        if not user:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-        serializer = UserSerializer(user, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
+    if serializer.is_valid():
+        username = serializer.validated_data['username']
+        password = serializer.validated_data['password']
+        user = User.objects.create_user(username=username, password=password)
+    else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    return Response(status=status.HTTP_400_BAD_REQUEST)
+    data = request.data.copy()
+    data['user'] = user.id
+    userSerializer = UserSerializer(data=data)
+
+    if userSerializer.is_valid():
+        userSerializer.save()
+        return Response(userSerializer.data,status=status.HTTP_201_CREATED)
+    else:
+        return Response(userSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+def update_user(request, user_id):
+    try:
+        user_profile = UserProfile.objects.get(user_id=user_id)
+    except UserProfile.DoesNotExist:
+        return Response({'error': 'User profile not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = UserSerializer(user_profile, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
