@@ -5,11 +5,16 @@ from .serializers import *
 from rest_framework import status
 from django.http import Http404
 from rest_framework.decorators import api_view, parser_classes
-from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import *
-import requests
+
+from django.contrib.auth import authenticate
+from rest_framework_jwt.settings import api_settings
+
+from rest_framework.views import APIView
+
+
 
 @api_view(['GET'])
 def getRoutes(request):
@@ -70,6 +75,39 @@ def update_user(request, user_id):
         serializer.save()
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# @api_view(['POST'])
+# def login(request):
+#     username = request.data.get('username')
+#     password = request.data.get('password')
+
+#     user = authenticate(username=username, password=password)
+#     if user is not None:
+#         jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+#         jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+#         payload = jwt_payload_handler(user)
+#         token = jwt_encode_handler(payload)
+#         return Response({'token': token}, status=status.HTTP_200_OK)
+
+#     return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+
+
+class LoginAPIView(APIView):
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            payload = jwt_payload_handler(user)
+            token = jwt_encode_handler(payload)
+            return Response({'token': token}, status=status.HTTP_200_OK)
+
+        return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 #car start
 @api_view(['GET'])

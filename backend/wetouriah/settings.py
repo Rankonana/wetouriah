@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+import datetime
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -45,6 +47,19 @@ INSTALLED_APPS = [
     'corsheaders',
 
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ],
+}
+
+JWT_AUTH = {
+    'JWT_SECRET_KEY': 'your-secret-key',
+    'JWT_ALGORITHM': 'HS256',
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
+}
 
 
 MIDDLEWARE = [

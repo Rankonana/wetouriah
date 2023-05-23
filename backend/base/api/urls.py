@@ -9,6 +9,9 @@ urlpatterns = [
     path('create-user/', views.create_user),
     path('update-user/<str:user_id>/', views.update_user),
 
+    path('login/', views.login),
+
+
     path('cars',views.getCars),
     path('cars/<str:pk>/', views.getCar),
     path('add-update-car/', views.car_detail),
