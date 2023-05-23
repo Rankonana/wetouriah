@@ -13,7 +13,6 @@ class User(AbstractUser):
     address = models.CharField(max_length=200,null=True,blank=True)
     phone = models.CharField(max_length=200,null=True,blank=True)
     email = models.EmailField(unique=True,null=True,blank=True)
-    #rating = models.EmailField(unique=True,null=True,blank=True)
 
 
     USERNAME_FIELD = 'username'
@@ -33,6 +32,8 @@ class Car(models.Model):
     year = models.CharField(max_length=200,null=True,blank=True)
     license_plate = models.CharField(max_length=200,null=True,blank=True)
 
+    def __str__(self):
+        return self.car_owner + " " + self.type
 
 class WareHouse(models.Model):
     warehouse_owner = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -45,6 +46,9 @@ class WareHouse(models.Model):
     parking_space = models.BooleanField(default=False)
     operating_hours = models.CharField(max_length=200,null=True,blank=True)
 
+    def __str__(self):
+        return self.warehouse_owner + " " + self.address
+        
 class RequestPickup(models.Model):
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -64,6 +68,9 @@ class RequestPickup(models.Model):
     parcel_description = models.CharField(max_length=200,null=True,blank=True)
     special_notes = models.CharField(max_length=200,null=True,blank=True)
     price_to_pay = models.CharField(max_length=200,null=True,blank=True)
+    
+    def __str__(self):
+        return self.customer + " " + self.request_time
 
 class Pickup(models.Model):
     request_pickup = models.ForeignKey(RequestPickup, on_delete=models.CASCADE)
@@ -74,6 +81,9 @@ class Pickup(models.Model):
     tip = models.CharField(max_length=200,null=True,blank=True)
     rating = models.PositiveIntegerField(blank=True, null=True)
     is_delivered = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.request_pickup + " " + self.start_datetime
 
 
 class PickupMessage(models.Model):
