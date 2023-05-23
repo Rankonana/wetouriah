@@ -26,6 +26,8 @@ class Car(models.Model):
     model = models.CharField(max_length=200,null=True,blank=True)
     year = models.CharField(max_length=200,null=True,blank=True)
     license_plate = models.CharField(max_length=200,null=True,blank=True)
+    #is_approved = models.BooleanField(default=False)
+
 
     def __str__(self):
         return self.car_owner + " " + self.type
@@ -40,6 +42,8 @@ class WareHouse(models.Model):
     fire_safety_and_management = models.BooleanField(default=False)
     parking_space = models.BooleanField(default=False)
     operating_hours = models.CharField(max_length=200,null=True,blank=True)
+    #is_approved = models.BooleanField(default=False)
+
 
     def __str__(self):
         return self.warehouse_owner + " " + self.address

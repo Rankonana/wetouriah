@@ -16,7 +16,9 @@ def getRoutes(request):
     routes = [
         'GET /api',
         'GET /api/users',
-        'GET /api/users/:id>'
+        'GET /api/users/:id>',
+        'POST /api/create-user/',
+        'PUT /api/update-user/:id>/'
     ]
 
     return Response(routes)
@@ -69,3 +71,82 @@ def update_user(request, user_id):
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+#car start
+@api_view(['GET'])
+def getCars(request):
+    cars = Car.objects.all()
+    serializer = CarSerializer(cars, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getCar(request,pk):
+    car = Car.objects.get(id=pk)
+    serializer = Car(car, many=False)
+    return Response(serializer.data)
+
+@api_view(['POST', 'PUT'])
+def car_detail(request):
+
+    try:
+        car = Car.objects.get(id=request.data.get('id'))
+    except Car.DoesNotExist:
+        car = None
+
+    if request.method == 'POST':
+        serializer = CarSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+    elif request.method == 'PUT':
+        if car is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = CarSerializer(car, request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#car end
+
+#WareHouse start
+@api_view(['GET'])
+def getWareHouses(request):
+    warehouse = WareHouse.objects.all()
+    serializer = WareHouseSerializer(warehouse, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getWareHouse(request,pk):
+    warehouse = WareHouse.objects.get(id=pk)
+    serializer = WareHouseSerializer(warehouse, many=False)
+    return Response(serializer.data)
+
+@api_view(['POST', 'PUT'])
+def warehouse_detail(request):
+
+    try:
+        warehouse = WareHouse.objects.get(id=request.data.get('id'))
+    except WareHouse.DoesNotExist:
+        warehouse = None
+
+    if request.method == 'POST':
+        serializer = WareHouseSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+    elif request.method == 'PUT':
+        if warehouse is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = WareHouseSerializer(warehouse, request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#WareHouse end
