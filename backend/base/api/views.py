@@ -9,9 +9,14 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import *
 
+#
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
 
+#
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getRoutes(request):
     routes = [
         'GET /api',
@@ -24,18 +29,21 @@ def getRoutes(request):
     return Response(routes)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getUsers(request):
     users = UserProfile.objects.all()
     serializer = UserSerializer(users, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getUser(request,pk):
     user = UserProfile.objects.get(id=pk)
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def create_user(request):
     serializer = CreateUserSerializer(data=request.data)
 
@@ -59,6 +67,7 @@ def create_user(request):
         return Response(userSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT'])
+@permission_classes([IsAuthenticated])
 def update_user(request, user_id):
     try:
         user_profile = UserProfile.objects.get(user_id=user_id)
@@ -72,52 +81,23 @@ def update_user(request, user_id):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['POST'])
-def login(request):
-    username = request.data.get('username')
-    password = request.data.get('password')
-
-    user = authenticate(username=username, password=password)
-    if user is not None:
-        jwt_payload_handler = settings.JWT_PAYLOAD_HANDLER
-        jwt_encode_handler = settings.JWT_ENCODE_HANDLER
-        payload = jwt_payload_handler(user)
-        token = jwt_encode_handler(payload)
-        return Response({'token': token}, status=status.HTTP_200_OK)
-
-    return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-
-# jwt_payload_handler = settings.JWT_PAYLOAD_HANDLER
-# jwt_encode_handler = settings.JWT_ENCODE_HANDLER
-
-
-# class LoginAPIView(APIView):
-#     def post(self, request):
-#         username = request.data.get('username')
-#         password = request.data.get('password')
-
-#         user = authenticate(username=username, password=password)
-#         if user is not None:
-#             payload = jwt_payload_handler(user)
-#             token = jwt_encode_handler(payload)
-#             return Response({'token': token}, status=status.HTTP_200_OK)
-
-#         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-
 #car start
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getCars(request):
     cars = Car.objects.all()
     serializer = CarSerializer(cars, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getCar(request,pk):
     car = Car.objects.get(id=pk)
     serializer = Car(car, many=False)
     return Response(serializer.data)
 
 @api_view(['POST', 'PUT'])
+@permission_classes([IsAuthenticated])
 def car_detail(request):
 
     try:
@@ -146,18 +126,21 @@ def car_detail(request):
 
 #WareHouse start
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getWareHouses(request):
     warehouse = WareHouse.objects.all()
     serializer = WareHouseSerializer(warehouse, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getWareHouse(request,pk):
     warehouse = WareHouse.objects.get(id=pk)
     serializer = WareHouseSerializer(warehouse, many=False)
     return Response(serializer.data)
 
 @api_view(['POST', 'PUT'])
+@permission_classes([IsAuthenticated])
 def warehouse_detail(request):
 
     try:
@@ -186,18 +169,21 @@ def warehouse_detail(request):
 
 #RequestPickup start
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getRequestPickups(request):
     requestpickup = RequestPickup.objects.all()
     serializer = RequestPickupSerializer(requestpickup, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getRequestPickup(request,pk):
     requestpickup = RequestPickup.objects.get(id=pk)
     serializer = RequestPickupSerializer(requestpickup, many=False)
     return Response(serializer.data)
 
 @api_view(['POST', 'PUT'])
+@permission_classes([IsAuthenticated])
 def requestpickup_detail(request):
 
     try:
@@ -227,18 +213,21 @@ def requestpickup_detail(request):
 
 #Pickup start
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getPickups(request):
     pickup = Pickup.objects.all()
     serializer = PickupSerializer(pickup, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getPickup(request,pk):
     pickup = Pickup.objects.get(id=pk)
     serializer = PickupSerializer(pickup, many=False)
     return Response(serializer.data)
 
 @api_view(['POST', 'PUT'])
+@permission_classes([IsAuthenticated])
 def pickup_detail(request):
 
     try:
@@ -268,18 +257,21 @@ def pickup_detail(request):
 
 #PickupMessage start
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getPickupMessages(request):
     pickupmessage = PickupMessage.objects.all()
     serializer = PickupMessageSerializer(pickupmessage, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getPickupMessage(request,pk):
     pickupmessage = PickupMessage.objects.get(id=pk)
     serializer = PickupMessageSerializer(pickupmessage, many=False)
     return Response(serializer.data)
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def pickup_message_detail(request):
     serializer = PickupMessageSerializer(data=request.data)
     if serializer.is_valid():
