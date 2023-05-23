@@ -21,6 +21,13 @@ urlpatterns = [
     path('requestpickups/<str:pk>/', views.getRequestPickup),
     path('add-update-requestpickup/', views.requestpickup_detail),
 
+    path('pickups',views.getPickups),
+    path('pickups/<str:pk>/', views.getPickup),
+    path('add-update-pickup/', views.pickup_detail),
+
+    path('pickup-messages',views.getPickupMessages),
+    path('pickup-messages/<str:pk>/', views.getPickupMessage),
+    path('add-update-pickup-messages/', views.pickup_message_detail),
 
 
 

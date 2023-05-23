@@ -67,6 +67,8 @@ class RequestPickup(models.Model):
     parcel_description = models.CharField(max_length=200,null=True,blank=True)
     special_notes = models.CharField(max_length=200,null=True,blank=True)
     price_to_pay = models.CharField(max_length=200,null=True,blank=True)
+    #is_pickup = models.BooleanField(default=False)
+
     
     def __str__(self):
         return str(self.request_time)
@@ -82,7 +84,7 @@ class Pickup(models.Model):
     is_delivered = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.request_pickup + " " + self.start_datetime
+        return  str(self.start_datetime)
 
 
 class PickupMessage(models.Model):

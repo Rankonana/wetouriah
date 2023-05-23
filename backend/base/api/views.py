@@ -190,3 +190,70 @@ def requestpickup_detail(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #RequestPickup end
+
+
+#Pickup start
+@api_view(['GET'])
+def getPickups(request):
+    pickup = Pickup.objects.all()
+    serializer = PickupSerializer(pickup, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getPickup(request,pk):
+    pickup = Pickup.objects.get(id=pk)
+    serializer = PickupSerializer(pickup, many=False)
+    return Response(serializer.data)
+
+@api_view(['POST', 'PUT'])
+def pickup_detail(request):
+
+    try:
+        pickup = Pickup.objects.get(id=request.data.get('id'))
+    except Pickup.DoesNotExist:
+        pickup = None
+
+    if request.method == 'POST':
+        serializer = PickupSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+    elif request.method == 'PUT':
+        if pickup is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = PickupSerializer(pickup, request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#Pickup end
+
+
+#PickupMessage start
+@api_view(['GET'])
+def getPickupMessages(request):
+    pickupmessage = PickupMessage.objects.all()
+    serializer = PickupMessageSerializer(pickupmessage, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getPickupMessage(request,pk):
+    pickupmessage = PickupMessage.objects.get(id=pk)
+    serializer = PickupMessageSerializer(pickupmessage, many=False)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def pickup_message_detail(request):
+    serializer = PickupMessageSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data,status=status.HTTP_201_CREATED)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+#PickupMessage end
