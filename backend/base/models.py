@@ -60,7 +60,7 @@ class RequestPickup(models.Model):
     recipient_name = models.CharField(max_length=100)
     recipient_phone = models.CharField(max_length=100)
     pickup_location = models.CharField(max_length=200,null=True,blank=True)
-    dropoff_location = models.BooleanField(default=False)
+    dropoff_location = models.CharField(max_length=200,null=True,blank=True)
 
     volume = models.CharField(max_length=200,null=True,blank=True)
     weight = models.DecimalField(max_digits=5, decimal_places=2)
@@ -69,7 +69,7 @@ class RequestPickup(models.Model):
     price_to_pay = models.CharField(max_length=200,null=True,blank=True)
     
     def __str__(self):
-        return self.customer + " " + self.request_time
+        return str(self.request_time)
 
 class Pickup(models.Model):
     request_pickup = models.ForeignKey(RequestPickup, on_delete=models.CASCADE)

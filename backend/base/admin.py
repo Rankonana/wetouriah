@@ -4,5 +4,6 @@ from .models import *
 admin.site.register(UserProfile)
 admin.site.register(Car)
 admin.site.register(WareHouse)
+admin.site.register(RequestPickup)
 admin.site.register(Pickup)
 admin.site.register(PickupMessage)

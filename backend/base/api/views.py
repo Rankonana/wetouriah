@@ -150,3 +150,43 @@ def warehouse_detail(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #WareHouse end
+
+#RequestPickup start
+@api_view(['GET'])
+def getRequestPickups(request):
+    requestpickup = RequestPickup.objects.all()
+    serializer = RequestPickupSerializer(requestpickup, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getRequestPickup(request,pk):
+    requestpickup = RequestPickup.objects.get(id=pk)
+    serializer = RequestPickupSerializer(requestpickup, many=False)
+    return Response(serializer.data)
+
+@api_view(['POST', 'PUT'])
+def requestpickup_detail(request):
+
+    try:
+        requestpickup = RequestPickup.objects.get(id=request.data.get('id'))
+    except RequestPickup.DoesNotExist:
+        requestpickup = None
+
+    if request.method == 'POST':
+        serializer = RequestPickupSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+    elif request.method == 'PUT':
+        if requestpickup is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = RequestPickupSerializer(requestpickup, request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#RequestPickup end

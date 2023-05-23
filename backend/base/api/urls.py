@@ -17,6 +17,10 @@ urlpatterns = [
     path('warehouses/<str:pk>/', views.getWareHouse),
     path('add-update-warehouse/', views.warehouse_detail),
 
+    path('requestpickups',views.getRequestPickups),
+    path('requestpickups/<str:pk>/', views.getRequestPickup),
+    path('add-update-requestpickup/', views.requestpickup_detail),
+
 
 
 
