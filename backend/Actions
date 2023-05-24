@@ -1,0 +1,18 @@
+Views
+1. Anonmos User View
+- "Login link"
+- "Register link"
+- "view warehouses link"
+2. Login View
+"username" input
+"password" input
+"login" button
+
+after succesfully you go to either following views => Warehouse, Customer,driver Portal
+
+2. Warehouse Portal View
+-"View  warehouses link", when clicked a view for "warehouses list view" will apear, from here user can click on any warehouse and they will be redirect to that warehouse details "warehouse detail View"
+-"Create a warehouse link" when a link is clicked a view for create warehouse will be shown wherby a user will enter a warehouse.
+-"View parcels Pickup link": when link is clicked a view for "RequestPickup list" will apear, showing a "Request parcel list" that belong to this specific user,they filter the list by "is_picked,keyboard" , when a parcel from list is clicked a user will taken to "Request parcel view" whereby they can view full details of Request parcel
+-"Request parcel Pickup link": when link is clicked a view for "RequestPickup" whereby a user will enter RequestPickup details
+
