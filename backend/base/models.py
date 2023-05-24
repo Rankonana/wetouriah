@@ -97,6 +97,7 @@ class Pickup(models.Model):
     duration = models.CharField(max_length=200,null=True,blank=True)
     tip = models.CharField(max_length=200,null=True,blank=True)
     rating = models.PositiveIntegerField(blank=True, null=True)
+    last_known_location = models.TextField()
     is_delivered = models.BooleanField(default=False)
 
     def __str__(self):

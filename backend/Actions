@@ -3,10 +3,11 @@ Views
 - "Login link"
 - "Register link"
 - "view warehouses link"
+- "track parcel link"
 2. Login View
 "username" input
 "password" input
-"login" button
+"login" button"
 
 after succesfully you go to either following views => Warehouse, Customer,driver Portal
 
@@ -15,4 +16,23 @@ after succesfully you go to either following views => Warehouse, Customer,driver
 -"Create a warehouse link" when a link is clicked a view for create warehouse will be shown wherby a user will enter a warehouse.
 -"View parcels Pickup link": when link is clicked a view for "RequestPickup list" will apear, showing a "Request parcel list" that belong to this specific user,they filter the list by "is_picked,keyboard" , when a parcel from list is clicked a user will taken to "Request parcel view" whereby they can view full details of Request parcel
 -"Request parcel Pickup link": when link is clicked a view for "RequestPickup" whereby a user will enter RequestPickup details
+
+3. Driver Portal View
+"add a car link" when clicked a user will taken to "add car view" whereby they will be able to add a Car
+"View parcels Pickup link", when clicked they will taken to "RequestPickup list view",this view shows all the RequestPickup, user can filter them, when clicking on one RequestPickup, they will be "accept button whereby they will asign themselves as driver for that particular RequestPickup and Pickup will be added and updated"
+"View ratings link"
+"Deliver link", when clicked users will taken "Deliver list view", showing a list of all parcel they have accept and the top one on the list being the one being delivered, when clicked on it, there is a "Message link to message sender", "Directions link to view directions"
+"messages link"
+"accept Pickup link"
+"Notifications to show messages"
+
+4. Customer Portal View
+"Update user details" to update user details
+"Request parcel Pickup link"
+"view warehouses link"
+"view Pickup link" filter by "rated","is_delivered"
+"view RequestPickup link" when clicked user be taken to "view RequestPickup list view", whereby the will be see all  RequestPickups filter them and update and delete
+"track parcel link", user will be able to track Pickup by its last location
+
+
 
