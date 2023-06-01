@@ -1,4 +1,5 @@
 gunicorn
+django_extensions
 djangorestframework-simplejwt
 asgiref==3.6.0
 certifi==2023.5.7

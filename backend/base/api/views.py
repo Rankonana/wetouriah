@@ -16,6 +16,36 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 
 #
 
+#
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny, IsAuthenticated
+#
+
+class AuthUserLoginView(APIView):
+    serializer_class = UserLoginSerializer
+    permission_classes = (AllowAny, )
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        valid = serializer.is_valid(raise_exception=True)
+
+        if valid:
+            status_code = status.HTTP_200_OK
+
+            response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': 'User logged in successfully',
+                'access': serializer.data['access'],
+                'refresh': serializer.data['refresh'],
+                'authenticatedUser': {
+                    'username': serializer.data['username']
+                    #,'role': serializer.data['role']
+                }
+            }
+
+            return Response(response, status=status_code)
+
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
 def getRoutes(request):
