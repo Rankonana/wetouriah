@@ -13,18 +13,19 @@ from rest_framework_simplejwt.views import (
 from rest_framework_simplejwt import views as jwt_views
 
 
-from .views import (
-    AuthUserLoginView
-)
+# from .views import (
+#     AuthUserLoginView
+# )
 urlpatterns = [
     path('',views.getRoutes),
-    path('users',views.getUsers),
-    path('users/<str:pk>/', views.getUser),
+    # path('users',views.getUsers),
+    # path('users/<str:pk>/', views.getUser),
     path('create-user/', views.create_user),
-    path('update-user/<str:user_id>/', views.update_user),
+    # path('update-user/<str:user_id>/', views.update_user),
 
     # path('login/', views.login),
-    path('token/', AuthUserLoginView.as_view(), name='token_obtain_pair'),
+    #path('token/', AuthUserLoginView.as_view(), name='token_obtain_pair'),
+    path('token/', views.login),
 
     #path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

@@ -21,31 +21,29 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 #
 
-class AuthUserLoginView(APIView):
-    serializer_class = UserLoginSerializer
-    permission_classes = (AllowAny, )
+@api_view(['POST'])
+def login(request):
+    print(request)
+    serializer = UserLoginSerializer(data=request.data)
 
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        valid = serializer.is_valid(raise_exception=True)
-
-        if valid:
-            status_code = status.HTTP_200_OK
-
-            response = {
-                'success': True,
-                'statusCode': status_code,
-                'message': 'User logged in successfully',
-                'access': serializer.data['access'],
-                'refresh': serializer.data['refresh'],
-                'authenticatedUser': {
-                    'username': serializer.data['username']
-                    #,'role': serializer.data['role']
-                }
+    if serializer.is_valid():
+        status_code = status.HTTP_200_OK
+        response = {
+            'success': True,
+            'statusCode': status_code,
+            'message': 'User logged in successfully',
+            'access': serializer.data['access'],
+            'refresh': serializer.data['refresh'],
+            'authenticatedUser': {
+                'username': serializer.data['username'],
+                'role': serializer.data['role']
             }
+        }
 
-            return Response(response, status=status_code)
-
+        return Response(response, status=status_code)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
 def getRoutes(request):
@@ -59,57 +57,50 @@ def getRoutes(request):
 
     return Response(routes)
 
-@api_view(['GET'])
-#@permission_classes([IsAuthenticated])
-def getUsers(request):
-    users = UserProfile.objects.all()
-    serializer = UserSerializer(users, many=True)
-    return Response(serializer.data)
+# @api_view(['GET'])
+# #@permission_classes([IsAuthenticated])
+# def getUsers(request):
+#     users = User.objects.all()
+#     serializer = UserSerializer(users, many=True)
+#     return Response(serializer.data)
 
-@api_view(['GET'])
+# @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
-def getUser(request,pk):
-    user = UserProfile.objects.get(id=pk)
-    serializer = UserSerializer(user, many=False)
-    return Response(serializer.data)
+# def getUser(request,pk):
+#     user = User.objects.get(id=pk)
+#     serializer = UserSerializer(user, many=False)
+#     return Response(serializer.data)
 
 @api_view(['POST'])
 #@permission_classes([IsAuthenticated])
 def create_user(request):
     serializer = CreateUserSerializer(data=request.data)
-
-    user = None
-
     if serializer.is_valid():
-        username = serializer.validated_data['username']
-        password = serializer.validated_data['password']
-        user = User.objects.create_user(username=username, password=password)
+        serializer.save()
+        status_code = status.HTTP_201_CREATED
+        response = {
+            'success': True,
+            'statusCode': status_code,
+            'message': 'User registered successfully',
+        }
+
+        return Response(response, status=status_code)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    data = request.data.copy()
-    data['user'] = user.id
-    userSerializer = UserSerializer(data=data)
+# @api_view(['PUT'])
+# #@permission_classes([IsAuthenticated])
+# def update_user(request, user_id):
+#     try:
+#         user_profile = User.objects.get(user_id=user_id)
+#     except User.DoesNotExist:
+#         return Response({'error': 'User profile not found.'}, status=status.HTTP_404_NOT_FOUND)
 
-    if userSerializer.is_valid():
-        userSerializer.save()
-        return Response(userSerializer.data,status=status.HTTP_201_CREATED)
-    else:
-        return Response(userSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['PUT'])
-#@permission_classes([IsAuthenticated])
-def update_user(request, user_id):
-    try:
-        user_profile = UserProfile.objects.get(user_id=user_id)
-    except UserProfile.DoesNotExist:
-        return Response({'error': 'User profile not found.'}, status=status.HTTP_404_NOT_FOUND)
-
-    serializer = UserSerializer(user_profile, data=request.data, partial=True)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     serializer = UserSerializer(user_profile, data=request.data, partial=True)
+#     if serializer.is_valid():
+#         serializer.save()
+#         return Response(serializer.data)
+#     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 #car start

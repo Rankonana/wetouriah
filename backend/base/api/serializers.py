@@ -5,8 +5,6 @@ from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 
-from django.contrib.auth.models import User
-
 
 
 class UserLoginSerializer(serializers.Serializer):
@@ -29,6 +27,8 @@ class UserLoginSerializer(serializers.Serializer):
 
         if user is None:
             raise serializers.ValidationError("Invalid login credentials")
+        
+        
 
         try:
             refresh = RefreshToken.for_user(user)
@@ -42,7 +42,7 @@ class UserLoginSerializer(serializers.Serializer):
                 'access': access_token,
                 'refresh': refresh_token,
                 'username': user.username,
-                # 'role': user.role,
+                'role': user.role,
             }
 
             return validation
@@ -50,15 +50,17 @@ class UserLoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Invalid login credentials")
 
 
-class CreateUserSerializer(ModelSerializer):
+class CreateUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username','password']
-        
-class UserSerializer(ModelSerializer):
-    class Meta:
-        model = UserProfile
-        fields = '__all__'
+        fields = ['username', 'password', 'email', 'profile_picture', 'role', 'title', 'firstname', 'lastname', 'address', 'phone_number']
+
+    def create(self, validated_data):
+        password = validated_data.pop('password')  # Extract the password from the data
+        user = User(**validated_data)
+        user.set_password(password)  # Hash the password
+        user.save()
+        return user
 
 class CarSerializer(ModelSerializer):
     class Meta:

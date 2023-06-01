@@ -1,22 +1,41 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,AbstractUser
 from django.db import models
 
+#
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+class User(AbstractUser):
+
+    # These fields tie to the roles!
+    ADMIN = 1
+    CUSTOMER = 2
+    DRIVER = 3
+    WAREHOUSE = 4
+
+    ROLE_CHOICES = (
+        (ADMIN, 'Admin'),
+        (CUSTOMER, 'Customer'),
+        (DRIVER, 'Driver'),
+        (WAREHOUSE,'WareHouse')
+    )
     profile_picture = models.ImageField(default="NoImage.jpg",null=True,blank=True)
+    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True, default=4)
     title = models.CharField(max_length=200,null=True,blank=True)
     firstname = models.CharField(max_length=200,null=True,blank=True)
     lastname = models.CharField(max_length=200,null=True,blank=True)
     address = models.CharField(max_length=200,null=True,blank=True)
     phone_number  = models.CharField(max_length=200,null=True,blank=True)
-    email = models.EmailField(unique=True,null=True,blank=True)
+    # email = models.EmailField(unique=True,null=True,blank=True)
+
+    # USERNAME_FIELD = email
+    REQUIRED_FIELDS = []
+    
 
     def __str__(self):
-        return self.user.username
+        return self.username
 
 class Car(models.Model):
-    car_owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    car_owner = models.ForeignKey(User, on_delete=models.CASCADE)
     type = models.CharField(max_length=200,null=True,blank=True)
     capacity = models.CharField(max_length=200,null=True,blank=True)
     color = models.CharField(max_length=200,null=True,blank=True)
@@ -31,7 +50,7 @@ class Car(models.Model):
         return self.car_owner + " " + self.type
 
 class WareHouse(models.Model):
-    warehouse_owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    warehouse_owner = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(default="NoImage.jpg",null=True,blank=True)
     address = models.CharField(max_length=200,null=True,blank=True)
     volume = models.CharField(max_length=200,null=True,blank=True)
@@ -51,7 +70,7 @@ class RequestPickupImages(models.Model):
 
 
 class RequestPickup(models.Model):
-    customer = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE)
 
     request_time = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -79,9 +98,9 @@ class RequestPickup(models.Model):
 
 class RequestPickupMessage(models.Model):
     requestpickup = models.ForeignKey(RequestPickup, on_delete=models.CASCADE)
-    sender = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    #sender = models.ForeignKey(UserProfile, related_name='sent_messages', on_delete=models.CASCADE)
-    #recipient = models.ForeignKey(UserProfile, related_name='received_messages', on_delete=models.CASCADE)
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    #sender = models.ForeignKey(User, related_name='sent_messages', on_delete=models.CASCADE)
+    #recipient = models.ForeignKey(User, related_name='received_messages', on_delete=models.CASCADE)
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     #is_read = models.BooleanField(default=False)
@@ -105,9 +124,9 @@ class Pickup(models.Model):
 
 class PickupMessage(models.Model):
     pickup = models.ForeignKey(Pickup, on_delete=models.CASCADE)
-    sender = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    #sender = models.ForeignKey(UserProfile, related_name='sent_messages', on_delete=models.CASCADE)
-    #recipient = models.ForeignKey(UserProfile, related_name='received_messages', on_delete=models.CASCADE)
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    #sender = models.ForeignKey(User, related_name='sent_messages', on_delete=models.CASCADE)
+    #recipient = models.ForeignKey(User, related_name='received_messages', on_delete=models.CASCADE)
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     #is_read = models.BooleanField(default=False)
