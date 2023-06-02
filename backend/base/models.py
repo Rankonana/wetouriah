@@ -43,7 +43,10 @@ class Car(models.Model):
     model = models.CharField(max_length=200,null=True,blank=True)
     year = models.CharField(max_length=200,null=True,blank=True)
     license_plate = models.CharField(max_length=200,null=True,blank=True)
-    #is_approved = models.BooleanField(default=False)
+    #is_approved = models.BooleanField(default=False ) 
+
+    #testco
+
 
 
     def __str__(self):
