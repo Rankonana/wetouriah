@@ -18,10 +18,10 @@ from rest_framework_simplejwt import views as jwt_views
 # )
 urlpatterns = [
     path('',views.getRoutes),
-    # path('users',views.getUsers),
-    # path('users/<str:pk>/', views.getUser),
+    path('users',views.getUsers),
+    path('users/<str:pk>/', views.getUser),
     path('create-user/', views.create_user),
-    # path('update-user/<str:user_id>/', views.update_user),
+    path('update-user/<str:pk>/', views.update_user),
 
     # path('login/', views.login),
     #path('token/', AuthUserLoginView.as_view(), name='token_obtain_pair'),

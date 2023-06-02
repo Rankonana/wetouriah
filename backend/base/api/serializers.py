@@ -62,6 +62,11 @@ class CreateUserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+class UserSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
+
 class CarSerializer(ModelSerializer):
     class Meta:
         model = Car
