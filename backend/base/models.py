@@ -43,14 +43,14 @@ class Car(models.Model):
     model = models.CharField(max_length=200,null=True,blank=True)
     year = models.CharField(max_length=200,null=True,blank=True)
     license_plate = models.CharField(max_length=200,null=True,blank=True)
-    #is_approved = models.BooleanField(default=False ) 
+    is_approved = models.BooleanField(default=False ) 
 
     #testco
 
 
 
     def __str__(self):
-        return self.car_owner + " " + self.type
+        return str(self.car_owner)
 
 class WareHouse(models.Model):
     warehouse_owner = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -62,14 +62,17 @@ class WareHouse(models.Model):
     fire_safety_and_management = models.BooleanField(default=False)
     parking_space = models.BooleanField(default=False)
     operating_hours = models.CharField(max_length=200,null=True,blank=True)
-    #is_approved = models.BooleanField(default=False)
+    is_approved = models.BooleanField(default=False ) 
 
 
     def __str__(self):
-        return self.warehouse_owner + " " + self.address
+        return str(self.warehouse_owner) + " " + self.address
 
 class RequestPickupImages(models.Model):
     request_pickup_images = models.ImageField(null=True,blank=True)
+
+    def __str__(self):
+        return str(self.request_pickup_images)
 
 
 class RequestPickup(models.Model):
@@ -97,7 +100,7 @@ class RequestPickup(models.Model):
 
     
     def __str__(self):
-        return str(self.request_time)
+        return str(self.recipient_name)
 
 class RequestPickupMessage(models.Model):
     requestpickup = models.ForeignKey(RequestPickup, on_delete=models.CASCADE)
@@ -112,14 +115,14 @@ class RequestPickupMessage(models.Model):
         return f"Message from {self.sender} - {self.timestamp}"
 
 class Pickup(models.Model):
-    request_pickup = models.ForeignKey(RequestPickup, on_delete=models.CASCADE)
-    car = models.ForeignKey(Car, on_delete=models.CASCADE)
+    request_pickup = models.ForeignKey(RequestPickup, on_delete=models.CASCADE,blank=True, null=True)
+    car = models.ForeignKey(Car, on_delete=models.CASCADE,blank=True, null=True)
     start_datetime = models.DateTimeField(auto_now=True)
     end_datetime = models.DateTimeField(auto_now=True)
     duration = models.CharField(max_length=200,null=True,blank=True)
     tip = models.CharField(max_length=200,null=True,blank=True)
     rating = models.PositiveIntegerField(blank=True, null=True)
-    last_known_location = models.TextField()
+    last_known_location = models.TextField(blank=True, null=True)
     is_delivered = models.BooleanField(default=False)
 
     def __str__(self):

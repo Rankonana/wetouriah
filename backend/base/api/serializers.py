@@ -4,6 +4,8 @@ from base.models import *
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
+from rest_framework.serializers import ImageField
+
 
 
 
@@ -67,6 +69,11 @@ class UserSerializer(ModelSerializer):
         model = User
         fields = '__all__'
 
+class RequestPickupImagesSerializer(ModelSerializer):
+    class Meta:
+        model = RequestPickupImages
+        fields = ['request_pickup_images']
+
 class CarSerializer(ModelSerializer):
     class Meta:
         model = Car
@@ -77,6 +84,7 @@ class WareHouseSerializer(ModelSerializer):
         model = WareHouse
         fields = '__all__'
 
+
 class RequestPickupSerializer(ModelSerializer):
     class Meta:
         model = RequestPickup
@@ -86,6 +94,7 @@ class PickupSerializer(ModelSerializer):
     class Meta:
         model = Pickup
         fields = '__all__'
+
 
 class PickupMessageSerializer(ModelSerializer):
     class Meta:

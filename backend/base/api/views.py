@@ -29,6 +29,7 @@ def login(request):
 
     if serializer.is_valid():
         status_code = status.HTTP_200_OK
+        user_id = User.objects.get(username=serializer.data['username']).id
         response = {
             'success': True,
             'statusCode': status_code,
@@ -36,8 +37,10 @@ def login(request):
             'access': serializer.data['access'],
             'refresh': serializer.data['refresh'],
             'authenticatedUser': {
+                'id': user_id,
                 'username': serializer.data['username'],
                 'role': serializer.data['role']
+ 
             }
         }
 
@@ -61,20 +64,22 @@ def getRoutes(request):
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
 def getUsers(request):
+    print("getting users")
     users = User.objects.all()
     serializer = UserSerializer(users, many=True)
     return Response(serializer.data)
 
-@api_view(['GET'])
+@api_view(['POST'])
 # @permission_classes([IsAuthenticated])
-def getUser(request,pk):
-    user = User.objects.get(id=pk)
+def getUser(request):
+    user = User.objects.get(id=request.data.get('id'))
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 
 @api_view(['POST'])
 #@permission_classes([IsAuthenticated])
 def create_user(request):
+    print(request.data)
     serializer = CreateUserSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -87,13 +92,20 @@ def create_user(request):
 
         return Response(response, status=status_code)
     else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        status_code = status.HTTP_400_BAD_REQUEST
+        response = {
+            'success': True,
+            'statusCode': status_code,
+            'message': serializer.errors,
+        }
+        return Response(response, status=status_code)
 
 @api_view(['PUT'])
 #@permission_classes([IsAuthenticated])
-def update_user(request, pk):
+def update_user(request):
     try:
-        user_profile = User.objects.get(pk=pk)
+        user_profile = User.objects.get(id=request.data.get('id'))
+
     except User.DoesNotExist:
         return Response({'error': 'User profile not found.'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -119,19 +131,22 @@ def getCars(request):
     serializer = CarSerializer(cars, many=True)
     return Response(serializer.data)
 
-@api_view(['GET'])
+
+@api_view(['POST'])
 #@permission_classes([IsAuthenticated])
-def getCar(request,pk):
-    car = Car.objects.get(id=pk)
-    serializer = Car(car, many=False)
+def getCar(request):
+    car = Car.objects.get(car_owner=request.data.get('id'))
+    serializer = CarSerializer(car, many=False)
     return Response(serializer.data)
+
 
 @api_view(['POST', 'PUT'])
 #@permission_classes([IsAuthenticated])
 def car_detail(request):
+    print(request.data)
 
     try:
-        car = Car.objects.get(id=request.data.get('id'))
+        car = Car.objects.get(car_owner=request.data.get('car_owner'))
     except Car.DoesNotExist:
         car = None
 
@@ -139,7 +154,13 @@ def car_detail(request):
         serializer = CarSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
+            status_code = status.HTTP_201_CREATED
+            response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': 'Car added successfully',
+            }
+            return Response(response, status=status_code)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
@@ -149,42 +170,107 @@ def car_detail(request):
         serializer = CarSerializer(car, request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            status_code = status.HTTP_201_CREATED
+            response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': 'Car updated successfully',
+            }
+            return Response(response, status=status_code)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #car end
 
 #WareHouse start
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
-def getWareHouses(request):
-    warehouse = WareHouse.objects.all()
-    serializer = WareHouseSerializer(warehouse, many=True)
+def searchWareHouses(request):
+    print(request.data)
+    # address = request.data.get('address', '')
+    address = request.GET.get('address', '')
+    print(address)
+    warehouses = WareHouse.objects.all()
+
+    if address != '':
+        warehouses = warehouses.filter(
+            Q(address__icontains = address)
+        )
+    serializer = WareHouseSerializer(warehouses, many=True)
     return Response(serializer.data)
 
+#WareHouse start
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
-def getWareHouse(request,pk):
-    warehouse = WareHouse.objects.get(id=pk)
+def getWareHouses(request):
+    print(request.data)
+    warehouses = WareHouse.objects.all()
+    serializer = WareHouseSerializer(warehouses, many=True)
+    return Response(serializer.data)
+
+# @api_view(['GET'])
+# #@permission_classes([IsAuthenticated])
+# def getWareHouses(request):
+
+#     print(request.data)
+#     address = request.data.get('address', '')
+#     warehouses = []
+#     warehouses = WareHouse.objects.all()
+
+#     if address != '':
+#         warehouses = warehouses.filter(
+#             Q(address = address)
+#             )
+    
+
+#     # Iterate over each book and print its title and authors
+#     # for requestp in requestpickups:
+#     #     images = requestp.images.all()
+#     #     for image in images:
+#     #         print(image)
+
+#     serializer = WareHouseSerializer(address, many=True)
+#     return Response(serializer.data)
+
+
+@api_view(['POST'])
+#@permission_classes([IsAuthenticated])
+def getWareHouse(request):
+    warehouse = WareHouse.objects.get(warehouse_owner=request.data.get('id'))
     serializer = WareHouseSerializer(warehouse, many=False)
     return Response(serializer.data)
 
 @api_view(['POST', 'PUT'])
 #@permission_classes([IsAuthenticated])
 def warehouse_detail(request):
-
+    print(request.data)
     try:
         warehouse = WareHouse.objects.get(id=request.data.get('id'))
+        print("Exist")
+
     except WareHouse.DoesNotExist:
         warehouse = None
 
     if request.method == 'POST':
+        print(request.data)
         serializer = WareHouseSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
+            status_code = status.HTTP_201_CREATED
+            response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': 'warehouse added successfully',
+            }
+            return Response(response, status=status_code)
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            status_code = status.HTTP_400_BAD_REQUEST
+            response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': serializer.errors,
+            }
+            return Response(response, status=status_code)
         
     elif request.method == 'PUT':
         if warehouse is None:
@@ -192,50 +278,77 @@ def warehouse_detail(request):
         serializer = WareHouseSerializer(warehouse, request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            status_code = status.HTTP_201_CREATED
+            response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': 'warehouse updated successfully',
+            }
+            return Response(response, status=status_code)
+        else:
+            status_code = status.HTTP_400_BAD_REQUEST
+            response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': serializer.errors,
+            }
+            return Response(response, status=status_code)
 
 #WareHouse end
 
 #RequestPickup start
 
-
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
-def getUserRequestPickups(request):
+def getImage(request):
+    image = RequestPickupImages.objects.get(id =request.data.get('id'))
+    serializer = RequestPickupImagesSerializer(image, many=False)
+    return Response(serializer.data)
 
-    customer = request.GET.get("customer", "")
-    is_picked = request.GET.get("is_picked", "")
-    keyword = request.GET.get("keyword", "")
+@api_view(['POST'])
+def getAllUserRequestPickups(request):
+    print(request.data)
+    customer = request.data.get('customer', '')
 
-    requestpickups = []
     requestpickups = RequestPickup.objects.all()
 
     if customer != '':
-        requestpickups = requestpickups.filter(
-            Q(customer = customer)
-            )
-        
-    if is_picked != '':
-        requestpickups = requestpickups.filter(
-            Q(is_picked = is_picked)
-            )
-    if keyword != '':
-        requestpickups = requestpickups.filter(
-            Q(pickup_location__icontains = keyword)|
-            Q(dropoff_location__icontains= keyword)|
-            Q(parcel_description__icontains= keyword)|
-            Q(special_notes__icontains= keyword)
-            )
+        requestpickups = requestpickups.filter(Q(customer=customer))
+
+    requestpickups = requestpickups.order_by('-updated')  # Apply order_by() on the queryset
+
     serializer = RequestPickupSerializer(requestpickups, many=True)
     return Response(serializer.data)
 
-@api_view(['GET'])
-#@permission_classes([IsAuthenticated])
-def getRequestPickups(request):
-    requestpickup = RequestPickup.objects.all()
-    serializer = RequestPickupSerializer(requestpickup, many=True)
+
+@api_view(['POST'])
+def getUnratedUserRequestPickups(request):
+    customer = request.data.get('customer', '')
+
+    # Retrieve all unrated RequestPickup objects
+    requestpickups = RequestPickup.objects.filter(pickup__rating=None)
+
+    if customer != '':
+        requestpickups = requestpickups.filter(customer=customer)
+
+    serializer = RequestPickupSerializer(requestpickups, many=True).order_by('-updated')
     return Response(serializer.data)
+
+@api_view(['POST'])
+def getUndeliveredUserRequestPickups(request):
+    print("undelivred")
+    print(request.data.get('customer'))
+    customer = request.data.get('customer', '')
+    
+    # Retrieve all undelivered RequestPickup objects
+    requestpickups = RequestPickup.objects.filter(pickup__is_delivered=False).order_by('-updated')
+
+    if customer != '':
+        requestpickups = requestpickups.filter(customer=customer)
+
+    serializer = RequestPickupSerializer(requestpickups, many=True)
+    return Response(serializer.data)
+
 
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
@@ -247,7 +360,7 @@ def getRequestPickup(request,pk):
 @api_view(['POST', 'PUT'])
 #@permission_classes([IsAuthenticated])
 def requestpickup_detail(request):
-
+    print(request.data)
     try:
         requestpickup = RequestPickup.objects.get(id=request.data.get('id'))
     except RequestPickup.DoesNotExist:
@@ -257,9 +370,21 @@ def requestpickup_detail(request):
         serializer = RequestPickupSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
+            status_code =status.HTTP_201_CREATED
+            response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': 'pick request added successfully',
+            }
+            return Response(response, status_code)
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            status_code =status.HTTP_400_BAD_REQUEST
+            response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': serializer.errors,
+            }
+            return Response(response, status_code)
         
     elif request.method == 'PUT':
         if requestpickup is None:
@@ -267,7 +392,13 @@ def requestpickup_detail(request):
         serializer = RequestPickupSerializer(requestpickup, request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            status_code =status.HTTP_201_CREATED
+            response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': 'pick request updated successfully',
+            }
+            return Response(response, status_code)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #RequestPickup end
@@ -279,6 +410,13 @@ def requestpickup_detail(request):
 def getPickups(request):
     pickup = Pickup.objects.all()
     serializer = PickupSerializer(pickup, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+#@permission_classes([IsAuthenticated])
+def getPickupIDfromRequestPickupID(request):
+    pickup = Pickup.objects.get(request_pickup=request.data.get('request_pickup'))
+    serializer = PickupSerializer(pickup, many=False)
     return Response(serializer.data)
 
 @api_view(['GET'])
@@ -293,7 +431,7 @@ def getPickup(request,pk):
 def pickup_detail(request):
 
     try:
-        pickup = Pickup.objects.get(id=request.data.get('id'))
+        pickup = Pickup.objects.get(request_pickup=request.data.get('request_pickup'))
     except Pickup.DoesNotExist:
         pickup = None
 
@@ -301,7 +439,13 @@ def pickup_detail(request):
         serializer = PickupSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
+            status_code =status.HTTP_201_CREATED
+            response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': 'pick  added successfully',
+            }
+            return Response(response, status_code)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
@@ -311,25 +455,35 @@ def pickup_detail(request):
         serializer = PickupSerializer(pickup, request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            status_code =status.HTTP_201_CREATED
+            response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': 'pickup  updated successfully',
+            }
+            return Response(response, status_code)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #Pickup end
 
 
-#PickupMessage start
-@api_view(['GET'])
+# #PickupMessage start
+# @api_view(['GET'])
+# #@permission_classes([IsAuthenticated])
+# def getPickupMessages(request):
+#     pickupmessage = PickupMessage.objects.all()
+#     serializer = PickupMessageSerializer(pickupmessage, many=True)
+#     return Response(serializer.data)
+
+@api_view(['POST'])
 #@permission_classes([IsAuthenticated])
 def getPickupMessages(request):
-    pickupmessage = PickupMessage.objects.all()
-    serializer = PickupMessageSerializer(pickupmessage, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-#@permission_classes([IsAuthenticated])
-def getPickupMessage(request,pk):
-    pickupmessage = PickupMessage.objects.get(id=pk)
-    serializer = PickupMessageSerializer(pickupmessage, many=False)
+    pickup = request.data.get('pickup')
+    pickupmessages = PickupMessage.objects.all()
+    pickupmessages = pickupmessages.filter(
+        Q(pickup = pickup)
+    )
+    serializer = PickupMessageSerializer(pickupmessages, many=True)
     return Response(serializer.data)
 
 @api_view(['POST'])
@@ -338,9 +492,35 @@ def pickup_message_detail(request):
     serializer = PickupMessageSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
-        return Response(serializer.data,status=status.HTTP_201_CREATED)
+        status_code =status.HTTP_201_CREATED
+        response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': 'Message Sent',
+            }
+        return Response(response,status=status.HTTP_201_CREATED)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
 #PickupMessage end
+
+
+@api_view(['POST'])
+#@permission_classes([IsAuthenticated])
+def trackParcel(request):
+    pickup = Pickup.objects.get(id=request.data.get('id'))
+    serializer = PickupSerializer(pickup, many=False)
+    return Response(serializer.data)
+
+
+
+
+
+
+
+
+
+
+
+
