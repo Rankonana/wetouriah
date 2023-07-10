@@ -2,35 +2,24 @@ package com.example.wetouriah;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
-import android.app.DownloadManager;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.github.drjacky.imagepicker.ImagePicker;
 import com.github.drjacky.imagepicker.constant.ImageProvider;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -47,28 +36,35 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Register extends AppCompatActivity {
 
-    private RelativeLayout lyUsernameAndPassword, lyProfileDetails;
-    private Button btnNext, btnBack,btnRegister, selectImageButton;
+    private RelativeLayout lyUsernameAndPassword, lyProfileDetails,lyRole;
+    private Button btnRolesNext,btnNext, btnBack,btnRegister, selectImageButton;
     private ImageView imageView;
     private EditText email,  username, password,
             title, firstname, lastname, address, phone_number;
 
+    private RadioGroup rgRoles;
+
 
     private String imagepath;
+    private String role,selectedOption;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        setTitle("Registration");
+        lyRole = findViewById(R.id.lyRole);
         lyUsernameAndPassword = findViewById(R.id.lyUsernameAndPassword);
         lyProfileDetails = findViewById(R.id.lyProfileDetails);
+        btnRolesNext = findViewById(R.id.btnRolesNext);
         btnNext = findViewById(R.id.btnNext);
         btnBack = findViewById(R.id.btnBack);
         btnRegister = findViewById(R.id.btnRegister);
 
-
         email = findViewById(R.id.email);
+        rgRoles = findViewById(R.id.rgRoles);
+
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         title = findViewById(R.id.title);
@@ -81,6 +77,38 @@ public class Register extends AppCompatActivity {
         imageView = findViewById(R.id.imageView);
         selectImageButton = findViewById(R.id.selectImageButton);
 
+        rgRoles.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton radioButton = findViewById(checkedId);
+                selectedOption = radioButton.getText().toString();
+
+                if(selectedOption.equals("Admin")) {
+                    role = "1";
+                }
+                if(selectedOption.equals("Customer")) {
+                    role= "2";
+                }
+                if(selectedOption.equals("Driver")) {
+                    role= "3";
+                }
+                if(selectedOption.equals("Warehouse Owner")) {
+                    role= "4";
+                }
+
+            }
+        });
+
+        btnRolesNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                lyRole.setVisibility(View.GONE);
+                lyUsernameAndPassword.setVisibility(View.VISIBLE);
+                Toast.makeText(Register.this, role.toString(), Toast.LENGTH_LONG).show();
+
+            }
+        });
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,9 +132,10 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String url = "http://127.0.0.1:8000/api/";
+                String url = "https://" + Constants.SERVER_IP_ADDRESS + "/api/";
 
                 addUser(url,imagepath,email.getText().toString(),
+                        role,
                         username.getText().toString(),
                         password.getText().toString(),
 
@@ -115,9 +144,6 @@ public class Register extends AppCompatActivity {
                         lastname.getText().toString(),
                         address.getText().toString(),
                         phone_number.getText().toString());
-
-
-
 
             }
         });
@@ -145,8 +171,6 @@ public class Register extends AppCompatActivity {
         Uri uri = data.getData();
          imagepath = RealPathUtil.getRealPath(this,uri);
         imageView.setImageURI(uri);
-        Toast.makeText(Register.this, uri.toString(), Toast.LENGTH_SHORT).show();
-
 
     }
 
@@ -217,11 +241,11 @@ public class Register extends AppCompatActivity {
 
 
     public void addUser(String url, String profile_picture,
-                            String email, String username,String password,
+                            String email,String role, String username,String password,
                             String title,String firstname,String lastname,
                             String address,String phone_number) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://196.254.66.80:8000/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS + "/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         File file = new File(imagepath);
@@ -232,6 +256,8 @@ public class Register extends AppCompatActivity {
 
 
         RequestBody user_email = RequestBody.create(MediaType.parse("multipart/form-data"), email);
+        RequestBody user_role = RequestBody.create(MediaType.parse("multipart/form-data"), role);
+
         RequestBody user_username= RequestBody.create(MediaType.parse("multipart/form-data"), username);
         RequestBody user_password = RequestBody.create(MediaType.parse("multipart/form-data"), password);
 
@@ -242,25 +268,49 @@ public class Register extends AppCompatActivity {
         RequestBody user_phone_number = RequestBody.create(MediaType.parse("multipart/form-data"),phone_number);
 
         APIService apiService = retrofit.create(APIService.class);
-        Call<AddUser> call = apiService.addUser(user_email,
+        Call<AddUserResponse> call = apiService.addUser(user_email,user_role,
                 user_username,user_password,
                 user_title,imagefield,user_firstname,user_lastname,user_address,user_phone_number);
 
-        call.enqueue(new Callback<AddUser>() {
+        call.enqueue(new Callback<AddUserResponse>() {
             @Override
-            public void onResponse(Call<AddUser> call, Response<AddUser> response) {
-                                if (response.isSuccessful()) {
+            public void onResponse(Call<AddUserResponse> call, Response<AddUserResponse> response) {
 
-                    if (!response.body().getEmail().isEmpty()) {
-                        Toast.makeText(getApplicationContext(), response.body().getEmail().toString(), Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "not Added", Toast.LENGTH_SHORT).show();
-                    }
-                }
+
+                               if(response.isSuccessful()){
+                                   if(response.body().getStatusCode().toString().equals("201")) {
+
+                                       if(role.equals("1")) {
+                                           Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
+                                           Intent intent = new Intent(Register.this,AdminPortal.class);
+                                           startActivity(intent);
+                                       }
+                                       if(role.equals("2")) {
+                                           Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
+                                           Intent intent = new Intent(Register.this, CustomerPortal.class);
+                                           startActivity(intent);
+                                       }
+                                       if(role.equals("3")) {
+                                           Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
+                                           Intent intent = new Intent(Register.this,DriverPortal.class);
+                                           startActivity(intent);
+                                       }
+                                       if(role.equals("4")) {
+                                           Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
+                                           Intent intent = new Intent(Register.this,WarehousePortal.class);
+                                           startActivity(intent);
+                                       }
+
+
+                                   }else{
+                                       Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
+
+                                   }
+                               }
             }
 
             @Override
-            public void onFailure(Call<AddUser> call, Throwable t) {
+            public void onFailure(Call<AddUserResponse> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
 
             }

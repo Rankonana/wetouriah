@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_login"
-
+        android:text="custi"
         android:hint="username" />
 
     <EditText
@@ -34,7 +34,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/edtUsername"
-
+        android:inputType="textPassword"
+        android:text="Marea36*******"
         android:hint="password" />
     <Button
         android:id="@+id/btnButton"

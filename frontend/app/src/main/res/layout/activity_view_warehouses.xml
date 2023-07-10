@@ -15,4 +15,19 @@
         android:fontFamily="sans-serif-condensed"
         android:textSize="30sp"/>
 
+    <EditText
+        android:id="@+id/txtID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtViewWarehouses"
+        android:hint="Enter your location "/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/idWarehouses"
+        android:layout_below="@+id/txtID"
+        />
+
+
 </RelativeLayout>

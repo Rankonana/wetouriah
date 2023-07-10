@@ -15,4 +15,20 @@
         android:fontFamily="sans-serif-condensed"
         android:textSize="30sp"/>
 
+
+    <EditText
+        android:id="@+id/txtID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtTrackparcel"
+
+        android:hint="Enter parcel id"/>
+
+    <Button
+        android:id="@+id/btnSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtID"
+        android:text="Search"/>
+
 </RelativeLayout>

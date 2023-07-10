@@ -4,58 +4,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="5dp"
-
     tools:context=".Register">
 
     <RelativeLayout
-        android:id="@+id/lyRoles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        >
+        android:id="@+id/lyRole"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
 
         <TextView
-            android:id="@+id/txtRolesWelcome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="What would you\n like register as ?"
-            android:textSize="30sp" />
+            android:text="Choose your Role Here ?"
+            android:textSize="25dp"
+            android:typeface="monospace"
+            android:id="@+id/txtChooseRoles">
 
+        </TextView>
 
         <RadioGroup
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/txtRolesWelcome"
-            android:id="@+id/rgRoles">
-            <RadioButton
-                android:id="@+id/rdDriver"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Driver" />
-            <RadioButton
-                android:id="@+id/rdWarehouse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Warehouse Owner" />
-            <RadioButton
-                android:id="@+id/rdCustomer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Customer" />
-        </RadioGroup>
-
-
-
-
-        <Button
-            android:id="@+id/btnNextRoles"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/txtChooseRoles"
+            android:id="@+id/rgRoles">
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rdDriver"
+                android:text="Driver">
+            </RadioButton>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rdCustomer"
+                android:text="Customer">
+            </RadioButton>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rdWarehouseOwner"
+                android:text="Warehouse Owner">
+
+            </RadioButton>
+        </RadioGroup>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnRolesNext"
             android:layout_below="@+id/rgRoles"
-            android:text="Next" />
+            android:layout_centerHorizontal="true"
+            android:text="Next">
 
-
+        </Button>
 
     </RelativeLayout>
 
@@ -63,15 +65,15 @@
         android:id="@+id/lyUsernameAndPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone">
-
+        android:visibility="gone"
+        >
         <TextView
             android:id="@+id/txtUsernameAndPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="Hi, Welcome to \n WeTouriah \nLet's Register"
-            android:textSize="30sp" />
+            android:text="Let's Register"
+            android:textSize="40sp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/lyusername"
@@ -88,58 +90,40 @@
                 android:hint="username"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/lyPassword1"
+
+
+
+
+        <!--        <EditText-->
+        <!--            android:id="@+id/username"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_below="@+id/txtUsernameAndPassword"-->
+
+        <!--            android:hint="username" />-->
+
+        <EditText
+            android:id="@+id/edtPassword1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/lyusername"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtPassword1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txtUsernameAndPassword"
-                android:hint="Password"/>
-        </com.google.android.material.textfield.TextInputLayout>
+            android:hint="Password" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/lyPassword2"
+        <EditText
+            android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/lyPassword1"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            android:layout_below="@+id/edtPassword1"
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txtUsernameAndPassword"
-                android:hint="Confirm Password"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-<!--        <EditText-->
-<!--            android:id="@+id/edtPassword1"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_below="@+id/lyusername"-->
-
-<!--            android:hint="Password" />-->
-
-<!--        <EditText-->
-<!--            android:id="@+id/password"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_below="@+id/edtPassword1"-->
-
-<!--            android:hint="Confirm Password" />-->
+            android:hint="Confirm Password" />
 
 
         <Button
             android:id="@+id/btnNext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/lyPassword2"
+            android:layout_below="@+id/password"
             android:text="Next" />
 
     </RelativeLayout>
@@ -160,41 +144,23 @@
             android:textSize="40sp" />
 
 
-
-
-
-
-
-        <LinearLayout
-            android:id="@+id/lyImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_below="@+id/txtRegister"
+            android:layout_marginTop="21dp"
+            android:maxWidth="50dp"
+            android:minHeight="50dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_baseline_person_24" />
 
-            android:orientation="horizontal">
-
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="200dp"
-                android:layout_weight="5"
-                android:background="@color/purple_200"
-                android:src="@drawable/ic_baseline_person_24" />
-s
-
-            <Button
-                android:id="@+id/selectImageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/imageView"
-                android:layout_marginTop="50dp"
-                android:layout_weight="1"
-
-                android:text="Select Image" />
-
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/selectImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView"
+            android:text="Select Image" />
 
 
 
@@ -202,7 +168,7 @@ s
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/lyImage"
+            android:layout_below="@+id/selectImageButton"
 
             android:hint="Title" />
 
@@ -236,7 +202,6 @@ s
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/address"
-
             android:hint="Phone number" />
 
         <EditText
@@ -244,42 +209,27 @@ s
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/phone_number"
+            android:inputType="textEmailAddress"
 
             android:hint="Email" />
 
-
-        <LinearLayout
+        <Button
+            android:id="@+id/btnBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/email"
+            android:text="Back" />
 
-            android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnBack"
 
-
-            <Button
-                android:id="@+id/btnBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="5dp"
-                android:text="Back" />
-
-            <Button
-                android:id="@+id/btnRegister"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-
-                android:text="Done" />
-
-
-        </LinearLayout>
+            android:text="Register" />
 
 
     </RelativeLayout>
-
-
 
 
 </RelativeLayout>

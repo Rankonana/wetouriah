@@ -1,6 +1,13 @@
 <resources>
-    <string name="app_name">Wetouriah</string>
+    <string name="app_name">wetouriah</string>
+    <string name="server">http://196.254.66.93</string>
+    <string name="warehouse_portal">Warehouse Portal</string>
+    <string name="bold_italic_text"><b><i>Add a Pickup request</i></b></string>
+    <string name="title_activity_aaatest">AAATest</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="Open">Open navigation drawer</string>
-    <string name="Close">Close navigation drawer</string>
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
+
 </resources>
