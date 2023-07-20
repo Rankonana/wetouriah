@@ -53,6 +53,21 @@ urlpatterns = [
     path('add-update-requestpickup/', views.requestpickup_detail),
 
 
+    path('all-requestpickups-by-driver/',views.getAllDriverRequestPickups),#get all requestpickups created by a user
+    path('all-undelivered-requestpickups-by-driver/',views.getDriverUndeliveredRequestPickups),#get all undelivered requestpickups created by a driver
+    path('all-unrated-requestpickups-by-driver/',views.getDriverRatedRequestPickups),#get all unrated requestpickups created by a driver
+    path('driver-notification/',views.check_unpicked_request_pickups),#check job assignments
+    path('decline-accept-job/',views.acceptDeclineJob),#check job assignments
+    path('add-delivery-proof-images/',views.add_proof_of_delivery_image),#proof of delivery images
+    path('set-is-delivered/',views.mark_request_pickup_delivered),#mark as delivred
+
+    path('get-delivery-images-and-rating/',views.getDeliveryImagesAndRating),#getImages and Rating
+
+
+
+
+
+
     path('pickups',views.getPickups),
     path('pickups/<str:pk>/', views.getPickup),
     path('get-pickup-id-from-requestpickup-id/',views.getPickupIDfromRequestPickupID),#get an  pickup id of a certain requestpickup

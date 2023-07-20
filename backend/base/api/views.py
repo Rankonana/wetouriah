@@ -24,7 +24,6 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 #ref: https://python.plainenglish.io/role-based-authentication-and-authorization-with-djangorestframework-and-simplejwt-d9614d79995c
 @api_view(['POST'])
 def login(request):
-    print(request)
     serializer = UserLoginSerializer(data=request.data)
 
     if serializer.is_valid():
@@ -64,7 +63,6 @@ def getRoutes(request):
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
 def getUsers(request):
-    print("getting users")
     users = User.objects.all()
     serializer = UserSerializer(users, many=True)
     return Response(serializer.data)
@@ -79,7 +77,6 @@ def getUser(request):
 @api_view(['POST'])
 #@permission_classes([IsAuthenticated])
 def create_user(request):
-    print(request.data)
     serializer = CreateUserSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -140,15 +137,12 @@ def getCar(request):
     return Response(serializer.data)
 
 
+#
 @api_view(['POST', 'PUT'])
 #@permission_classes([IsAuthenticated])
 def car_detail(request):
     print(request.data)
 
-    try:
-        car = Car.objects.get(car_owner=request.data.get('car_owner'))
-    except Car.DoesNotExist:
-        car = None
 
     if request.method == 'POST':
         serializer = CarSerializer(data=request.data)
@@ -165,6 +159,11 @@ def car_detail(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
     elif request.method == 'PUT':
+        try:
+            car = Car.objects.get(car_owner=request.data.get('car_owner'))
+        except Car.DoesNotExist:
+            car = None
+
         if car is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = CarSerializer(car, request.data)
@@ -180,16 +179,18 @@ def car_detail(request):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+#
+
+
 #car end
 
 #WareHouse start
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
 def searchWareHouses(request):
-    print(request.data)
     # address = request.data.get('address', '')
     address = request.GET.get('address', '')
-    print(address)
     warehouses = WareHouse.objects.all()
 
     if address != '':
@@ -203,7 +204,6 @@ def searchWareHouses(request):
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
 def getWareHouses(request):
-    print(request.data)
     warehouses = WareHouse.objects.all()
     serializer = WareHouseSerializer(warehouses, many=True)
     return Response(serializer.data)
@@ -246,13 +246,11 @@ def warehouse_detail(request):
     print(request.data)
     try:
         warehouse = WareHouse.objects.get(id=request.data.get('id'))
-        print("Exist")
 
     except WareHouse.DoesNotExist:
         warehouse = None
 
     if request.method == 'POST':
-        print(request.data)
         serializer = WareHouseSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -307,7 +305,6 @@ def getImage(request):
 
 @api_view(['POST'])
 def getAllUserRequestPickups(request):
-    print(request.data)
     customer = request.data.get('customer', '')
 
     requestpickups = RequestPickup.objects.all()
@@ -326,28 +323,231 @@ def getUnratedUserRequestPickups(request):
     customer = request.data.get('customer', '')
 
     # Retrieve all unrated RequestPickup objects
-    requestpickups = RequestPickup.objects.filter(pickup__rating=None)
+
+    requestpickups = RequestPickup.objects.filter(pickup__is_delivered=True, pickup__rating=0)
 
     if customer != '':
         requestpickups = requestpickups.filter(customer=customer)
 
-    serializer = RequestPickupSerializer(requestpickups, many=True).order_by('-updated')
+    requestpickups = requestpickups.order_by('-updated')  # Apply ordering here
+
+    serializer = RequestPickupSerializer(requestpickups, many=True)
     return Response(serializer.data)
+
 
 @api_view(['POST'])
 def getUndeliveredUserRequestPickups(request):
-    print("undelivred")
-    print(request.data.get('customer'))
     customer = request.data.get('customer', '')
     
     # Retrieve all undelivered RequestPickup objects
     requestpickups = RequestPickup.objects.filter(pickup__is_delivered=False).order_by('-updated')
 
     if customer != '':
-        requestpickups = requestpickups.filter(customer=customer)
+        requestpickups = requestpickups.filter(is_picked=True, customer=customer)
 
     serializer = RequestPickupSerializer(requestpickups, many=True)
     return Response(serializer.data)
+
+
+@api_view(['POST'])
+def check_just_delivered_request_pickups(request):
+    user_id = request.data.get('user_id', '')  # Assuming you pass the user ID of the car owner
+    try:
+        car_owner = User.objects.get(id=user_id)
+        # Retrieve the unpicked RequestPickup objects for the car
+        try:
+            unpicked_request_pickups = RequestPickup.objects.get(is_picked=False,pickup__car__car_owner=car_owner)
+        except RequestPickup.DoesNotExist:
+            return Response("Request Pickup not found", status=status.HTTP_404_NOT_FOUND)
+        try:
+            serializer = RequestPickupSerializer(unpicked_request_pickups, many=False)
+            return Response(serializer.data)
+        except RequestPickup.DoesNotExist:
+            return Response("Request Pickup not found", status=status.HTTP_404_NOT_FOUND)
+    except User.DoesNotExist:
+        return Response("Car owner not found", status=status.HTTP_404_NOT_FOUND)
+
+
+
+
+
+@api_view(['POST'])
+def getDriverUndeliveredRequestPickups(request):
+    user_id = request.data.get('user_id', '')  # Assuming you pass the user ID of the car owner
+
+    try:
+        car_owner = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return Response("Car owner not found", status=status.HTTP_404_NOT_FOUND)
+
+    # Retrieve all undelivered RequestPickup objects for the car owner's cars
+    requestpickups = RequestPickup.objects.filter(
+        is_picked = True,
+        pickup__is_delivered=False,
+        pickup__car__car_owner=car_owner
+    ).order_by('-updated')
+
+    serializer = RequestPickupSerializer(requestpickups, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def getDriverRatedRequestPickups(request):
+    user_id = request.data.get('user_id', '')  # Assuming you pass the user ID of the car owner
+
+    try:
+        car_owner = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return Response("Car owner not found", status=status.HTTP_404_NOT_FOUND)
+
+    # Retrieve all undelivered and unrated RequestPickup objects for the car owner's cars
+    requestpickups = RequestPickup.objects.filter(
+        pickup__is_delivered=True,
+        pickup__car__car_owner=car_owner,
+        pickup__rating__gt=0
+    ).order_by('-updated')
+
+    serializer = RequestPickupSerializer(requestpickups, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def getAllDriverRequestPickups(request):
+    user_id = request.data.get('user_id', '')  # Assuming you pass the user ID of the car owner
+
+    try:
+        car_owner = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return Response("Car owner not found", status=status.HTTP_404_NOT_FOUND)
+
+    # Retrieve all undelivered and unrated RequestPickup objects for the car owner's cars
+    requestpickups = RequestPickup.objects.filter(
+        pickup__car__car_owner=car_owner,
+        pickup__is_delivered=True
+
+    ).order_by('-updated')
+
+    serializer = RequestPickupSerializer(requestpickups, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def check_unpicked_request_pickups(request):
+    user_id = request.data.get('user_id', '')  # Assuming you pass the user ID of the car owner
+    try:
+        car_owner = User.objects.get(id=user_id)
+        # Retrieve the unpicked RequestPickup objects for the car
+        try:
+            unpicked_request_pickups = RequestPickup.objects.get(is_picked=False,pickup__car__car_owner=car_owner)
+        except RequestPickup.DoesNotExist:
+            return Response("Request Pickup not found", status=status.HTTP_404_NOT_FOUND)
+        try:
+            serializer = RequestPickupSerializer(unpicked_request_pickups, many=False)
+            return Response(serializer.data)
+        except RequestPickup.DoesNotExist:
+            return Response("Request Pickup not found", status=status.HTTP_404_NOT_FOUND)
+    except User.DoesNotExist:
+        return Response("Car owner not found", status=status.HTTP_404_NOT_FOUND)
+
+
+
+
+@api_view(['POST'])
+def acceptDeclineJob(request):
+    requestPickup_id = request.data.get('requestPickup_id', '')
+    accept_decline = request.data.get('accept_decline', '')
+
+    try:
+        requestPickup = RequestPickup.objects.get(id=requestPickup_id)
+        setattr(requestPickup, "is_picked", accept_decline)
+        requestPickup.save()
+        status_code = status.HTTP_201_CREATED
+        response = ""
+        if accept_decline == "True":
+            response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': 'job accepted',
+            }
+        else:
+            response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': 'job declined',
+            }
+
+        return Response(response, status=status_code)
+            
+    except RequestPickup.DoesNotExist:
+        status_code = status.HTTP_400_BAD_REQUEST
+        response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': serializer.errors,
+                }
+        return Response(response, status=status_code)
+
+
+@api_view(['POST'])
+def add_proof_of_delivery_image(request):
+    serializer = ProofOfDeliverySerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        status_code = status.HTTP_201_CREATED
+        response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': 'image added',
+            }
+        return Response(response, status_code)
+    else:
+        return Response(serializer.errors, status=400)
+
+@api_view(['POST'])
+def mark_request_pickup_delivered(request):
+    request_pickup_id = request.data.get('request_pickup_id', '')
+    try:
+        request_pickup = RequestPickup.objects.get(id=request_pickup_id)
+        pickup = Pickup.objects.get(request_pickup=request_pickup)
+        setattr(pickup, "is_delivered", "True")
+        pickup.save()
+        status_code = status.HTTP_201_CREATED
+        response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': 'delivered',
+            }
+        return Response(response, status_code)
+
+    except RequestPickup.DoesNotExist:
+        status_code = status.HTTP_400_BAD_REQUEST
+        response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': serializer.errors,
+                }
+        return Response(response, status=status_code)
+
+
+@api_view(['POST'])
+def getDeliveryImagesAndRating(request):
+    request_pickup_id = request.data.get('pickup', '')
+    try:
+        pickup = RequestPickup.objects.get(id=request_pickup_id)
+    except RequestPickup.DoesNotExist:
+        return Response("RequestPickup not found", status=status.HTTP_404_NOT_FOUND)
+
+    images = ProofOfDelivery.objects.filter(pickup=pickup)
+    image_urls = [request.build_absolute_uri(image.image.url) for image in images]
+    rating = Pickup.objects.get(request_pickup=request_pickup_id).rating
+
+    response_data = {
+        'images': image_urls,
+        'rating': rating
+    }
+    # response_data = {
+    #     'images': "test",
+    #     'rating': "test"
+    # }
+    
+    return Response(response_data)
 
 
 @api_view(['GET'])
@@ -360,7 +560,6 @@ def getRequestPickup(request,pk):
 @api_view(['POST', 'PUT'])
 #@permission_classes([IsAuthenticated])
 def requestpickup_detail(request):
-    print(request.data)
     try:
         requestpickup = RequestPickup.objects.get(id=request.data.get('id'))
     except RequestPickup.DoesNotExist:

@@ -121,12 +121,19 @@ class Pickup(models.Model):
     end_datetime = models.DateTimeField(auto_now=True)
     duration = models.CharField(max_length=200,null=True,blank=True)
     tip = models.CharField(max_length=200,null=True,blank=True)
-    rating = models.PositiveIntegerField(blank=True, null=True)
+    rating = models.PositiveIntegerField(blank=True, null=True,default=0)
     last_known_location = models.TextField(blank=True, null=True)
     is_delivered = models.BooleanField(default=False)
 
     def __str__(self):
-        return  str(self.start_datetime)
+        return  str("Pickup for : " + str(self.request_pickup))
+
+class ProofOfDelivery(models.Model):
+    pickup = models.ForeignKey(RequestPickup, on_delete=models.CASCADE,blank=True, null=True)
+    image = models.ImageField(upload_to='proof_of_delivery')
+
+    def __str__(self):
+        return f"Proof of Delivery Image #{self.id} for {self.pickup}"
 
 class PickupMessage(models.Model):
     pickup = models.ForeignKey(Pickup, on_delete=models.CASCADE)
