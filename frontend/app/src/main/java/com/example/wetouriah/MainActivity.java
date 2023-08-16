@@ -1,10 +1,16 @@
 package com.example.wetouriah;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,27 +45,30 @@ public class MainActivity extends AppCompatActivity {
 
 
         if (role != null && !role.isEmpty() && username != null && !username.isEmpty()) {
-//            Toast.makeText(getApplicationContext(), "Hello, " + username, Toast.LENGTH_SHORT).show();
             if("1".equals(role)){
 
                 Intent intent = new Intent(MainActivity.this,AdminPortal.class);
                 startActivity(intent);
+                finish();
 
 
             }
             if("2".equals(role) ){
                 Intent intent = new Intent(MainActivity.this, CustomerPortal.class);
                 startActivity(intent);
+                finish();
 
             }
             if("3".equals(role)){
                 Intent intent = new Intent(MainActivity.this,DriverPortal.class);
                 startActivity(intent);
+                finish();
 
             }
             if("4".equals(role) ){
                 Intent intent = new Intent(MainActivity.this,WarehousePortal.class);
                 startActivity(intent);
+                finish();
 
             }
 
@@ -72,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Let's login", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this,Login.class);
                 startActivity(intent);
             }
@@ -81,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "lets register", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this,Register.class);
                 startActivity(intent);
             }
@@ -92,14 +99,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                // Intent intent = new Intent(MainActivity.this,ViewWarehouses.class);
                 Intent intent = new Intent(MainActivity.this,TitleOnAmap.class);
-                Toast.makeText(MainActivity.this, "Reached", Toast.LENGTH_SHORT).show();
                 startActivity(intent);
             }
         });
         btnTrackparcel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "lets track your parcel", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this,TrackParcel.class);
                 startActivity(intent);
             }
@@ -159,5 +164,8 @@ public class MainActivity extends AppCompatActivity {
         // This method is called before the activity is destroyed
         // Perform any cleanup operations here, such as releasing resources
     }
+
+
+
 
 }

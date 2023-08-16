@@ -18,39 +18,19 @@
             android:layout_height="98dp"
             android:src="@drawable/laptop"/>
 
-        <TextView
-            android:id="@+id/customer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/image"
-            android:text="customer" />
 
         <TextView
             android:id="@+id/request_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/customer" />
+            android:layout_below="@+id/image"
+            android:text="15:00"/>
 
-        <TextView
-            android:id="@+id/updated"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/request_time" />
-        <TextView
-            android:id="@+id/date_and_time_pickup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/updated" />
-        <TextView
-            android:id="@+id/date_and_time_dropoff"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/date_and_time_pickup" />
         <TextView
             android:id="@+id/recipient_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/date_and_time_dropoff"
+            android:layout_below="@+id/request_time"
             android:text="recipient name"/>
         <TextView
             android:id="@+id/recipient_phone"
@@ -61,99 +41,108 @@
             android:id="@+id/pickup_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/recipient_phone" />
+            android:layout_below="@+id/recipient_phone"
+            android:text="From"/>
         <TextView
             android:id="@+id/dropoff_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="To"
             android:layout_below="@+id/pickup_location" />
         <TextView
             android:id="@+id/volume"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/dropoff_location" />
+            android:layout_below="@+id/dropoff_location"
+            android:text="volume"/>
         <TextView
             android:id="@+id/weight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/volume" />
-        <TextView
-            android:id="@+id/parcel_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/weight" />
-        <TextView
-            android:id="@+id/special_notes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/parcel_description" />
+            android:layout_below="@+id/volume"
+            android:text="weight"/>
+
         <TextView
             android:id="@+id/price_to_pay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/special_notes" />
+            android:layout_below="@+id/weight"
+            android:text="price_to_pay"/>
 
         <Button
             android:id="@+id/drive"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/price_to_pay"
-            android:text="Drive"/>
+            android:text="Directions"/>
+
+
         <Button
-            android:id="@+id/accept"
+            android:id="@+id/deliver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/price_to_pay"
             android:layout_toEndOf="@+id/drive"
-            android:text="Accept"/>
+            android:text="Sign / Delivery"/>
+
+
         <Button
             android:id="@+id/chat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/price_to_pay"
-            android:layout_toEndOf="@+id/accept"
+            android:layout_toEndOf="@+id/deliver"
             android:text="Chat"/>
-        <Button
-            android:id="@+id/rate"
+
+
+
+        <RelativeLayout
+            android:id="@+id/lyAcceptDecline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/price_to_pay"
-            android:layout_toEndOf="@+id/chat"
-            android:text="Rate"/>
+            android:layout_below="@+id/chat">
+
+            <TextView
+                android:id="@+id/txtAcceptDecline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Accept / Decline delivery"
+                android:layout_centerVertical="true"
+
+                />
+
+            <RadioGroup
+                android:id="@+id/rdgAcceptDecline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/txtAcceptDecline">
+
+                <RadioButton
+                    android:id="@+id/rdAccept"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Accept" />
+
+                <RadioButton
+                    android:id="@+id/rdDecline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Decline" />
+
+            </RadioGroup>
+
+
+        </RelativeLayout>
+
+
+
 
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/lyRate"
-        android:layout_width="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
-        <TextView
-            android:id="@+id/txtRate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:textSize="20dp"
-            android:text="Rate out 5 stars"/>
-        <RatingBar
-            android:id="@+id/ratingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/txtRate"
-            android:layout_centerHorizontal="true"
-            android:numStars="5"
-            android:stepSize="1"
-            />
-        <Button
-            android:id="@+id/btnRate"
-            android:layout_below="@+id/ratingBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Rate"/>
-    </RelativeLayout>
+
+
+
 
 
 </RelativeLayout>

@@ -16,23 +16,64 @@
         android:layout_height="match_parent"
         >
 
-        <TextView
-            android:id="@+id/txtWelcome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
-            android:text=" Welcome"
-            android:fontFamily="sans-serif-condensed"
-            android:textSize="30sp"/>
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_Undelivered"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not Yet Delivered" />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_Rated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rated" />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_AllPickupRequests"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="All Deliveries rated/unRated" />
 
-        <Button
-            android:id="@+id/btnAddCar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txtWelcome"
-            android:text="Your Car"
+        </com.google.android.material.tabs.TabLayout>
 
-            />
+        <RelativeLayout
+            android:id="@+id/lyAllUndelivered"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/tab_layout"
+            android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/idUndelivered"/>
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/lyUnRated"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/tab_layout"
+            android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:id="@+id/idUnRated"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/lyAllPickupRequests"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/tab_layout"
+            android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/idAllPickupRequests"/>
+        </RelativeLayout>
+
+
 
 
     </RelativeLayout>

@@ -3,20 +3,6 @@
 
 
     <group android:checkableBehavior="single">
-
-        <item
-            android:id="@+id/nav_chat"
-            android:icon="@drawable/baseline_message_24"
-            android:title="Chat" />
-
-        <item
-            android:id="@+id/na_request_Pickup"
-            android:icon="@drawable/book"
-            android:title="Request Pickup" />
-        <item
-            android:id="@+id/nav_history"
-            android:icon="@drawable/history"
-            android:title="History" />
         <item
             android:id="@+id/nav_track"
             android:icon="@drawable/track"

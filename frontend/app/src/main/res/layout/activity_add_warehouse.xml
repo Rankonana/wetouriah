@@ -38,27 +38,40 @@
                 android:background="@drawable/camera"
                 android:layout_toEndOf="@+id/image" />
 
-            <EditText
-                android:id="@+id/address"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/lyaddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/image"
-                android:hint="address" />
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-            <EditText
-                android:id="@+id/volume"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="address"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/lyvolume"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/address"
+                android:layout_below="@+id/lyaddress"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                android:hint="volume" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/volume"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="volume" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <CheckBox
                 android:id="@+id/cctv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="cctv"
-                android:layout_below="@+id/volume"
+                android:layout_below="@+id/lyvolume"
 
                 />
             <CheckBox
@@ -85,19 +98,26 @@
                 android:layout_below="@+id/fire_safety_and_management"
 
                 />
-            <EditText
-                android:id="@+id/operating_hours"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/lyoperating_hours"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="operating hours"
                 android:layout_below="@+id/parking_space"
-                />
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/operating_hours"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="operating hours"
+/>
+            </com.google.android.material.textfield.TextInputLayout>
             <CheckBox
                 android:id="@+id/is_approved"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="Is approved"
-                android:layout_below="@+id/operating_hours"
+                android:layout_below="@+id/lyoperating_hours"
                 android:enabled="false"
 
                 />

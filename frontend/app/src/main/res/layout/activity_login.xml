@@ -21,25 +21,46 @@
         android:fontFamily="sans-serif-condensed"
         android:textSize="30sp"/>
 
-    <EditText
-        android:id="@+id/edtUsername"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/lyusername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_login"
-        android:text="custi"
-        android:hint="username" />
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-    <EditText
-        android:id="@+id/edtPassword"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_login"
+            android:text="warehouse"
+            android:hint="username"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/lyPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/edtUsername"
-        android:inputType="textPassword"
-        android:text="Marea36*******"
-        android:hint="password" />
+        android:layout_below="@+id/lyusername"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edtUsername"
+            android:inputType="textPassword"
+            android:text="Marea36*******"
+            android:hint="password"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
     <Button
         android:id="@+id/btnButton"
-        android:layout_below="@+id/edtPassword"
+        android:layout_below="@+id/lyPassword"
         android:layout_width="match_parent"
         android:text="Login"
         android:layout_height="wrap_content" />

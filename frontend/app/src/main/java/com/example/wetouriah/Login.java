@@ -46,27 +46,31 @@ public class Login extends AppCompatActivity {
 
 
         if (role != null && !role.isEmpty() && username != null && !username.isEmpty()) {
-//            Toast.makeText(getApplicationContext(), "Hello, " + username, Toast.LENGTH_SHORT).show();
             if("1".equals(role)){
 
                 Intent intent = new Intent(Login.this,AdminPortal.class);
                 startActivity(intent);
-
-
+                finish();
             }
             if("2".equals(role) ){
                 Intent intent = new Intent(Login.this, CustomerPortal.class);
                 startActivity(intent);
+                finish();
+
 
             }
             if("3".equals(role)){
                 Intent intent = new Intent(Login.this,DriverPortal.class);
                 startActivity(intent);
+                finish();
+
 
             }
             if("4".equals(role) ){
                 Intent intent = new Intent(Login.this,WarehousePortal.class);
                 startActivity(intent);
+                finish();
+
 
             }
 
@@ -76,7 +80,7 @@ public class Login extends AppCompatActivity {
 
     public void mLogin(String username,String password) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS + "/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         RequestBody user_username= RequestBody.create(MediaType.parse("multipart/form-data"), username);
@@ -105,27 +109,33 @@ public class Login extends AppCompatActivity {
 
                         editor.apply();
 
-                        Toast.makeText(getApplicationContext(), "hello ," + response.body().getAuthenticatedUser().getUsername(), Toast.LENGTH_SHORT).show();
-
                         if(response.body().getAuthenticatedUser().getRole().toString().equals("1")  ){
                             Intent intent = new Intent(Login.this,AdminPortal.class);
                             startActivity(intent);
+                            finish();
+
 
 
                         }
                         if(response.body().getAuthenticatedUser().getRole().toString().equals("2") ){
                             Intent intent = new Intent(Login.this, CustomerPortal.class);
                             startActivity(intent);
+                            finish();
+
 
                         }
                         if(response.body().getAuthenticatedUser().getRole().toString().equals("3") ){
                             Intent intent = new Intent(Login.this,DriverPortal.class);
                             startActivity(intent);
+                            finish();
+
 
                         }
                         if(response.body().getAuthenticatedUser().getRole().toString().equals("4") ){
                             Intent intent = new Intent(Login.this,WarehousePortal.class);
                             startActivity(intent);
+                            finish();
+
 
                         }
 

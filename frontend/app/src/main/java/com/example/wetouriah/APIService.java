@@ -6,6 +6,8 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -98,8 +100,6 @@ public interface APIService {
     @Multipart
     @POST("add-update-requestpickup/")
     Call<APIResponse> addPickRequest(@Part("date_and_time_pickup") RequestBody date_and_time_pickup,
-                                           @Part("date_and_time_dropoff") RequestBody date_and_time_dropoff,
-
                                            @Part("recipient_name") RequestBody recipient_name,
                                            @Part("recipient_phone") RequestBody recipient_phone,
 
@@ -109,10 +109,8 @@ public interface APIService {
                                            @Part("volume") RequestBody volume,
                                            @Part("weight") RequestBody weight,
 
-                                           @Part("parcel_description") RequestBody parcel_description,
-                                           @Part("special_notes") RequestBody special_notes,
-                                           @Part("customer") RequestBody customer,
-                                           @Part("images") RequestBody images);
+                                           @Part("price_to_pay") RequestBody price_to_pay,
+                                           @Part("customer") RequestBody customer);
 
 
 
@@ -120,11 +118,35 @@ public interface APIService {
     @GET("get-image/")
     Call<ImageResponse> getImage(@Part("id") RequestBody id);
 
-    @POST("add-update-car/")
-    Call<CarResponse> addCar(@Body CarItem carItem);
 
+
+    @Multipart
+    @POST("add-update-car/")
+    Call<CarResponse> addCar(
+                                 @Part("car_owner") RequestBody carOwner,
+                                 @Part("type") RequestBody type,
+                                 @Part("capacity") RequestBody capacity,
+                                 @Part("color") RequestBody color,
+                                 @Part("make") RequestBody make,
+                                 @Part("model") RequestBody model,
+                                 @Part("year") RequestBody year,
+                                 @Part("license_plate") RequestBody licensePlate,
+                                 @Part("is_approved") RequestBody isApproved);
+
+
+
+    @Multipart
     @PUT("add-update-car/")
-    Call<CarResponse> updateCar(@Body CarItem carItem);
+    Call<CarResponse> updateCar( @Part("id") RequestBody id,
+                                          @Part("car_owner") RequestBody carOwner,
+                                          @Part("type") RequestBody type,
+                                          @Part("capacity") RequestBody capacity,
+                                          @Part("color") RequestBody color,
+                                          @Part("make") RequestBody make,
+                                          @Part("model") RequestBody model,
+                                          @Part("year") RequestBody year,
+                                          @Part("license_plate") RequestBody licensePlate,
+                                          @Part("is_approved") RequestBody isApproved);
 
     @Multipart
     @POST("get-car/")
@@ -205,7 +227,7 @@ public interface APIService {
 
     @Multipart
     @POST("all-requestpickups-by-user/") // Replace "endpoint" with your actual API endpoint
-    Call<List<RequestPickupResponse>> getAllUserObjects(@Part("customer") RequestBody customer);
+    Call<List<RequestPickupResponse>> getAllUserRequest(@Part("customer") RequestBody customer);
 
     @Multipart
     @POST("all-undelivered-requestpickups-by-user/") // Replace "endpoint" with your actual API endpoint
@@ -218,6 +240,42 @@ public interface APIService {
     @Multipart
     @POST("get-pickup-id-from-requestpickup-id/")
     Call<PickupResponse> getPickupIDfromRequestpickup(@Part("request_pickup") RequestBody request_pickup);
+
+
+    @Multipart
+    @POST("all-undelivered-requestpickups-by-driver/") // Replace "endpoint" with your actual API endpoint
+    Call<List<RequestPickupResponse>> getUnDeliveredDriverObjects(@Part("user_id") RequestBody user_id);
+
+    @Multipart
+    @POST("all-unrated-requestpickups-by-driver/") // Replace "endpoint" with your actual API endpoint
+    Call<List<RequestPickupResponse>> getUnRatedDriverObjects(@Part("user_id") RequestBody user_id);
+
+    @Multipart
+    @POST("all-requestpickups-by-driver/") // Replace "endpoint" with your actual API endpoint
+    Call<List<RequestPickupResponse>> getAllDriverObjects(@Part("user_id") RequestBody user_id);
+
+    @Multipart
+    @POST("driver-notification/")
+    Call<RequestPickupResponse> checkTaskAssignment(@Part("user_id") RequestBody user_id);
+
+    @Multipart
+    @POST("decline-accept-job/")
+    Call<APIResponse> acceptDeclineJob(@Part("requestPickup_id") RequestBody requestPickup_id,
+                                                 @Part("accept_decline") RequestBody accept_decline);
+
+    @Multipart
+    @POST("add-delivery-proof-images/")
+    Call<APIResponse> uploadProofImage(@Part("pickup") RequestBody pickup,
+                                       @Part MultipartBody.Part image);
+
+    @Multipart
+    @POST("set-is-delivered/")
+    Call<APIResponse> setIsDelivered(@Part("request_pickup_id") RequestBody request_pickup_id);
+
+    @Multipart
+    @POST("get-delivery-images-and-rating/")
+    Call<DeliveryImagesAndRatingResponse> getImagesAndRating(@Part("pickup") RequestBody request_pickup_id);
+
 
 
 

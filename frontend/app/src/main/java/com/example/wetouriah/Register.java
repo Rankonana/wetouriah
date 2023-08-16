@@ -105,7 +105,6 @@ public class Register extends AppCompatActivity {
 
                 lyRole.setVisibility(View.GONE);
                 lyUsernameAndPassword.setVisibility(View.VISIBLE);
-                Toast.makeText(Register.this, role.toString(), Toast.LENGTH_LONG).show();
 
             }
         });
@@ -132,7 +131,7 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String url = "https://" + Constants.SERVER_IP_ADDRESS + "/api/";
+                String url = "http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/";
 
                 addUser(url,imagepath,email.getText().toString(),
                         role,
@@ -245,7 +244,7 @@ public class Register extends AppCompatActivity {
                             String title,String firstname,String lastname,
                             String address,String phone_number) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS + "/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         File file = new File(imagepath);

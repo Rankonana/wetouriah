@@ -8,19 +8,14 @@
     android:gravity="bottom">
 
     <TextView
+        android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name"
         android:textColor="@color/black"
         android:textSize="30dp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:layout_marginTop="5px"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Name"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        android:textStyle="italic"/>
 
 </LinearLayout>
