@@ -305,6 +305,7 @@ def getImage(request):
 
 @api_view(['POST'])
 def getAllUserRequestPickups(request):
+    print(request.data)
     customer = request.data.get('customer', '')
 
     requestpickups = RequestPickup.objects.all()
@@ -312,7 +313,7 @@ def getAllUserRequestPickups(request):
     if customer != '':
         requestpickups = requestpickups.filter(Q(customer=customer))
 
-    requestpickups = requestpickups.order_by('-updated')  # Apply order_by() on the queryset
+    #requestpickups = requestpickups.order_by('-updated')  #Apply order_by() on the queryset
 
     serializer = RequestPickupSerializer(requestpickups, many=True)
     return Response(serializer.data)
