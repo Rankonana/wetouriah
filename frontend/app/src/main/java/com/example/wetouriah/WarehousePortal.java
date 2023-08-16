@@ -120,7 +120,7 @@ public class WarehousePortal extends AppCompatActivity  implements NavigationVie
         SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         String role = sharedPreferences.getString("role", null);
         String username = sharedPreferences.getString("username", null);
-        headerUsername.setText("hello, " + username);
+        headerUsername.setText("Hello, " + username);
 
 
 

@@ -3,17 +3,22 @@
     <group android:checkableBehavior="single">
 
         <item
-            android:id="@+id/customers"
+            android:id="@+id/users"
             android:icon="@drawable/person"
-            android:title="Customers" />
+            android:title="Users" />
+        <item
+            android:id="@+id/cars"
+            android:icon="@drawable/car"
+            android:title="Cars" />
         <item
             android:id="@+id/warehouses"
             android:icon="@drawable/warehouse"
-            android:title="Warehouses Owners" />
+            android:title="Warehouses" />
+
         <item
-            android:id="@+id/drivers"
+            android:id="@+id/licenses"
             android:icon="@drawable/car"
-            android:title="Drivers" />
+            android:title="licenses"/>
         <item
             android:id="@+id/nav_loginout"
             android:icon="@drawable/login_logout"
