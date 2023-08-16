@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="5dp"
     tools:context=".TitleOnAmap">
 
     <TextView
@@ -12,8 +13,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="13dp"
         android:text="Zoom in or Out"
+        android:layout_centerHorizontal="true"
         android:fontFamily="sans-serif-condensed"
-        android:textSize="30sp"/>
+        android:textSize="35dp"
+        android:textStyle="bold"/>
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -21,7 +24,7 @@
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="match_parent"
         android:layout_below="@+id/txtWelcome"
         tools:context=".AAATest" />
 

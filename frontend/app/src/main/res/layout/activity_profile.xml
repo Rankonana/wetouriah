@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="10dp"
     tools:context=".Profile">
 
 
@@ -20,7 +21,8 @@
             android:maxWidth="200dp"
             android:minHeight="200dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_baseline_person_24" />
+            android:src="@drawable/ic_baseline_person_24"
+            android:visibility="gone"/>
 
 
         <Button
@@ -29,7 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:layout_toEndOf="@+id/imageView"
-            android:text="Select Image" />
+            android:text="Select Image"
+            android:visibility="gone"/>
 
 
 

@@ -283,21 +283,25 @@ public class Register extends AppCompatActivity {
                                            Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
                                            Intent intent = new Intent(Register.this,AdminPortal.class);
                                            startActivity(intent);
+                                           finish();
                                        }
                                        if(role.equals("2")) {
                                            Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
                                            Intent intent = new Intent(Register.this, CustomerPortal.class);
                                            startActivity(intent);
+                                           finish();
                                        }
                                        if(role.equals("3")) {
                                            Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
                                            Intent intent = new Intent(Register.this,DriverPortal.class);
                                            startActivity(intent);
+                                           finish();
                                        }
                                        if(role.equals("4")) {
                                            Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
                                            Intent intent = new Intent(Register.this,WarehousePortal.class);
                                            startActivity(intent);
+                                           finish();
                                        }
 
 
@@ -317,6 +321,14 @@ public class Register extends AppCompatActivity {
 
 
 
+    }
+    @Override
+    public void onBackPressed() {
+        // Create an intent for the default activity
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Clear the activity stack
+        startActivity(intent);
+        finish(); // Finish the current activity
     }
 
 }

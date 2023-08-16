@@ -1,148 +1,274 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PickUpRequestDetailed">
+    tools:context=".PickUpRequestDetailed"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/lyMainDetailed"
-        >
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="70dp"
-            android:layout_height="98dp"
-            android:src="@drawable/laptop"/>
-
-
-        <TextView
-            android:id="@+id/request_time"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/image"
-            android:text="15:00"/>
-
-        <TextView
-            android:id="@+id/recipient_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/request_time"
-            android:text="recipient name"/>
-        <TextView
-            android:id="@+id/recipient_phone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/recipient_name" />
-        <TextView
-            android:id="@+id/pickup_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/recipient_phone"
-            android:text="From"/>
-        <TextView
-            android:id="@+id/dropoff_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="To"
-            android:layout_below="@+id/pickup_location" />
-        <TextView
-            android:id="@+id/volume"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/dropoff_location"
-            android:text="volume"/>
-        <TextView
-            android:id="@+id/weight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/volume"
-            android:text="weight"/>
-
-        <TextView
-            android:id="@+id/price_to_pay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/weight"
-            android:text="price_to_pay"/>
-
-        <Button
-            android:id="@+id/drive"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/price_to_pay"
-            android:text="Directions"/>
+            android:layout_margin="2dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="5dp"
+            app:cardUseCompatPadding="true">
 
 
-        <Button
-            android:id="@+id/deliver"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/price_to_pay"
-            android:layout_toEndOf="@+id/drive"
-            android:text="Sign / Delivery"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/recipient_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Recipient name: Rankonana Mokoena"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
+
+                <RelativeLayout
+                    android:id="@+id/lyfromTo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/recipient_name"
+                    >
+
+                    <TextView
+                        android:id="@+id/pickup_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="From: Bloemfontein"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/dropoff_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/pickup_location"
+                        android:text="To: Cape Town"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        />
+                    <ImageView
+                        android:id="@+id/drive"
+                        android:layout_below="@+id/pickup_location"
+                        android:layout_alignEnd="@+id/dropoff_location"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/baseline_assistant_direction_24"/>
 
 
-        <Button
-            android:id="@+id/chat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/price_to_pay"
-            android:layout_toEndOf="@+id/deliver"
-            android:text="Chat"/>
+                </RelativeLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/lyfromTo">
+                    <Button
+                        android:id="@+id/phone"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="5dp"
+                        android:text="Call"
+                        android:drawableLeft="@drawable/phone"/>
 
+                    <Button
+                        android:id="@+id/watsapp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="5dp"
+                        android:text="Watsapp"
+                        android:drawableLeft="@drawable/watsapp"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
 
         <RelativeLayout
-            android:id="@+id/lyAcceptDecline"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/chat">
+            android:layout_below="@+id/cardView"
+            android:layout_margin="10dp"
+
+
+            >
 
             <TextView
-                android:id="@+id/txtAcceptDecline"
+                android:id="@+id/trackingId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tracking ID: ERTYDFGH345"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Status: On the way"
+                android:layout_below="@+id/trackingId"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/request_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/status"
+                android:text="Requested at: 15:00"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+
+            <TextView
+                android:id="@+id/volume"
+                android:layout_below="@+id/request_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Volume: 250m3"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/weight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/volume"
+                android:text="Weight: 5kg"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/price_to_pay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/weight"
+                android:text="Price: R99.00"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+            <LinearLayout
+                android:id="@+id/lyimages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/price_to_pay"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:layout_below="@+id/cardView"
+                    android:layout_width="70dp"
+                    android:layout_height="98dp"
+                    android:src="@drawable/camera"/>
+                <ImageView
+                    android:layout_below="@+id/cardView"
+                    android:layout_width="70dp"
+                    android:layout_height="98dp"
+                    android:src="@drawable/camera"/>
+                <ImageView
+                    android:layout_below="@+id/cardView"
+                    android:layout_width="70dp"
+                    android:layout_height="98dp"
+                    android:src="@drawable/camera"/>
+                <ImageView
+                    android:layout_below="@+id/cardView"
+                    android:layout_width="70dp"
+                    android:layout_height="98dp"
+                    android:src="@drawable/camera"/>
+                <ImageView
+                    android:layout_below="@+id/cardView"
+                    android:layout_width="70dp"
+                    android:layout_height="98dp"
+                    android:src="@drawable/camera"/>
+
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/lyimages">
+                <Button
+                    android:id="@+id/btnSign"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="5dp"
+                    android:text="Signin"/>
+                <Button
+                    android:id="@+id/btnReturn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="5dp"
+                    android:text="Return"/>
+
+            </LinearLayout>
+
+
+
+
+
+            <RelativeLayout
+                android:id="@+id/lyAcceptDecline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Accept / Decline delivery"
-                android:layout_centerVertical="true"
+                android:visibility="gone">
 
-                />
-
-            <RadioGroup
-                android:id="@+id/rdgAcceptDecline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/txtAcceptDecline">
-
-                <RadioButton
-                    android:id="@+id/rdAccept"
+                <TextView
+                    android:id="@+id/txtAcceptDecline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Accept" />
+                    android:text="Accept / Decline delivery"
+                    android:layout_centerVertical="true"
 
-                <RadioButton
-                    android:id="@+id/rdDecline"
+                    />
+
+                <RadioGroup
+                    android:id="@+id/rdgAcceptDecline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Decline" />
+                    android:layout_toEndOf="@+id/txtAcceptDecline">
 
-            </RadioGroup>
+                    <RadioButton
+                        android:id="@+id/rdAccept"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Accept" />
+
+                    <RadioButton
+                        android:id="@+id/rdDecline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Decline" />
+
+                </RadioGroup>
+
+
+            </RelativeLayout>
 
 
         </RelativeLayout>
 
-
-
-
-
     </RelativeLayout>
 
 
-
-
-
-
-</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

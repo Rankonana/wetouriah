@@ -1,15 +1,23 @@
 package com.example.wetouriah;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.navigation.NavigationView;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -22,14 +30,41 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Login extends AppCompatActivity {
     EditText edtUsername, edtPassword;
     Button btnButton;
+
+    TextView btnResetPassword, btnRegister;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
+
+
         edtUsername = (EditText)findViewById(R.id.edtUsername);
         edtPassword = (EditText)findViewById(R.id.edtPassword);
         btnButton = (Button)findViewById(R.id.btnButton);
+
+        btnResetPassword = findViewById(R.id.btnResetPassword);
+        btnRegister = findViewById(R.id.btnRegister);
+
+        btnResetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changePassword();
+            }
+        });
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Login.this, Register.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
 
         btnButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +112,7 @@ public class Login extends AppCompatActivity {
         }
 
     }
+
 
     public void mLogin(String username,String password) {
 
@@ -155,5 +191,21 @@ public class Login extends AppCompatActivity {
 
 
 
+    }
+
+    public void changePassword()
+    {
+        Intent intent = new Intent(Login.this,ResetPassword.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Create an intent for the default activity
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Clear the activity stack
+        startActivity(intent);
+        finish(); // Finish the current activity
     }
 }

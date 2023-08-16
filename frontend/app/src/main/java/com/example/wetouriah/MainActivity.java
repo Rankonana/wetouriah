@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,Login.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,Register.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -100,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
                // Intent intent = new Intent(MainActivity.this,ViewWarehouses.class);
                 Intent intent = new Intent(MainActivity.this,TitleOnAmap.class);
                 startActivity(intent);
+                finish();
             }
         });
         btnTrackparcel.setOnClickListener(new View.OnClickListener() {
@@ -107,42 +110,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,TrackParcel.class);
                 startActivity(intent);
+                finish();
             }
         });
 
 
-//            if(role.equals("2") ){
-//                Intent intent = new Intent(MainActivity.this,CustomerPortal.class);
-//                startActivity(intent);
-//            }
-//            if(role.equals("3") ){
-//                Intent intent = new Intent(MainActivity.this,DriverPortal.class);
-//                startActivity(intent);
-//            }
-//            if(role.equals("4") ){
-//                Intent intent = new Intent(MainActivity.this,WarehousePortal.class);
-//                startActivity(intent);
-//            }
-
-//        if(!role.isEmpty()){
-//            if(role.equals("1")  ){
-//                Intent intent = new Intent(MainActivity.this,AdminPortal.class);
-//                startActivity(intent);
-//
-//            }
-//            if(role.equals("2") ){
-//                Intent intent = new Intent(MainActivity.this,CustomerPortal.class);
-//                startActivity(intent);
-//            }
-//            if(role.equals("3") ){
-//                Intent intent = new Intent(MainActivity.this,DriverPortal.class);
-//                startActivity(intent);
-//            }
-//            if(role.equals("4") ){
-//                Intent intent = new Intent(MainActivity.this,WarehousePortal.class);
-//                startActivity(intent);
-//            }
-//        }
     }
     @Override
     protected void onResume() {

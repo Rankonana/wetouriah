@@ -13,14 +13,14 @@
         android:id="@+id/lyPickRequestList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+        android:visibility="visible"
         >
         <TextView
             android:id="@+id/txtdeliveries"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="Deliveries"
+            android:text="Delivery History"
             android:textSize="35dp"
             android:textStyle="bold"/>
 
@@ -140,7 +140,7 @@
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:visibility="visible"
+        android:visibility="gone"
         >
 
         <TextView
@@ -164,7 +164,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txtPrice"
-            android:text="Next"/>
+            android:text="Continue"/>
 
 
     </RelativeLayout>
@@ -175,10 +175,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
+        <TextView
+            android:id="@+id/txtCollectionTimes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Deliveries"
+            android:textSize="35dp"
+            android:textStyle="bold"/>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/lypickdateEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/txtCollectionTimes"
+
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -197,6 +208,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/lypickdateEditText"
+
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -210,48 +222,14 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/lydropoffdateEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/lypicktimeEditText"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/dropoffdateEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Dropoff date"
-                android:inputType="date"
-                android:focusable="false"
-                android:clickable="true" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/lydropofftimeEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/lydropoffdateEditText"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/dropofftimeEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Dropoff time"
-                android:inputType="time"
-                android:focusable="false"
-                android:clickable="true" />
-        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btnShowRecipentDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/lydropofftimeEditText"
-            android:text="Next"/>
+            android:text="Continue"/>
     </RelativeLayout>
 
 
@@ -261,11 +239,22 @@
         android:layout_height="match_parent"
         android:visibility="gone">
 
+        <TextView
+            android:id="@+id/txtRecDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Details of the Reciepient"
+            android:textSize="35dp"
+            android:textStyle="bold"/>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/lyrecipient_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            android:layout_below="@+id/txtRecDetails"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            tools:ignore="MissingClass">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/recipient_name"

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddWarehouse">
+
+
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/lyAddWarehouse"
+            android:visibility="visible">
+
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="126dp"
+                android:layout_height="110dp"
+                android:layout_marginTop="21dp"
+                android:maxWidth="50dp"
+                android:minHeight="50dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/warehouse" />
+
+            <Button
+                android:id="@+id/selectImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/camera"
+                android:layout_toEndOf="@+id/image" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/lyaddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/image"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="address"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/lyvolume"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lyaddress"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/volume"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="volume" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <CheckBox
+                android:id="@+id/cctv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="cctv"
+                android:layout_below="@+id/lyvolume"
+
+                />
+            <CheckBox
+                android:id="@+id/armed_response"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="armed response"
+                android:layout_below="@+id/cctv"
+
+                />
+            <CheckBox
+                android:id="@+id/fire_safety_and_management"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="fire safety and management"
+                android:layout_below="@+id/armed_response"
+
+                />
+            <CheckBox
+                android:id="@+id/parking_space"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="parking space"
+                android:layout_below="@+id/fire_safety_and_management"
+
+                />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/lyoperating_hours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/parking_space"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/operating_hours"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="operating hours"
+/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <CheckBox
+                android:id="@+id/is_approved"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Is approved"
+                android:layout_below="@+id/lyoperating_hours"
+                android:enabled="false"
+
+                />
+
+            <Button
+                android:id="@+id/btnAddWarehouse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/is_approved"
+                android:text="Add"/>
+
+        </RelativeLayout>
+
+
+
+    </ScrollView>
+
+
+
+
+
+
+
+</RelativeLayout>

@@ -22,6 +22,10 @@
                     android:icon="@drawable/person"
                     android:title="Profile" />
                 <item
+                    android:id="@+id/password"
+                    android:icon="@drawable/baseline_lock_24"
+                    android:title="Change Password" />
+                <item
                     android:id="@+id/nav_loginout"
                     android:icon="@drawable/login_logout"
                     android:title="Logout" />

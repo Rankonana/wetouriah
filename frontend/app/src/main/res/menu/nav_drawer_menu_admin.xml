@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/customers"
+            android:icon="@drawable/person"
+            android:title="Customers" />
+        <item
+            android:id="@+id/warehouses"
+            android:icon="@drawable/warehouse"
+            android:title="Warehouses Owners" />
+        <item
+            android:id="@+id/drivers"
+            android:icon="@drawable/car"
+            android:title="Drivers" />
         <item
             android:id="@+id/nav_loginout"
             android:icon="@drawable/login_logout"
             android:title="Logout" />
-    </group>
 
+        <item
+            android:id="@+id/password"
+            android:icon="@drawable/baseline_lock_24"
+            android:title="Change Password" />
+    </group>
 
 </menu>

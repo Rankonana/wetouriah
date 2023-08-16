@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AdminPortal"
+    tools:ignore="HardcodedText">
+
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_monday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="All Users" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_tuesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cars" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_wednesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Warehouses" />
+
+        </com.google.android.material.tabs.TabLayout>
+
+        <RelativeLayout
+            android:id="@+id/lyAllusers"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/tab_layout"
+            android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/idAllusers"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/lyAllCars"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/tab_layout"
+            android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/idAllCars"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/lyWarehouses"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/tab_layout"
+            android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:id="@+id/idAllWarehouses"/>
+
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
+
+    <!-- Navigation Drawer -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@android:color/white"
+        app:headerLayout="@layout/nav_drawer_header"
+        app:menu="@menu/nav_drawer_menu_admin" />
+
+</androidx.drawerlayout.widget.DrawerLayout>
+
+
+
+

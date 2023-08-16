@@ -6,6 +6,8 @@ android {
     namespace 'com.example.wetouriah'
     compileSdk 33
 
+
+
     defaultConfig {
         applicationId "com.example.wetouriah"
         minSdk 27
@@ -59,6 +61,9 @@ dependencies {
     implementation 'com.google.maps:google-maps-services:2.2.0'
 
     implementation 'com.google.maps.android:android-maps-utils:0.4+'
+
+    implementation 'com.kyanogen.signatureview:signature-view:1.2'
+    implementation 'com.github.mrudultora:Colorpicker:1.2.0'
 
 
 }

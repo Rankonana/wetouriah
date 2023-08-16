@@ -151,6 +151,7 @@ public class DriverPortal extends AppCompatActivity implements NavigationView.On
 //            public void onClick(View v) {
 //                Intent intent = new Intent(DriverPortal.this,AddCar.class);
 //                startActivity(intent);
+        //finish();
 //            }
 //        });
 
@@ -175,10 +176,12 @@ public class DriverPortal extends AppCompatActivity implements NavigationView.On
             case R.id.nav_car:
                 Intent intentCar = new Intent(DriverPortal.this,AddCar.class);
                 startActivity(intentCar);
+                finish();
                 break;
             case R.id.nav_inner_profile:
                 Intent intent = new Intent(DriverPortal.this,Profile.class);
                 startActivity(intent);
+                finish();
                 break;
         }
 
@@ -392,6 +395,7 @@ public class DriverPortal extends AppCompatActivity implements NavigationView.On
 //                                Intent intent = new Intent(DriverPortal.this, PickUpRequestDetailed.class);
 //                                intent.putExtra(NEXT_SCREEN, model);
 //                                startActivity(intent);
+    //                              finish();
 //
 //                            }
 //                        });

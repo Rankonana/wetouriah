@@ -167,8 +167,6 @@ public class CustomerPortal extends AppCompatActivity  implements NavigationView
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(CustomerPortal.this, "1", Toast.LENGTH_SHORT).show();
-
                 hideAllLayers();
                 lyPrice.setVisibility(View.VISIBLE);
 
@@ -179,7 +177,6 @@ public class CustomerPortal extends AppCompatActivity  implements NavigationView
 
 
                 try {
-                    Toast.makeText(CustomerPortal.this, "2", Toast.LENGTH_LONG).show();
 
                     List<Address> originAddresses = geocoder.getFromLocationName(pickup_location.getText().toString(), 1);
                     List<Address> destinationAddresses = geocoder.getFromLocationName(droff_location.getText().toString(), 1);
@@ -314,16 +311,19 @@ public class CustomerPortal extends AppCompatActivity  implements NavigationView
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation item clicks here
         switch (item.getItemId()) {
-            case R.id.nav_warehouses:
-//              Intent intent = new Intent(CustomerPortal.this,ViewWarehouses.class);
-                Intent wa = new Intent(CustomerPortal.this,TitleOnAmap.class);
-                startActivity(wa);
-                finish();
-                break;
+//            case R.id.nav_warehouses:
+////              Intent intent = new Intent(CustomerPortal.this,ViewWarehouses.class);
+//                Intent wa = new Intent(CustomerPortal.this,TitleOnAmap.class);
+//                startActivity(wa);
+//                finish();
+//                break;
             case R.id.nav_track:
                 Intent track = new Intent(CustomerPortal.this,TrackParcel.class);
                 startActivity(track);
                 finish();
+                break;
+            case R.id.password:
+                changePassword();
                 break;
             case R.id.nav_loginout:
                 Logout();
@@ -494,6 +494,13 @@ public class CustomerPortal extends AppCompatActivity  implements NavigationView
 
 
                         for (RequestPickupResponse object : objects) {
+                            String status= object.getStatus().toString();
+                            if (status.equals("1")){
+                                status = "Delivered";
+                            }
+                            if (status.equals("2")){
+                                status = "In Transit";
+                            }
 
                             pickUpRequestItems.add(new PickUpRequestItem(object.getId().toString(),
                                     object.getTrackingNumber(),object.getCustomer().toString(),
@@ -507,12 +514,50 @@ public class CustomerPortal extends AppCompatActivity  implements NavigationView
                                     object.getWeight().toString(),
                                     object.getPriceToPay().toString(),
                                     object.getImages().toString(),
-                                    object.getStatus().toString())
+                                    status)
                             );
-
-
-
-
+                            pickUpRequestItems.add(new PickUpRequestItem(object.getId().toString(),
+                                    object.getTrackingNumber(),object.getCustomer().toString(),
+                                    object.getRequestTime().toString(),
+                                    object.getDateAndTimePickup().toString(),
+                                    object.getRecipientName().toString(),
+                                    object.getRecipientPhone().toString(),
+                                    object.getPickupLocation().toString(),
+                                    object.getDropoffLocation().toString(),
+                                    object.getVolume().toString(),
+                                    object.getWeight().toString(),
+                                    object.getPriceToPay().toString(),
+                                    object.getImages().toString(),
+                                    status)
+                            );
+                            pickUpRequestItems.add(new PickUpRequestItem(object.getId().toString(),
+                                    object.getTrackingNumber(),object.getCustomer().toString(),
+                                    object.getRequestTime().toString(),
+                                    object.getDateAndTimePickup().toString(),
+                                    object.getRecipientName().toString(),
+                                    object.getRecipientPhone().toString(),
+                                    object.getPickupLocation().toString(),
+                                    object.getDropoffLocation().toString(),
+                                    object.getVolume().toString(),
+                                    object.getWeight().toString(),
+                                    object.getPriceToPay().toString(),
+                                    object.getImages().toString(),
+                                    status)
+                            );
+                            pickUpRequestItems.add(new PickUpRequestItem(object.getId().toString(),
+                                    object.getTrackingNumber(),object.getCustomer().toString(),
+                                    object.getRequestTime().toString(),
+                                    object.getDateAndTimePickup().toString(),
+                                    object.getRecipientName().toString(),
+                                    object.getRecipientPhone().toString(),
+                                    object.getPickupLocation().toString(),
+                                    object.getDropoffLocation().toString(),
+                                    object.getVolume().toString(),
+                                    object.getWeight().toString(),
+                                    object.getPriceToPay().toString(),
+                                    object.getImages().toString(),
+                                    status)
+                            );
 
                         }
 
@@ -528,6 +573,7 @@ public class CustomerPortal extends AppCompatActivity  implements NavigationView
                                 Intent intent = new Intent(CustomerPortal.this, PickUpRequestDetailed.class);
                                 intent.putExtra(NEXT_SCREEN, model);
                                 startActivity(intent);
+                                finish();
 
                             }
                         });
@@ -622,6 +668,14 @@ public class CustomerPortal extends AppCompatActivity  implements NavigationView
         // Notify the user
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(0, notification);
+    }
+
+    public void changePassword()
+    {
+        Intent intent = new Intent(getApplicationContext(),ResetPassword.class);
+        intent.putExtra("password", "password");
+        startActivity(intent);
+        finish();
     }
 
 
