@@ -36,8 +36,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AdminPortal extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    TabLayout tab_layout ;
-    RelativeLayout lyAllusers,lyAllCars, lyWarehouses;
+    RelativeLayout lyAllusers,lyAllCars, lyWarehouses,lyDriversLicenses;
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
@@ -69,16 +68,12 @@ public class AdminPortal extends AppCompatActivity implements NavigationView.OnN
 
         //
 
-        tab_layout = findViewById(R.id.tab_layout);
-
         lyAllusers = findViewById(R.id.lyAllusers);
         lyAllCars = findViewById(R.id.lyAllCars);
         lyWarehouses = findViewById(R.id.lyWarehouses);
+        lyDriversLicenses = findViewById(R.id.lyDriversLicenses);
 
 
-        lyAllusers.setVisibility(View.VISIBLE);
-        lyAllCars.setVisibility(View.GONE);
-        lyWarehouses.setVisibility(View.GONE);
 
 
         View headerView = navigationView.getHeaderView(0);
@@ -91,43 +86,12 @@ public class AdminPortal extends AppCompatActivity implements NavigationView.OnN
        mGetAllUsers();
         mGetAllCars();
         mGetAllWarehouses();
+        mGetAllDriversLicense();
+
+        hideAlllayers();
+        lyAllusers.setVisibility(View.VISIBLE);
 
 
-        tab_layout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                // Show or hide the layout based on the selected tab
-                if (tab.getPosition() == 0) {
-                    lyAllusers.setVisibility(View.VISIBLE);
-                    lyAllCars.setVisibility(View.GONE);
-                    lyWarehouses.setVisibility(View.GONE);
-
-
-                }
-                if (tab.getPosition() == 1) {
-                    lyAllusers.setVisibility(View.GONE);
-                    lyAllCars.setVisibility(View.VISIBLE);
-                    lyWarehouses.setVisibility(View.GONE);
-                }
-                if (tab.getPosition() == 2) {
-                    lyAllusers.setVisibility(View.GONE);
-                    lyAllCars.setVisibility(View.GONE);
-                    lyWarehouses.setVisibility(View.VISIBLE);
-
-
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                // Optional: Handle any actions when a tab is unselected
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                // Optional: Handle any actions when a tab is reselected
-            }
-        });
     }
 
     public void mGetAllUsers(){
@@ -275,6 +239,80 @@ public class AdminPortal extends AppCompatActivity implements NavigationView.OnN
 
     }
 
+    public void mGetAllDriversLicense(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your actual base URL
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        APIService apiService = retrofit.create(APIService.class);
+
+        Call<List<DriversLicenseResponse>> call = apiService.getAllDriversLicenseObjects();
+
+
+        call.enqueue(new Callback<List<DriversLicenseResponse>>() {
+            @Override
+            public void onResponse(Call<List<DriversLicenseResponse>> call, Response<List<DriversLicenseResponse>> response) {
+                if (response.isSuccessful()) {
+
+                    List<DriversLicenseResponse> objects = response.body();
+
+                    if (objects != null) {
+                        RecyclerView recyclerView = findViewById(R.id.idAllDriversLicenses);
+
+                        List<DriversLicense> driversLicense = new ArrayList<DriversLicense>();
+
+                        for (DriversLicenseResponse object : objects) {
+//                            driversLicense.add(new DriversLicense(
+//                                    ""+object.getType().toString(),
+//                                    ""+object.getType().toString(),
+//                                    ""+object.getType().toString(),
+//                                    ""+object.getCapacity().toString(),
+//                                    ""+object.getColor().toString(),
+//                                    ""+object.getMake().toString(),
+//                                    ""+object.getModel().toString(),
+//                                    ""+object.getYear().toString(),
+//                                    ""+object.getLicensePlate().toString(),
+//                                    ""+object.getIsApproved().toString(),
+//                                    ""+object.getType().toString(),
+//                                    ""+object.getType().toString(),
+//                                    ""+object.getType().toString(),
+//                                    ""+object.getType().toString()));
+
+                        }
+                        recyclerView.setLayoutManager(new LinearLayoutManager(AdminPortal.this));
+
+                        final AdapterAllDriversLicense adapterAllDriversLicense = new AdapterAllDriversLicense(getApplicationContext(),driversLicense);
+                        recyclerView.setAdapter(adapterAllDriversLicense);
+//                        recyclerView.setAdapter(new AdapterPickUpRequest(getApplicationContext(), driversLicense));
+
+                        adapterAllDriversLicense.setOnClickListener(new AdapterAllDriversLicense.OnClickListener() {
+                            @Override
+                            public void onClick(int position, DriversLicense model) {
+                                Intent intent = new Intent(AdminPortal.this, AddDriversLicense.class);
+                                intent.putExtra("driversLicense",  model);
+                                startActivity(intent);
+                                finish();
+
+                            }
+                        });
+
+                    }
+
+                } else {
+                    // Handle error
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<DriversLicenseResponse>> call, Throwable t) {
+                // Handle failure
+            }
+        });
+
+    }
+
+
     public void mGetAllWarehouses(){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your actual base URL
@@ -348,13 +386,53 @@ public class AdminPortal extends AppCompatActivity implements NavigationView.OnN
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation item clicks here
         switch (item.getItemId()) {
+            case R.id.users:
+                hideAlllayers();
+                lyAllusers.setVisibility(View.VISIBLE);
+                break;
+            case R.id.cars:
+                hideAlllayers();
+                lyAllCars.setVisibility(View.VISIBLE);
+                break;
+            case R.id.warehouses:
+                hideAlllayers();
+                lyWarehouses.setVisibility(View.VISIBLE);
+                break;
+            case R.id.licenses:
+                hideAlllayers();
+                lyDriversLicenses.setVisibility(View.VISIBLE);
+                break;
             case R.id.nav_loginout:
                 Logout();
+                break;
+            case R.id.password:
+                changePassword();
                 break;
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void hideAlllayers(){
+        lyAllusers.setVisibility(View.GONE);
+        lyAllCars.setVisibility(View.GONE);
+        lyWarehouses.setVisibility(View.GONE);
+        lyDriversLicenses.setVisibility(View.GONE);
+    }
+    public void DriversLicense()
+    {
+        Intent intent = new Intent(getApplicationContext(),AddDriversLicense.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void changePassword()
+    {
+        Intent intent = new Intent(getApplicationContext(),ResetPassword.class);
+        intent.putExtra("password", "password");
+        startActivity(intent);
+        finish();
     }
 
     @Override

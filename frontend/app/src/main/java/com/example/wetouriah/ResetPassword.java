@@ -38,7 +38,7 @@ public class ResetPassword extends AppCompatActivity {
 
 
 
-                lyEnterUsername = findViewById(R.id.lyEnterUsername);
+        lyEnterUsername = findViewById(R.id.lyEnterUsername);
         lyenterVerificationCode = findViewById(R.id.lyenterVerificationCode);
         lySuccessMessage = findViewById(R.id.lySuccessMessage);
         lyConfirmPassword = findViewById(R.id.lyConfirmPassword);

@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Wetouriah"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".AddDriversLicense"
+            android:exported="false" />
         <activity
             android:name=".Signature"
             android:exported="false" />
@@ -89,8 +91,7 @@
         <activity
             android:name=".Login"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"
-            />
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".User"
             android:exported="false"

@@ -198,6 +198,10 @@ public interface APIService {
     Call<List<WarehouseResponse>> getAllWareHouseObjects();
 
 
+    @GET("drivers-licenses/") // Replace "endpoint" with your actual API endpoint
+    Call<List<DriversLicenseResponse>> getAllDriversLicenseObjects();
+
+
 
 
     @Multipart
