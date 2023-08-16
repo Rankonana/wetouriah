@@ -10,4 +10,6 @@ admin.site.register(Pickup)
 admin.site.register(PickupMessage)
 admin.site.register(RequestPickupMessage)
 admin.site.register(ProofOfDelivery) 
+admin.site.register(DriversLicense) 
+
 

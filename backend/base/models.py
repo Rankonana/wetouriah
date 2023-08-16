@@ -23,7 +23,7 @@ class User(AbstractUser):
     title = models.CharField(max_length=200,null=True,blank=True)
     address = models.CharField(max_length=200,null=True,blank=True)
     phone_number  = models.CharField(max_length=200,null=True,blank=True)
-    driver_license  = models.CharField(max_length=200,null=True,blank=True) #added
+    #driver_license  = models.CharField(max_length=200,null=True,blank=True) #added
 
 
     # USERNAME_FIELD = email
@@ -33,9 +33,30 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+class DriversLicense(models.Model):
+    license_owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    fullname  = models.CharField(max_length=200,null=True,blank=True)
+    identity_number = models.CharField(max_length=200,null=True,blank=True)
+    date_of_birth = models.DateTimeField(null=True,blank=True)
+    license_number = models.CharField(max_length=200,null=True,blank=True)
+    expiry_date = models.DateTimeField(null=True,blank=True)
+    country_of_issue = models.CharField(max_length=200,null=True,blank=True)
+    code = models.CharField(max_length=200,null=True,blank=True)
+    restrictions = models.CharField(max_length=200,null=True,blank=True)
+    gender = models.CharField(max_length=200,null=True,blank=True)
+    drivers_license_number = models.CharField(max_length=200,null=True,blank=True)
+    date_of_issue= models.DateTimeField(null=True,blank=True)
+    uploadLicense = models.ImageField(default="NoImage.jpg",null=True,blank=True)
+    is_approved = models.BooleanField(default=False ) 
+
+
+
+    def __str__(self):
+        return str(self.car_owner)
+
 class Car(models.Model):
     car_owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    type = models.CharField(max_length=200,null=True,blank=True)
+    type = models.CharField(max_length=200,null=True,blank=True) #change type to cartype
     capacity = models.CharField(max_length=200,null=True,blank=True)
     color = models.CharField(max_length=200,null=True,blank=True)
     make = models.CharField(max_length=200,null=True,blank=True)

@@ -60,12 +60,26 @@ def getRoutes(request):
 
     return Response(routes)
 
+
 @api_view(['GET'])
-#@permission_classes([IsAuthenticated])
 def getUsers(request):
+    role = request.query_params.get('role')
+    username = request.query_params.get('username')
+    sort = request.query_params.get('sort')
+
     users = User.objects.all()
+
+    if role:
+        users = users.filter(role=role)
+
+    if username:
+        users = users.filter(username__icontains=username)
+
+    if sort == 'new':
+        users = users.order_by('-date_joined')
+
     serializer = UserSerializer(users, many=True)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)    
 
 @api_view(['POST'])
 # @permission_classes([IsAuthenticated])

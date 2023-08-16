@@ -1,6 +1,8 @@
 package com.example.wetouriah;
 
-public class UserItem {
+import java.io.Serializable;
+
+public class UserItem implements Serializable {
 
     String id,username,address,first_name,last_name,email,is_active,profile_picture,role,phone_number;
 

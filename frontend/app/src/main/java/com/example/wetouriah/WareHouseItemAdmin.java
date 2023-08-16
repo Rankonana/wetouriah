@@ -1,6 +1,8 @@
 package com.example.wetouriah;
 
-public class WareHouseItemAdmin {
+import java.io.Serializable;
+
+public class WareHouseItemAdmin implements Serializable {
 
 String id, image, address, volume;
 String cctv , armed_response, fire_safety_and_management, parking_space, is_approved,operating_hours, warehouse_owner;

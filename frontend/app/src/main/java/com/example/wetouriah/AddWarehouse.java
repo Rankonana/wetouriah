@@ -59,6 +59,8 @@ public class AddWarehouse extends AppCompatActivity {
 
     private static final String TAG = "AddWarehouse";
 
+    String user_id,warehouse_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,15 +88,32 @@ public class AddWarehouse extends AppCompatActivity {
 
         selectImageButton = findViewById(R.id.selectImageButton);
 
+        //
         SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-        String user_id = sharedPreferences.getString("user_id", null);
-        String warehouse_id = sharedPreferences.getString("warehouse_id", null);
+        user_id = sharedPreferences.getString("user_id", null);
+        warehouse_id = sharedPreferences.getString("warehouse_id", null);
+
+
 
         try {
-            loadwarehouse(user_id);
+
+
+            WareHouseItemAdmin warehouse = (WareHouseItemAdmin) getIntent().getSerializableExtra("warehouse");
+            if(warehouse != null){
+                user_id = warehouse.getWarehouse_owner().toString();
+                //car_id =  car.getId().toString();
+                loadwarehouse(user_id);
+            }
+            else {
+                loadwarehouse(user_id);
+
+            }
+
         } catch (Exception e) {
 
         }
+
+        //
 
         selectImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,16 +132,14 @@ public class AddWarehouse extends AppCompatActivity {
         btnAddWarehouse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-                String user_id = sharedPreferences.getString("user_id", null);
-                String warehouse_id = sharedPreferences.getString("warehouse_id", null);
-
-                if (imagepath != null && !imagepath.isEmpty()) {
+                     if (imagepath != null && !imagepath.isEmpty()) {
                     add_updateWarehouse(Integer.parseInt(warehouse_id),user_id,address.getText().toString(),volume.getText().toString(),
                             String.valueOf(cctv.isChecked()),String.valueOf(armed_response.isChecked()),
                             String.valueOf(fire_safety_and_management.isChecked()),String.valueOf(parking_space.isChecked()),
                             operating_hours.getText().toString());
-                } else {
+                         add_updateWarehouse( warehouse_id.toString(),warehouse_owner.toString(), String.valueOf(is_approved.isChecked()));
+
+                     } else {
                     add_updateWarehouseNoImage(Integer.parseInt(warehouse_id),user_id,address.getText().toString(),volume.getText().toString(),
                             String.valueOf(cctv.isChecked()),String.valueOf(armed_response.isChecked()),
                             String.valueOf(fire_safety_and_management.isChecked()),String.valueOf(parking_space.isChecked()),
@@ -153,6 +170,13 @@ public class AddWarehouse extends AppCompatActivity {
             SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
             String role = sharedPreferences.getString("role", null);
             // Check the user's role
+
+            if (role.equals("1")) {
+                // Navigate to the CustomerPortal
+                Intent intent = new Intent(this, AdminPortal.class);
+                startActivity(intent);
+                finish();
+            }
             if (role.equals("2")) {
                 // Navigate to the CustomerPortal
                 Intent intent = new Intent(this, CustomerPortal.class);
@@ -358,5 +382,45 @@ public class AddWarehouse extends AppCompatActivity {
 
 
     }
+
+    public void add_updateWarehouse(String warehouse_id, String warehouse_owner,String is_approved ) {
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
+                .addConverterFactory(GsonConverterFactory.create()).build();
+
+        RequestBody w_warehouse_id = RequestBody.create(MediaType.parse("multipart/form-data"), warehouse_id );
+        RequestBody w_warehouse_owner = RequestBody.create(MediaType.parse("multipart/form-data"), warehouse_owner );
+
+
+        RequestBody w_is_approved = RequestBody.create(MediaType.parse("multipart/form-data"), is_approved);
+        APIService apiService = retrofit.create(APIService.class);
+        Call<APIResponse> call=  apiService.updateWarehouseApproval(w_warehouse_id,w_warehouse_owner,w_is_approved);
+
+        call.enqueue(new Callback<APIResponse>() {
+
+            @Override
+            public void onResponse(Call<APIResponse> call, Response<APIResponse> response) {
+
+                if(response.isSuccessful()){
+
+                    if(response.body().getStatusCode().toString().equals("201")) {
+//                        Toast.makeText(getApplicationContext(), "approval updated", Toast.LENGTH_SHORT).show();
+                    }else{
+//                        Toast.makeText(getApplicationContext(), "Error updating approval", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<APIResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+
+    }
+
 
 }

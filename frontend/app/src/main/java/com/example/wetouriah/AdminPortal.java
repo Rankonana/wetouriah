@@ -178,6 +178,17 @@ public class AdminPortal extends AppCompatActivity implements NavigationView.OnN
                         recyclerView.setAdapter(adapterAllUsers);
 //                        recyclerView.setAdapter(new AdapterPickUpRequest(getApplicationContext(), UserItems));
 
+                        adapterAllUsers.setOnClickListener(new AdapterAllUsers.OnClickListener() {
+                            @Override
+                            public void onClick(int position, UserItem model) {
+                                Intent intent = new Intent(AdminPortal.this, Profile.class);
+                                intent.putExtra("user",  model);
+                                startActivity(intent);
+                                finish();
+
+                            }
+                        });
+
                     }
 
                 } else {
@@ -241,8 +252,10 @@ public class AdminPortal extends AppCompatActivity implements NavigationView.OnN
                         adapterAllCars.setOnClickListener(new AdapterAllCars.OnClickListener() {
                             @Override
                             public void onClick(int position, CarItem model) {
-                                Toast.makeText(getApplicationContext(), "hi", Toast.LENGTH_SHORT).show();
-
+                                Intent intent = new Intent(AdminPortal.this, AddCar.class);
+                                intent.putExtra("car",  model);
+                                startActivity(intent);
+                                finish();
 
                             }
                         });
@@ -296,6 +309,16 @@ public class AdminPortal extends AppCompatActivity implements NavigationView.OnN
                         final AdapterAllWarehouses adapterAllWarehouses = new AdapterAllWarehouses(getApplicationContext(),wareHouseItemAdmin);
                         recyclerView.setAdapter(adapterAllWarehouses);
 //                        recyclerView.setAdapter(new AdapterPickUpRequest(getApplicationContext(), WareHouseItemAdmins));
+
+                        adapterAllWarehouses.setOnClickListener(new AdapterAllWarehouses.OnClickListener() {
+                            @Override
+                            public void onClick(int position, WareHouseItemAdmin model) {
+                                Intent intent = new Intent(AdminPortal.this, AddWarehouse.class);
+                                intent.putExtra("warehouse",  model);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
 
                     }
 

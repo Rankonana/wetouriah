@@ -26,6 +26,7 @@ public class AdapterAllUsers extends RecyclerView.Adapter<AllUsersViewHolder> {
 
     Context context;
     List<UserItem> UserItems;
+    private OnClickListener onClickListener;
 
     public AdapterAllUsers(Context context, List<UserItem> UserItems) {
         this.context = context;
@@ -41,6 +42,8 @@ public class AdapterAllUsers extends RecyclerView.Adapter<AllUsersViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull AllUsersViewHolder holder, int position) {
+
+        UserItem item = UserItems.get(position);
 
         String imageUrl = "http://" + Constants.SERVER_IP_ADDRESS + ":8000/" +  UserItems.get(position).getProfile_picture();
         Picasso.get().load(imageUrl).into(holder.profile_picture);
@@ -59,6 +62,15 @@ public class AdapterAllUsers extends RecyclerView.Adapter<AllUsersViewHolder> {
             public void onClick(View view) {
                 updateUserStatus( UserItems.get(holder.getAdapterPosition()).getId(), String.valueOf(holder.is_active.isChecked()));
 
+            }
+        });
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onClickListener != null) {
+                    onClickListener.onClick(holder.getAdapterPosition(), item);
+                }
             }
         });
 
@@ -100,6 +112,14 @@ public class AdapterAllUsers extends RecyclerView.Adapter<AllUsersViewHolder> {
 
 
 
+    }
+
+    public void setOnClickListener(OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
+
+    public interface OnClickListener {
+        void onClick(int position, UserItem model);
     }
 
 

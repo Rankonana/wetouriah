@@ -1,6 +1,6 @@
 package com.example.wetouriah;
 
 public class Constants {
-    public static final String SERVER_IP_ADDRESS = "196.254.65.163"; // Replace with your actual IP address
+    public static final String SERVER_IP_ADDRESS = "192.168.56.1"; // Replace with your actual IP address
 
 }

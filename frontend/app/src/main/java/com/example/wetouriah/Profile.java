@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -39,6 +40,9 @@ public class Profile extends AppCompatActivity {
 
     private Button selectImageButton,btnUpdate;
     private String imagepath;
+    private CheckBox status;
+
+    String user_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,17 +62,30 @@ public class Profile extends AppCompatActivity {
         address = findViewById(R.id.address);
         phone_number = findViewById(R.id.phone_number);
 
+        status = findViewById(R.id.status);
+
+
 
         imageView = findViewById(R.id.imageView);
         selectImageButton = findViewById(R.id.selectImageButton);
         btnUpdate = findViewById(R.id.btnUpdate);
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-        String user_id = sharedPreferences.getString("user_id", null);
+        user_id = sharedPreferences.getString("user_id", null);
 
         try {
 
-            loadUser(user_id.toString());
+            UserItem user = (UserItem) getIntent().getSerializableExtra("user");
+            if(user != null){
+                user_id = user.getId().toString();
+                loadUser(user_id);
+            }
+            else {
+                loadUser(user_id.toString());
+
+            }
+
+
         } catch (Exception e) {
 
         }
@@ -89,10 +106,12 @@ public class Profile extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-                String user_id = sharedPreferences.getString("user_id", null);
-
                 String url = "http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/";
+
+                boolean isChecked = status.isChecked();
+
+                updateUserStatus( user_id.toString(), String.valueOf(isChecked));
+
 
                 updateUser(user_id,email.getText().toString(),
                         title.getText().toString(),
@@ -104,6 +123,40 @@ public class Profile extends AppCompatActivity {
             }
         });
     }
+    public void updateUserStatus(String id,String is_active ) {
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
+                .addConverterFactory(GsonConverterFactory.create()).build();
+
+        RequestBody u_id = RequestBody.create(MediaType.parse("multipart/form-data"), id );
+        RequestBody u_active = RequestBody.create(MediaType.parse("multipart/form-data"), is_active );
+
+        APIService apiService = retrofit.create(APIService.class);
+        Call<APIResponse> call=  apiService.updateUserActive(u_id,u_active);
+
+        call.enqueue(new Callback<APIResponse>() {
+            @Override
+            public void onResponse(Call<APIResponse> call, Response<APIResponse> response) {
+                if(response.isSuccessful()){
+
+                    if(response.body().getStatusCode().toString().equals("201")) {
+                        Toast.makeText(getApplicationContext(), "active status updated", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Error updating active status", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<APIResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -117,6 +170,13 @@ public class Profile extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
             String role = sharedPreferences.getString("role", null);
+
+            if (role.equals("1")) {
+                // Navigate to the CustomerPortal
+                Intent intent = new Intent(this, AdminPortal.class);
+                startActivity(intent);
+                finish();
+            }
             // Check the user's role
             if (role.equals("2")) {
                 // Navigate to the CustomerPortal
@@ -136,9 +196,9 @@ public class Profile extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     public void updateUser(String id,
-                        String email,
-                        String title,String firstname,String lastname,
-                        String address,String phone_number) {
+                           String email,
+                           String title,String firstname,String lastname,
+                           String address,String phone_number) {
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
