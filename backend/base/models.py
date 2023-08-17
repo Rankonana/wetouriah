@@ -91,14 +91,16 @@ class RequestPickupImages(models.Model):
 
 
 class RequestPickup(models.Model):
-    driver_assigned = 1
-    picked_up = 2
-    in_transit = 3
-    out_for_delivery  = 4
-    delivered  = 5
-    returned  = 6
+    pending = 1
+    driver_assigned = 2
+    picked_up = 3
+    in_transit = 4
+    out_for_delivery  = 5
+    delivered  = 6
+    returned  = 7
 
     DELIVERY_CHOICES = (
+        (pending, 'pending'),
         (driver_assigned, 'driver_assigned'),
         (picked_up, 'picked_up'),
         (in_transit , 'in_transit'),

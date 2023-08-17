@@ -38,6 +38,11 @@ urlpatterns = [
     path('get-car/', views.getCar),
     path('add-update-car/', views.car_detail),
 
+    
+    path('drivers-licenses/',views.getDriversLicenses),
+    path('get-drivers-license/', views.getDriversLicense),
+    path('add-update-drivers-license/', views.driversLicense_detail),
+
     path('warehouses/',views.getWareHouses),
     path('get-warehouse/', views.getWareHouse),
     path('add-update-warehouse/', views.warehouse_detail),

@@ -37,6 +37,7 @@ public class AddCar extends AppCompatActivity {
 
         setTitle("Your Car");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         type = findViewById(R.id.type);
         capacity = findViewById(R.id.capacity);
         color = findViewById(R.id.color);

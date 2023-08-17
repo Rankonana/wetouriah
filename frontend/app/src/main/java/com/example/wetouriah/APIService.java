@@ -135,6 +135,8 @@ public interface APIService {
 
 
 
+
+
     @Multipart
     @PUT("add-update-car/")
     Call<CarResponse> updateCar( @Part("id") RequestBody id,
@@ -148,9 +150,48 @@ public interface APIService {
                                           @Part("license_plate") RequestBody licensePlate,
                                           @Part("is_approved") RequestBody isApproved);
 
+
+
+    @Multipart
+    @POST("add-update-drivers-license/")
+    Call<DriversLicenseResponse> addDriversLicense(
+                                                   @Part("license_owner") RequestBody license_owner,
+                                                   @Part("fullname") RequestBody fullname,
+                                                   @Part("identity_number") RequestBody identity_number,
+                                                   @Part("date_of_birth") RequestBody date_of_birth,
+                                                   @Part("license_number") RequestBody license_number,
+                                                   @Part("expiry_date") RequestBody expiry_date,
+                                                   @Part("country_of_issue") RequestBody country_of_issue,
+                                                   @Part("code") RequestBody code,
+                                                   @Part("restrictions") RequestBody restrictions,
+                                                   @Part("gender") RequestBody gender,
+                                                   @Part("date_of_issue") RequestBody date_of_issue,
+                                                   @Part("uploadLicense") RequestBody uploadLicense);
+    @Multipart
+    @PUT("add-update-car/")
+    Call<DriversLicenseResponse> updateDriversLicense( @Part("id") RequestBody id,
+                                 @Part("license_owner") RequestBody license_owner,
+                                 @Part("fullname") RequestBody fullname,
+                                 @Part("identity_number") RequestBody identity_number,
+                                 @Part("date_of_birth") RequestBody date_of_birth,
+                                 @Part("license_number") RequestBody license_number,
+                                 @Part("expiry_date") RequestBody expiry_date,
+                                 @Part("country_of_issue") RequestBody country_of_issue,
+                                 @Part("code") RequestBody code,
+                                 @Part("restrictions") RequestBody restrictions,
+                               @Part("gender") RequestBody gender,
+                               @Part("date_of_issue") RequestBody date_of_issue,
+                               @Part("uploadLicense") RequestBody uploadLicense,
+                                                       @Part("is_approved") RequestBody is_approved);
+
     @Multipart
     @POST("get-car/")
     Call<CarResponse> loadCar(@Part("id") RequestBody id);
+
+
+    @Multipart
+    @POST("get-drivers-license/")
+    Call<DriversLicenseResponse> loadDriversLicense(@Part("id") RequestBody id);
 
     @Multipart
     @POST("track-parcel/")
@@ -215,6 +256,13 @@ public interface APIService {
     @PUT("add-update-car/")
     Call<APIResponse> updateCarApproval(@Part("car_owner") RequestBody car_owner,
                                               @Part("is_approved") RequestBody is_approved
+    );
+
+
+    @Multipart
+    @PUT("add-update-drivers-license/")
+    Call<APIResponse> updateLicenseApproval(@Part("license_owner") RequestBody license_owner,
+                                        @Part("is_approved") RequestBody is_approved
     );
 
     @Multipart

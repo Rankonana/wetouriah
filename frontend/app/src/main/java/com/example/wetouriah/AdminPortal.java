@@ -53,7 +53,7 @@ public class AdminPortal extends AppCompatActivity implements NavigationView.OnN
 
 
         //
-        
+
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
 
@@ -83,7 +83,7 @@ public class AdminPortal extends AppCompatActivity implements NavigationView.OnN
         String username = sharedPreferences.getString("username", null);
         headerUsername.setText("Hello, " + username);
 
-       mGetAllUsers();
+        mGetAllUsers();
         mGetAllCars();
         mGetAllWarehouses();
         mGetAllDriversLicense();
@@ -263,21 +263,23 @@ public class AdminPortal extends AppCompatActivity implements NavigationView.OnN
                         List<DriversLicense> driversLicense = new ArrayList<DriversLicense>();
 
                         for (DriversLicenseResponse object : objects) {
-//                            driversLicense.add(new DriversLicense(
-//                                    ""+object.getType().toString(),
-//                                    ""+object.getType().toString(),
-//                                    ""+object.getType().toString(),
-//                                    ""+object.getCapacity().toString(),
-//                                    ""+object.getColor().toString(),
-//                                    ""+object.getMake().toString(),
-//                                    ""+object.getModel().toString(),
-//                                    ""+object.getYear().toString(),
-//                                    ""+object.getLicensePlate().toString(),
-//                                    ""+object.getIsApproved().toString(),
-//                                    ""+object.getType().toString(),
-//                                    ""+object.getType().toString(),
-//                                    ""+object.getType().toString(),
-//                                    ""+object.getType().toString()));
+
+                            driversLicense.add(new DriversLicense(
+                                    object.getId().toString(),
+                                    object.getLicenseOwner().toString(),
+                                    object.getFullname().toString(),
+                                    object.getIdentityNumber().toString(),
+                                    object.getDateOfBirth().toString(),
+                                    object.getLicenseNumber().toString(),
+                                    object.getExpiryDate().toString(),
+                                    object.getCountryOfIssue().toString(),
+                                    object.getCode().toString(),
+                                    object.getRestrictions().toString(),
+                                    object.getGender().toString(),
+                                    object.getDateOfIssue().toString(),
+                                    object.getUploadLicense().toString(),
+                                    object.getIsApproved().toString()));
+
 
                         }
                         recyclerView.setLayoutManager(new LinearLayoutManager(AdminPortal.this));

@@ -36,18 +36,18 @@ public class AdapterAllDriversLicense extends RecyclerView.Adapter<AllDriversLic
 
         DriversLicense item = DriversLicenses.get(position);
 
-        holder.license_owner.setText(DriversLicenses.get(position).getLicense_owner());
-        holder.fullname.setText(DriversLicenses.get(position).getFullname());
-        holder.identity_number.setText(DriversLicenses.get(position).getIdentity_number());
-        holder.date_of_birth.setText(DriversLicenses.get(position).getDate_of_birth());
-        holder.license_number.setText(DriversLicenses.get(position).getLicense_number());
-        holder.expiry_date.setText(DriversLicenses.get(position).getExpiry_date());
-        holder.country_of_issue.setText(DriversLicenses.get(position).getCountry_of_issue());
-        holder.code.setText(DriversLicenses.get(position).getCode());
-        holder.restrictions.setText(DriversLicenses.get(position).getRestrictions());
-        holder.gender.setText(DriversLicenses.get(position).getGender());
-        holder.date_of_issue.setText(DriversLicenses.get(position).getDate_of_issue());
-        holder.uploadLicense.setText(DriversLicenses.get(position).getUploadLicense());
+//        holder.license_owner.setText(DriversLicenses.get(position).getLicense_owner());
+        holder.fullname.setText("Name: " + DriversLicenses.get(position).getFullname());
+//        holder.identity_number.setText(DriversLicenses.get(position).getIdentity_number());
+//        holder.date_of_birth.setText(DriversLicenses.get(position).getDate_of_birth());
+        holder.license_number.setText("license number: "+DriversLicenses.get(position).getLicense_number());
+        holder.expiry_date.setText("expiry: "+DriversLicenses.get(position).getExpiry_date());
+//        holder.country_of_issue.setText(DriversLicenses.get(position).getCountry_of_issue());
+//        holder.code.setText(DriversLicenses.get(position).getCode());
+//        holder.restrictions.setText(DriversLicenses.get(position).getRestrictions());
+//        holder.gender.setText(DriversLicenses.get(position).getGender());
+//        holder.date_of_issue.setText(DriversLicenses.get(position).getDate_of_issue());
+//        holder.uploadLicense.setText(DriversLicenses.get(position).getUploadLicense());
         holder.is_approved.setChecked(Boolean.parseBoolean(DriversLicenses.get(position).getIs_approved()));
 
 

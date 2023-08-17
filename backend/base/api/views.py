@@ -194,10 +194,66 @@ def car_detail(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-#
-
-
 #car end
+
+#DriversLicense start
+@api_view(['GET'])
+#@permission_classes([IsAuthenticated])
+def getDriversLicenses(request):
+    driversLicenses = DriversLicense.objects.all()
+    serializer = DriversLicenseSerializer(driversLicenses, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+#@permission_classes([IsAuthenticated])
+def getDriversLicense(request):
+    license_owner = DriversLicense.objects.get(license_owner=request.data.get('id'))
+    serializer = DriversLicenseSerializer(license_owner, many=False)
+    return Response(serializer.data)
+
+@api_view(['POST', 'PUT'])
+#@permission_classes([IsAuthenticated])
+def driversLicense_detail(request):
+    print(request.data)
+
+
+    if request.method == 'POST':
+        serializer = DriversLicenseSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            status_code = status.HTTP_201_CREATED
+            response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': 'license added successfully',
+            }
+            return Response(response, status=status_code)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+    elif request.method == 'PUT':
+        try:
+            license = DriversLicense.objects.get(license_owner=request.data.get('license_owner'))
+        except DriversLicense.DoesNotExist:
+            license = None
+
+        if license is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = DriversLicenseSerializer(license, request.data)
+        if serializer.is_valid():
+            serializer.save()
+            status_code = status.HTTP_201_CREATED
+            response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': 'License updated successfully',
+            }
+            return Response(response, status=status_code)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+#DriversLicense end
 
 #WareHouse start
 @api_view(['GET'])

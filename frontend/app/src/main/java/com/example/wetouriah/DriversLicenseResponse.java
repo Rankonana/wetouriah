@@ -8,33 +8,45 @@ public class DriversLicenseResponse {
     @SerializedName("id")
     @Expose
     private Integer id;
-    @SerializedName("type")
+    @SerializedName("fullname")
     @Expose
-    private String type;
-    @SerializedName("capacity")
+    private String fullname;
+    @SerializedName("identity_number")
     @Expose
-    private String capacity;
-    @SerializedName("color")
+    private String identityNumber;
+    @SerializedName("date_of_birth")
     @Expose
-    private String color;
-    @SerializedName("make")
+    private String dateOfBirth;
+    @SerializedName("license_number")
     @Expose
-    private String make;
-    @SerializedName("model")
+    private Object licenseNumber;
+    @SerializedName("expiry_date")
     @Expose
-    private String model;
-    @SerializedName("year")
+    private String expiryDate;
+    @SerializedName("country_of_issue")
     @Expose
-    private String year;
-    @SerializedName("license_plate")
+    private String countryOfIssue;
+    @SerializedName("code")
     @Expose
-    private String licensePlate;
+    private String code;
+    @SerializedName("restrictions")
+    @Expose
+    private String restrictions;
+    @SerializedName("gender")
+    @Expose
+    private String gender;
+    @SerializedName("date_of_issue")
+    @Expose
+    private String dateOfIssue;
+    @SerializedName("uploadLicense")
+    @Expose
+    private String uploadLicense;
     @SerializedName("is_approved")
     @Expose
     private Boolean isApproved;
-    @SerializedName("car_owner")
+    @SerializedName("license_owner")
     @Expose
-    private Integer carOwner;
+    private Integer licenseOwner;
 
     public Integer getId() {
         return id;
@@ -44,60 +56,92 @@ public class DriversLicenseResponse {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public String getFullname() {
+        return fullname;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
-    public String getCapacity() {
-        return capacity;
+    public String getIdentityNumber() {
+        return identityNumber;
     }
 
-    public void setCapacity(String capacity) {
-        this.capacity = capacity;
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
     }
 
-    public String getColor() {
-        return color;
+    public String getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
-    public String getMake() {
-        return make;
+    public Object getLicenseNumber() {
+        return licenseNumber;
     }
 
-    public void setMake(String make) {
-        this.make = make;
+    public void setLicenseNumber(Object licenseNumber) {
+        this.licenseNumber = licenseNumber;
     }
 
-    public String getModel() {
-        return model;
+    public String getExpiryDate() {
+        return expiryDate;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setExpiryDate(String expiryDate) {
+        this.expiryDate = expiryDate;
     }
 
-    public String getYear() {
-        return year;
+    public String getCountryOfIssue() {
+        return countryOfIssue;
     }
 
-    public void setYear(String year) {
-        this.year = year;
+    public void setCountryOfIssue(String countryOfIssue) {
+        this.countryOfIssue = countryOfIssue;
     }
 
-    public String getLicensePlate() {
-        return licensePlate;
+    public String getCode() {
+        return code;
     }
 
-    public void setLicensePlate(String licensePlate) {
-        this.licensePlate = licensePlate;
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getRestrictions() {
+        return restrictions;
+    }
+
+    public void setRestrictions(String restrictions) {
+        this.restrictions = restrictions;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getDateOfIssue() {
+        return dateOfIssue;
+    }
+
+    public void setDateOfIssue(String dateOfIssue) {
+        this.dateOfIssue = dateOfIssue;
+    }
+
+    public String getUploadLicense() {
+        return uploadLicense;
+    }
+
+    public void setUploadLicense(String uploadLicense) {
+        this.uploadLicense = uploadLicense;
     }
 
     public Boolean getIsApproved() {
@@ -108,12 +152,12 @@ public class DriversLicenseResponse {
         this.isApproved = isApproved;
     }
 
-    public Integer getCarOwner() {
-        return carOwner;
+    public Integer getLicenseOwner() {
+        return licenseOwner;
     }
 
-    public void setCarOwner(Integer carOwner) {
-        this.carOwner = carOwner;
+    public void setLicenseOwner(Integer licenseOwner) {
+        this.licenseOwner = licenseOwner;
     }
 
 }

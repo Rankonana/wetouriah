@@ -79,6 +79,11 @@ class CarSerializer(ModelSerializer):
         model = Car
         fields = '__all__'
 
+class DriversLicenseSerializer(ModelSerializer):
+    class Meta:
+        model = DriversLicense
+        fields = '__all__'
+
 class WareHouseSerializer(ModelSerializer):
     class Meta:
         model = WareHouse
