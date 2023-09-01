@@ -101,10 +101,6 @@ class PickupSerializer(ModelSerializer):
         fields = '__all__'
 
 
-class PickupMessageSerializer(ModelSerializer):
-    class Meta:
-        model = PickupMessage
-        fields = '__all__'
 
 class ProofOfDeliverySerializer(ModelSerializer):
     class Meta:

@@ -153,15 +153,6 @@ class TrackingInfo(models.Model):
     def __str__(self):
         return f"{self.request_pickup} - {self.location} - {self.timestamp}"
 
-class RequestPickupMessage(models.Model):
-    requestpickup = models.ForeignKey(RequestPickup, on_delete=models.CASCADE)
-    sender = models.ForeignKey(User, on_delete=models.CASCADE)
-    message = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
-    #is_read = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f"Message from {self.sender} - {self.timestamp}"
 
 
 
@@ -172,15 +163,7 @@ class ProofOfDelivery(models.Model):
     def __str__(self):
         return f"Proof of Delivery Image #{self.id} for {self.pickup}"
 
-class PickupMessage(models.Model):
-    pickup = models.ForeignKey(Pickup, on_delete=models.CASCADE)
-    sender = models.ForeignKey(User, on_delete=models.CASCADE)
-    message = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
-    #is_read = models.BooleanField(default=False)
 
-    def __str__(self):
-        return f"Message from {self.sender} - {self.timestamp}"
 
 
 

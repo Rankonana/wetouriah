@@ -78,9 +78,6 @@ urlpatterns = [
     path('get-pickup-id-from-requestpickup-id/',views.getPickupIDfromRequestPickupID),#get an  pickup id of a certain requestpickup
     path('add-update-pickup/', views.pickup_detail),
 
-    # path('pickup-messages',views.getPickupMessages),
-    path('pickup-messages/', views.getPickupMessages),
-    path('send-message/', views.pickup_message_detail),
 
 
     path('track-parcel/', views.trackParcel),

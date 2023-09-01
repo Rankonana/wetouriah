@@ -7,8 +7,6 @@ admin.site.register(WareHouse)
 admin.site.register(RequestPickupImages)
 admin.site.register(RequestPickup)
 admin.site.register(Pickup)
-admin.site.register(PickupMessage)
-admin.site.register(RequestPickupMessage)
 admin.site.register(ProofOfDelivery) 
 admin.site.register(DriversLicense) 
 

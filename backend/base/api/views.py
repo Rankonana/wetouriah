@@ -737,43 +737,6 @@ def pickup_detail(request):
 #Pickup end
 
 
-# #PickupMessage start
-# @api_view(['GET'])
-# #@permission_classes([IsAuthenticated])
-# def getPickupMessages(request):
-#     pickupmessage = PickupMessage.objects.all()
-#     serializer = PickupMessageSerializer(pickupmessage, many=True)
-#     return Response(serializer.data)
-
-@api_view(['POST'])
-#@permission_classes([IsAuthenticated])
-def getPickupMessages(request):
-    pickup = request.data.get('pickup')
-    pickupmessages = PickupMessage.objects.all()
-    pickupmessages = pickupmessages.filter(
-        Q(pickup = pickup)
-    )
-    serializer = PickupMessageSerializer(pickupmessages, many=True)
-    return Response(serializer.data)
-
-@api_view(['POST'])
-#@permission_classes([IsAuthenticated])
-def pickup_message_detail(request):
-    serializer = PickupMessageSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        status_code =status.HTTP_201_CREATED
-        response = {
-                'success': True,
-                'statusCode': status_code,
-                'message': 'Message Sent',
-            }
-        return Response(response,status=status.HTTP_201_CREATED)
-    else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-
-#PickupMessage end
 
 
 @api_view(['POST'])
