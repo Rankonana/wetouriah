@@ -1,4 +1,7 @@
 gunicorn
+graphviz
+pyparsing
+pydot
 django_extensions
 djangorestframework-simplejwt
 asgiref==3.6.0
