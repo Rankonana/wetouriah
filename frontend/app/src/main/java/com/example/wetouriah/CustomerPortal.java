@@ -625,7 +625,7 @@ public class CustomerPortal extends AppCompatActivity  implements NavigationView
             @Override
             public void run() {
                 // Call your API method here
-                mGetAllPickRequest();
+               // mGetAllPickRequest();
 
                 // Schedule the next execution after a delay
                 handler.postDelayed(this, 15000); // Execute every 5 seconds
