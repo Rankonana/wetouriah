@@ -176,7 +176,7 @@ public class AddWarehouse extends AppCompatActivity {
                          String volume,String cctv, String armed_response,String fire_safety_and_management,
                          String parking_space, String operating_hours ) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         File file = new File(imagepath);
@@ -244,7 +244,7 @@ public class AddWarehouse extends AppCompatActivity {
                                     String volume,String cctv, String armed_response,String fire_safety_and_management,
                                     String parking_space, String operating_hours ) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
 
@@ -310,7 +310,7 @@ public class AddWarehouse extends AppCompatActivity {
 
     public void loadwarehouse(String id) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         RequestBody user_id= RequestBody.create(MediaType.parse("multipart/form-data"), id);
@@ -325,7 +325,7 @@ public class AddWarehouse extends AppCompatActivity {
             public void onResponse(Call<WarehouseResponse> call, Response<WarehouseResponse> response) {
 
                 if(response.isSuccessful()){
-                    Picasso.get().load( "http://" + Constants.SERVER_IP_ADDRESS+ ":8000"+"/" +response.body().getImage()).into(image);
+                    Picasso.get().load( "https://" + Constants.SERVER_IP_ADDRESS+"/" +response.body().getImage()).into(image);
 
                     address.setText(response.body().getAddress());
                     volume.setText(response.body().getVolume());

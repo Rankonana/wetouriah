@@ -85,7 +85,7 @@ public class ViewWarehouses extends AppCompatActivity   {
 
     public void mWarehouses(String location ) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + Constants.SERVER_IP_ADDRESS + ":8000/api/")
+                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS + "/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

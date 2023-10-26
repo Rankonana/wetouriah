@@ -530,7 +530,7 @@ public class AdminPortal extends AppCompatActivity implements NavigationView.OnN
 
     public void mGetAllUsers(){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your actual base URL
+                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/") // Replace with your actual base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -610,7 +610,7 @@ public class AdminPortal extends AppCompatActivity implements NavigationView.OnN
 
     public void mGetAllCars(){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your actual base URL
+                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/") // Replace with your actual base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -679,7 +679,7 @@ public class AdminPortal extends AppCompatActivity implements NavigationView.OnN
 
     public void mGetAllDriversLicense(){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your actual base URL
+                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/") // Replace with your actual base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -748,7 +748,7 @@ public class AdminPortal extends AppCompatActivity implements NavigationView.OnN
 
     public void mGetAllWarehouses(){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your actual base URL
+                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/") // Replace with your actual base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

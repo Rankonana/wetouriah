@@ -636,7 +636,7 @@ public class DriverPortal extends AppCompatActivity implements OnMapReadyCallbac
     public void SendLocationAndStatus(String available,String location){
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your actual base URL
+                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/") // Replace with your actual base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -952,7 +952,7 @@ public class DriverPortal extends AppCompatActivity implements OnMapReadyCallbac
         lyPickRequestList.setVisibility(View.GONE);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your actual base URL
+                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/") // Replace with your actual base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -1107,7 +1107,7 @@ public class DriverPortal extends AppCompatActivity implements OnMapReadyCallbac
 
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your actual base URL
+                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/") // Replace with your actual base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -1442,7 +1442,7 @@ public class DriverPortal extends AppCompatActivity implements OnMapReadyCallbac
     public void mCheckJobOffers(){
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your actual base URL
+                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/") // Replace with your actual base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -1531,7 +1531,7 @@ public class DriverPortal extends AppCompatActivity implements OnMapReadyCallbac
     public void mGetAvailabilty(){
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your actual base URL
+                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/") // Replace with your actual base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

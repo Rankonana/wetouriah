@@ -50,7 +50,7 @@ public class AdapterAllUsers extends RecyclerView.Adapter<AllUsersViewHolder> {
 
         UserItem item = UserItems.get(position);
 
-        String imageUrl = "http://" + Constants.SERVER_IP_ADDRESS + ":8000/" +  UserItems.get(position).getProfile_picture();
+        String imageUrl = "https://" + Constants.SERVER_IP_ADDRESS + "/" +  UserItems.get(position).getProfile_picture();
         Picasso.get().load(imageUrl).into(holder.profile_picture);
 
         holder.is_active.setChecked(Boolean.parseBoolean(UserItems.get(position).getIs_active()));
@@ -87,7 +87,7 @@ public class AdapterAllUsers extends RecyclerView.Adapter<AllUsersViewHolder> {
 
     public void updateUserStatus(String id,String is_active ) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         RequestBody u_id = RequestBody.create(MediaType.parse("multipart/form-data"), id );

@@ -247,7 +247,7 @@ public class PickUpRequestDetailed extends AppCompatActivity {
 
     public void GetAnID(String request_pickup) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         RequestBody request_pickup_id= RequestBody.create(MediaType.parse("multipart/form-data"), request_pickup);
@@ -373,7 +373,7 @@ public class PickUpRequestDetailed extends AppCompatActivity {
 
     public void mAcceptDecline(String pickup_id, String accept_decline) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
 

@@ -131,7 +131,7 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String url = "http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/";
+                String url = "https://" + Constants.SERVER_IP_ADDRESS+ "/api/";
 
                 addUser(url,imagepath,email.getText().toString(),
                         role,
@@ -244,7 +244,7 @@ public class Register extends AppCompatActivity {
                             String title,String firstname,String lastname,
                             String address,String phone_number) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         File file = new File(imagepath);

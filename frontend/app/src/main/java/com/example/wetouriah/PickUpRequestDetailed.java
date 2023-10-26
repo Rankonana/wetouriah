@@ -700,7 +700,7 @@ public class PickUpRequestDetailed extends AppCompatActivity {
 
     public void mDelete(String id) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         RequestBody request_pickup_id= RequestBody.create(MediaType.parse("multipart/form-data"), id);
@@ -726,7 +726,7 @@ public class PickUpRequestDetailed extends AppCompatActivity {
 
     public void mRate(String tracking_number, String rating) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         RequestBody request_tracking_number= RequestBody.create(MediaType.parse("multipart/form-data"), tracking_number);
@@ -752,7 +752,7 @@ public class PickUpRequestDetailed extends AppCompatActivity {
 
     public void mSetStatus(String tracking_number, String status) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         RequestBody request_tracking_number= RequestBody.create(MediaType.parse("multipart/form-data"), tracking_number);
@@ -782,7 +782,7 @@ public class PickUpRequestDetailed extends AppCompatActivity {
 
     public void mGetAllImages(String tracking_number){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your actual base URL
+                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/") // Replace with your actual base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -877,7 +877,7 @@ public class PickUpRequestDetailed extends AppCompatActivity {
 
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your actual base URL
+                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/") // Replace with your actual base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -1205,7 +1205,7 @@ public class PickUpRequestDetailed extends AppCompatActivity {
     public void mAcceptDecline(String requestPickup,String status){
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your actual base URL
+                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/") // Replace with your actual base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -1242,7 +1242,7 @@ public class PickUpRequestDetailed extends AppCompatActivity {
 
     public void mSinglePickRequest(String tracking_number){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your actual base URL
+                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/") // Replace with your actual base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -1440,7 +1440,7 @@ public class PickUpRequestDetailed extends AppCompatActivity {
     public void mSendSMS(String recipient_number, String message, String from_warehouse, String parcel_id){
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your actual base URL
+                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/") // Replace with your actual base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         //Toast.makeText(getApplicationContext(), "sms r1", Toast.LENGTH_SHORT).show();

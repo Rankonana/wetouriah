@@ -86,7 +86,7 @@ public class TrackParcel extends AppCompatActivity {
 
     public void loadLocation(String id) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         RequestBody pick_id= RequestBody.create(MediaType.parse("multipart/form-data"), id);

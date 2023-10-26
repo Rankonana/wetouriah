@@ -72,7 +72,7 @@ public class TitleOnAmap extends AppCompatActivity implements OnMapReadyCallback
         List<String> addresses = new ArrayList<>();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + Constants.SERVER_IP_ADDRESS + ":8000/api/")
+                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS + "/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

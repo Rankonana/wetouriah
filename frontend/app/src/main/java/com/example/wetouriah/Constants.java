@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Constants {
-    public static final String SERVER_IP_ADDRESS = "192.168.56.1"; // Replace with your actual IP address
+    public static final String SERVER_IP_ADDRESS = "wetouriah.careercrest.co.za"; // Replace with your actual IP address
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 

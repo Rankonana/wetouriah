@@ -107,7 +107,7 @@ public class AddDriversLicense extends AppCompatActivity {
         }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your API base URL
+                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/") // Replace with your API base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -235,7 +235,7 @@ public class AddDriversLicense extends AppCompatActivity {
 
     public void loadDriversLicense(String id) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         RequestBody user_id= RequestBody.create(MediaType.parse("multipart/form-data"), id);
@@ -250,7 +250,7 @@ public class AddDriversLicense extends AppCompatActivity {
                 if(response.isSuccessful()){
                     if(Integer.parseInt(response.body().getId().toString()) > 0) {
 
-                        Picasso.get().load( "http://" + Constants.SERVER_IP_ADDRESS+ ":8000"+"/" +response.body().getUploadLicense()).into(image);
+                        Picasso.get().load( "https://" + Constants.SERVER_IP_ADDRESS+"/" +response.body().getUploadLicense()).into(image);
 
                         license_owner.setText(response.body().getLicenseOwner().toString());
                         fullname.setText(response.body().getFullname().toString());

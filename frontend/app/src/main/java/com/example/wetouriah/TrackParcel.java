@@ -122,7 +122,7 @@ public class TrackParcel extends AppCompatActivity {
 
     public void loadTracking(String tracking_number){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your actual base URL
+                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/") // Replace with your actual base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

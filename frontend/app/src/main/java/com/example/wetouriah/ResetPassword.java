@@ -268,7 +268,7 @@ public class ResetPassword extends AppCompatActivity {
 
     public void CheckPassword(String username,String password) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         RequestBody user_username= RequestBody.create(MediaType.parse("multipart/form-data"), username);
@@ -310,7 +310,7 @@ public class ResetPassword extends AppCompatActivity {
 
     public void CheckUsername(String username,String password) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         RequestBody user_username= RequestBody.create(MediaType.parse("multipart/form-data"), username);
@@ -356,7 +356,7 @@ public class ResetPassword extends AppCompatActivity {
 
     public void ChangePassword(String username,String password) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         RequestBody user_username= RequestBody.create(MediaType.parse("multipart/form-data"), username);
@@ -393,7 +393,7 @@ public class ResetPassword extends AppCompatActivity {
 
     public void SendCode(String username) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         RequestBody user_username= RequestBody.create(MediaType.parse("multipart/form-data"), username);
