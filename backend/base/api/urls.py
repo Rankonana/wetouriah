@@ -24,10 +24,12 @@ urlpatterns = [
     path('users/',views.getUsers),
     path('get-user/', views.getUser),
     path('create-user/', views.create_user),
+    path('check-user-email/', views.check_username_email),
+
     path('update-user/', views.update_user),
     path('reset-password/', views.reset_password),
 
-    path('send-code/', views.send_code),
+    path('send-code/', views.sendPasswordResetCode),
 
 
     # path('login/', views.login),
@@ -68,6 +70,7 @@ urlpatterns = [
     path('check-job-offers/',views.check_job_offers),
     path('get-courier-availability/',views.get_availabilty_status),
     path('get-distance-and-time/',views.get_distance_andTime),
+    path('send-sms/', views.sendSMS),
 
 
 

@@ -31,7 +31,10 @@ class UserLoginSerializer(serializers.Serializer):
 
         user =  None
         if data['password'] == 'reset':
-            user = User.objects.get(username=username)
+            try:
+                user = User.objects.get(username=username.lower())
+            except:
+                raise serializers.ValidationError("invalid username")
         else:
             user = authenticate(username=username, password=password)
 

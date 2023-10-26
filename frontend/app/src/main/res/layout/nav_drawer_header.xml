@@ -7,15 +7,33 @@
     android:background="@drawable/wetouriah"
     android:gravity="bottom">
 
-    <TextView
-        android:id="@+id/username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Name"
-        android:textColor="@color/white"
-        android:textSize="30dp"
-        android:textStyle="bold"
-        android:layout_marginTop="5px"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:layout_marginTop="110dp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:layout_below="@+id/username"
+            android:id="@+id/avilableForJobs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Available for jobs"
+            android:visibility="gone"
+            />
+
+    </RelativeLayout>
+
+
 
 
 </LinearLayout>

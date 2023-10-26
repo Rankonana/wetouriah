@@ -1,5 +1,6 @@
 package com.example.wetouriah;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -35,6 +36,9 @@ public class TitleOnAmap extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_title_on_amap);
         setTitle("Available Warehouses");
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(false);
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()

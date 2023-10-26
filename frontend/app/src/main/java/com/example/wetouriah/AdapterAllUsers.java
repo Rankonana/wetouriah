@@ -28,6 +28,11 @@ public class AdapterAllUsers extends RecyclerView.Adapter<AllUsersViewHolder> {
     List<UserItem> UserItems;
     private OnClickListener onClickListener;
 
+    public void SetFilteredList(List<UserItem> filteredUserItems){
+        this.UserItems = filteredUserItems;
+        notifyDataSetChanged();
+    }
+
     public AdapterAllUsers(Context context, List<UserItem> UserItems) {
         this.context = context;
         this.UserItems = UserItems;
@@ -50,12 +55,12 @@ public class AdapterAllUsers extends RecyclerView.Adapter<AllUsersViewHolder> {
 
         holder.is_active.setChecked(Boolean.parseBoolean(UserItems.get(position).getIs_active()));
 
-        holder.username.setText(UserItems.get(position).getUsername());
-        holder.firstname.setText(UserItems.get(position).getFirst_name());
-        holder.lastname.setText(UserItems.get(position).getLast_name());
-        holder.address.setText(UserItems.get(position).getAddress());
-        holder.role.setText(UserItems.get(position).getRole());
-        holder.email.setText(UserItems.get(position).getEmail());
+        holder.username.setText("Username: " + UserItems.get(position).getUsername());
+        holder.firstname.setText("Firstname: " + UserItems.get(position).getFirst_name());
+        holder.lastname.setText("Lastname: "+UserItems.get(position).getLast_name());
+        holder.address.setText("Address: "+UserItems.get(position).getAddress());
+        holder.role.setText("Role: "+UserItems.get(position).getRole());
+        holder.email.setText("Email: "+UserItems.get(position).getEmail());
 
         holder.is_active.setOnClickListener(new View.OnClickListener() {
             @Override

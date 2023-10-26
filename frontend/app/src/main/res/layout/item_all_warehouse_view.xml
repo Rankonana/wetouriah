@@ -26,15 +26,15 @@
         android:src="@drawable/warehouse"
         android:visibility="gone"/>
 
-    <TextView
-        android:id="@+id/address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/image"
-        android:textSize="20dp"
-        android:textColor="@color/purple"
-        android:textStyle="bold"
-        android:hint="address" />
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/image"
+            android:hint="address"
+            android:textColor="@color/purple"
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
     <TextView
         android:id="@+id/volume"
@@ -99,16 +99,16 @@
         android:layout_toEndOf="@+id/image"
 
         />
-    <CheckBox
-        android:id="@+id/is_approved"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Is approved"
-        android:layout_below="@+id/operating_hours"
-        android:layout_toEndOf="@+id/image"
-        android:enabled="false"
+        <CheckBox
+            android:id="@+id/is_approved"
+            android:text="Approval Status: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/operating_hours"
 
-        />
+            android:enabled="false"
+
+            />
 
 </RelativeLayout>
 </androidx.cardview.widget.CardView>

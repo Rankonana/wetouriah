@@ -4,23 +4,48 @@
         android:id="@+id/edit"
         android:title="Edit"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:visible="false"/>
     <item
         android:id="@+id/delete"
         android:title="Delete"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:visible="false"/>
 
     <item
         android:id="@+id/rate"
         android:title="Rate"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/signIn"
+        android:title="Sign-in"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/AcceptDecline"
+        android:title="Accept / Decline"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:visible="false"/>
+    <item
+        android:id="@+id/ChangeStatus"
+        android:title="Change Status"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:visible="false"/>
     <item
         android:id="@+id/track"
         android:title="Track"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:visible="false"
+/>
 
 
 </menu>

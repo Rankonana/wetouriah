@@ -26,6 +26,10 @@ public class AdapterAllCars extends RecyclerView.Adapter<AllCarsViewHolder> {
     List<CarItem> CarItems;
 
     private OnClickListener onClickListener;
+    public void SetFilteredList(List<CarItem> filteredCarItemItems){
+        this.CarItems = filteredCarItemItems;
+        notifyDataSetChanged();
+    }
 
 
     public AdapterAllCars(Context context, List<CarItem> CarItems) {

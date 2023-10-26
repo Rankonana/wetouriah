@@ -11,17 +11,16 @@
 
 
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-     
+
         <RelativeLayout
             android:id="@+id/lyAllusers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="visible"
             >
             <TextView
                 android:id="@+id/txtheadingUsers"
@@ -32,11 +31,188 @@
                 android:textAlignment="center"
                 android:textStyle="bold"
                 android:textColor="@color/purple"/>
+
+
+            <!-- Search Bar -->
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/lysearchUsersEditText"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtheadingUsers"
+
+                app:startIconDrawable="@drawable/search"
+                app:boxStrokeColor="@color/purple"
+                app:boxStrokeWidth="3dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                android:layout_marginLeft="10dp"
+
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/searchUsersEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_login"
+                    android:hint="Search by name, username or  email"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <ImageView
+                android:id="@+id/imgFilterUsers"
+                android:layout_width="100dp"
+                android:layout_height="70dp"
+                android:layout_toEndOf="@+id/lysearchUsersEditText"
+                android:layout_below="@+id/txtheadingUsers"
+                android:src="@drawable/ic_baseline_filter_list_24"
+                />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/lyFilterUsers"
+                android:layout_width="wrap_content"
+                android:layout_below="@+id/lysearchUsersEditText"
+                android:layout_height="wrap_content"
+                android:layout_margin="30dp"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="20dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/custom_edittext"
+                android:visibility="gone">
+
+                <RelativeLayout
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/searchUsersEditText"
+                    >
+
+                    <!-- Filter Section -->
+                    <TextView
+                        android:id="@+id/txtFilterStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Filter by Status:"
+                        android:textSize="16sp"
+                        android:layout_marginTop="16dp"
+                        android:layout_centerHorizontal="true" />
+
+                    <!-- Active Status -->
+
+                    <CheckBox
+                        android:id="@+id/activeUserCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Active"
+                        android:checked="true"
+                        android:layout_below="@+id/txtFilterStatus"
+                        android:layout_centerHorizontal="true"
+                        />
+
+
+
+
+                    <!-- Role -->
+
+                    <TextView
+                        android:id="@+id/txtFilterRoleby"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Filter by Role:"
+                        android:textSize="16sp"
+                        android:layout_marginTop="16dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/activeUserCheckBox"/>
+                    <CheckBox
+                        android:id="@+id/adminCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Admin"
+                        android:checked="true"
+                        android:layout_below="@+id/txtFilterRoleby" />
+
+                    <CheckBox
+                        android:id="@+id/customerCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Customer"
+                        android:checked="true"
+                        android:layout_below="@+id/txtFilterRoleby"
+                        android:layout_toEndOf="@+id/adminCheckBox"/>
+
+                    <CheckBox
+                        android:id="@+id/driverCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Driver"
+                        android:checked="true"
+                        android:layout_below="@+id/txtFilterRoleby"
+                        android:layout_toEndOf="@+id/customerCheckBox"/>
+
+                    <CheckBox
+                        android:id="@+id/warehouseCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Warehouse Owner"
+                        android:checked="true"
+                        android:layout_below="@+id/txtFilterRoleby"
+                        android:layout_toEndOf="@+id/driverCheckBox"/>
+
+
+                    <RelativeLayout
+                        android:id="@+id/rlDiscardAppy"
+                        android:layout_below="@+id/warehouseCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_centerHorizontal="true">
+
+                        <Button
+                            android:id="@+id/btnDiscardUsers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Default"
+                            android:layout_margin="16dp"
+                            />
+
+                        <Button
+                            android:id="@+id/btnApplyUsers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Apply"
+                            android:layout_toEndOf="@+id/btnDiscardUsers"
+                            android:layout_margin="16dp"
+                            />
+
+                    </RelativeLayout>
+
+
+
+
+
+                </RelativeLayout>
+
+
+
+            </androidx.cardview.widget.CardView>
+
+
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/txtheadingUsers"
+                android:layout_below="@+id/lysearchUsersEditText"
                 android:id="@+id/idAllusers"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/add_users"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="16dp"
+                app:srcCompat="@drawable/add" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -48,14 +224,148 @@
                 android:id="@+id/txtheadingCars"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cars"
+                android:text="Vehicles"
                 android:textSize="36sp"
                 android:textAlignment="center"
                 android:textStyle="bold"
                 android:textColor="@color/purple"/>
+
+            <!-- Search Bar -->
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/lysearchCarsEditText"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtheadingCars"
+
+                app:startIconDrawable="@drawable/search"
+                app:boxStrokeColor="@color/purple"
+                app:boxStrokeWidth="3dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                android:layout_marginLeft="10dp"
+
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/searchCarsEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_login"
+                    android:hint="number plate , make, model"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <ImageView
+                android:id="@+id/imgFilterCars"
+                android:layout_width="100dp"
+                android:layout_height="70dp"
+                android:layout_toEndOf="@+id/lysearchCarsEditText"
+                android:layout_below="@+id/txtheadingCars"
+                android:src="@drawable/ic_baseline_filter_list_24"
+                />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/lyFilterCars"
+                android:layout_width="wrap_content"
+                android:layout_below="@+id/lysearchCarsEditText"
+                android:layout_height="wrap_content"
+                android:layout_margin="30dp"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="20dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/custom_edittext"
+                android:visibility="gone">
+
+                <RelativeLayout
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/searchCarsEditText"
+                    >
+
+                    <!-- Filter Section -->
+                    <TextView
+                        android:id="@+id/txtCarsFilterStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Filter by Status:"
+                        android:textSize="16sp"
+                        android:layout_marginTop="16dp"
+                        android:layout_centerHorizontal="true" />
+
+                    <!-- Active Status -->
+
+
+
+
+
+
+                    <RadioGroup
+                        android:id="@+id/radioStatusCars"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txtCarsFilterStatus"
+                        android:layout_centerHorizontal="true">
+
+                        <RadioButton
+                            android:id="@+id/approvedCarCheckBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Approved" />
+
+                        <RadioButton
+                            android:id="@+id/notapprovedCarCheckBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Not Approved" />
+                    </RadioGroup>
+
+
+                    <!-- Role -->
+
+
+                    <RelativeLayout
+                        android:id="@+id/rlCarsDiscardAppy"
+                        android:layout_below="@+id/radioStatusCars"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true">
+
+                        <Button
+                            android:id="@+id/btnDiscardCars"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:text="Default" />
+                        <Button
+                            android:id="@+id/btnApplyCars"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Apply"
+                            android:layout_toEndOf="@+id/btnDiscardCars"
+                            android:layout_margin="16dp"
+                            />
+
+                    </RelativeLayout>
+
+
+
+
+                </RelativeLayout>
+
+
+
+            </androidx.cardview.widget.CardView>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_below="@+id/txtheadingCars"
+                android:layout_below="@+id/lysearchCarsEditText"
                 android:layout_height="wrap_content"
                 android:id="@+id/idAllCars"/>
 
@@ -75,10 +385,177 @@
                 android:textAlignment="center"
                 android:textStyle="bold"
                 android:textColor="@color/purple"/>
+
+            <!-- Search Bar -->
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/lysearchwarehousesEditText"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtheadingWarehouses"
+
+                app:startIconDrawable="@drawable/search"
+                app:boxStrokeColor="@color/purple"
+                app:boxStrokeWidth="3dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                android:layout_marginLeft="10dp"
+
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/searchwarehousesEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_login"
+                    android:hint="Search by address "/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <ImageView
+                android:id="@+id/imgFilterwarehouses"
+                android:layout_width="100dp"
+                android:layout_height="70dp"
+                android:layout_toEndOf="@+id/lysearchwarehousesEditText"
+                android:layout_below="@+id/txtheadingWarehouses"
+                android:src="@drawable/ic_baseline_filter_list_24"
+                />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/lyFilterwarehouses"
+                android:layout_width="wrap_content"
+                android:layout_below="@+id/lysearchwarehousesEditText"
+                android:layout_height="wrap_content"
+                android:layout_margin="30dp"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="20dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/custom_edittext"
+                android:visibility="gone">
+
+                <RelativeLayout
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/searchUsersEditText"
+                    >
+
+                    <!-- Filter Section -->
+                    <TextView
+                        android:id="@+id/txtWarehousesFilterStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Filter by Status:"
+                        android:textSize="16sp"
+                        android:layout_marginTop="16dp"
+                        android:layout_centerHorizontal="true" />
+
+                    <!-- Active Status -->
+
+                    <CheckBox
+                        android:id="@+id/approvedWarehouseCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Approved"
+                        android:checked="true"
+                        android:layout_below="@+id/txtWarehousesFilterStatus"
+                        android:layout_centerHorizontal="true"
+                        />
+
+
+
+
+                    <!-- Role -->
+
+                    <TextView
+                        android:id="@+id/txtFilterFeatures"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Filter by features:"
+                        android:textSize="16sp"
+                        android:layout_marginTop="16dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/approvedWarehouseCheckBox"/>
+                    <CheckBox
+                        android:id="@+id/chCctv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CCTV"
+                        android:checked="true"
+                        android:layout_below="@+id/txtFilterFeatures" />
+
+                    <CheckBox
+                        android:id="@+id/chArmedResponse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Armed Response"
+                        android:checked="true"
+                        android:layout_below="@+id/txtFilterFeatures"
+                        android:layout_toEndOf="@+id/chCctv"/>
+
+                    <CheckBox
+                        android:id="@+id/chFireSafety"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fire &amp; Safety"
+                        android:checked="true"
+                        android:layout_below="@+id/chArmedResponse"/>
+
+                    <CheckBox
+                        android:id="@+id/chParkingSpace"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Parking Space"
+                        android:checked="true"
+                        android:layout_below="@+id/chArmedResponse"
+                        android:layout_toEndOf="@+id/chFireSafety"
+                        />
+
+
+                    <RelativeLayout
+                        android:id="@+id/rlWarehousesDiscardAppy"
+                        android:layout_below="@+id/chParkingSpace"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_centerHorizontal="true">
+
+                        <Button
+                            android:id="@+id/btnDiscardWarehouses"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Default"
+                            android:layout_margin="16dp"
+                            />
+
+                        <Button
+                            android:id="@+id/btnApplyWarehouses"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Apply"
+                            android:layout_toEndOf="@+id/btnDiscardWarehouses"
+                            android:layout_margin="16dp"
+                            />
+
+                    </RelativeLayout>
+
+
+
+
+
+                </RelativeLayout>
+
+
+
+            </androidx.cardview.widget.CardView>
+
+
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/txtheadingWarehouses"
+                android:layout_below="@+id/lysearchwarehousesEditText"
 
                 android:id="@+id/idAllWarehouses"/>
 
@@ -98,10 +575,131 @@
                 android:textAlignment="center"
                 android:textStyle="bold"
                 android:textColor="@color/purple"/>
+
+
+            <!-- Search Bar -->
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/lysearchLicensesEditText"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtheadingDriversLicenses"
+
+                app:startIconDrawable="@drawable/search"
+                app:boxStrokeColor="@color/purple"
+                app:boxStrokeWidth="3dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                android:layout_marginLeft="10dp"
+
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/searchLicensesEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_login"
+                    android:hint="Search by name , license_number "/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <ImageView
+                android:id="@+id/imgFilterLicenses"
+                android:layout_width="100dp"
+                android:layout_height="70dp"
+                android:layout_toEndOf="@+id/lysearchLicensesEditText"
+                android:layout_below="@+id/txtheadingDriversLicenses"
+                android:src="@drawable/ic_baseline_filter_list_24"
+                />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/lyFilterLicenses"
+                android:layout_width="wrap_content"
+                android:layout_below="@+id/lysearchLicensesEditText"
+                android:layout_height="wrap_content"
+                android:layout_margin="30dp"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="20dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/custom_edittext"
+                android:visibility="gone">
+
+                <RelativeLayout
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/searchUsersEditText"
+                    >
+
+                    <!-- Filter Section -->
+                    <TextView
+                        android:id="@+id/txtLicensesFilterStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Filter by Status:"
+                        android:textSize="16sp"
+                        android:layout_marginTop="16dp"
+                        android:layout_centerHorizontal="true" />
+
+                    <!-- Active Status -->
+
+                    <CheckBox
+                        android:id="@+id/approvedlicenseCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Approved"
+                        android:checked="true"
+                        android:layout_below="@+id/txtLicensesFilterStatus"
+                        android:layout_centerHorizontal="true"
+                        />
+
+
+
+                    <RelativeLayout
+                        android:id="@+id/rlLicensesDiscardAppy"
+                        android:layout_below="@+id/approvedlicenseCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_centerHorizontal="true">
+
+                        <Button
+                            android:id="@+id/btnDiscardLicenses"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Default"
+                            android:layout_margin="16dp"
+                            />
+
+                        <Button
+                            android:id="@+id/btnApplyLicenses"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Apply"
+                            android:layout_toEndOf="@+id/btnDiscardLicenses"
+                            android:layout_margin="16dp"
+                            />
+
+                    </RelativeLayout>
+
+
+
+
+
+                </RelativeLayout>
+
+
+
+            </androidx.cardview.widget.CardView>
+
+
+
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/txtheadingDriversLicenses"
+                android:layout_below="@+id/lysearchLicensesEditText"
 
                 android:id="@+id/idAllDriversLicenses"/>
 

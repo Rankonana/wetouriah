@@ -7,7 +7,6 @@ import java.util.List;
 
 public class GetUserReponse {
 
-
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -16,7 +15,7 @@ public class GetUserReponse {
     private String password;
     @SerializedName("last_login")
     @Expose
-    private Object lastLogin;
+    private String lastLogin;
     @SerializedName("is_superuser")
     @Expose
     private Boolean isSuperuser;
@@ -50,12 +49,6 @@ public class GetUserReponse {
     @SerializedName("title")
     @Expose
     private String title;
-    @SerializedName("firstname")
-    @Expose
-    private String firstname;
-    @SerializedName("lastname")
-    @Expose
-    private String lastname;
     @SerializedName("address")
     @Expose
     private String address;
@@ -85,11 +78,11 @@ public class GetUserReponse {
         this.password = password;
     }
 
-    public Object getLastLogin() {
+    public String getLastLogin() {
         return lastLogin;
     }
 
-    public void setLastLogin(Object lastLogin) {
+    public void setLastLogin(String lastLogin) {
         this.lastLogin = lastLogin;
     }
 
@@ -179,22 +172,6 @@ public class GetUserReponse {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
     }
 
     public String getAddress() {

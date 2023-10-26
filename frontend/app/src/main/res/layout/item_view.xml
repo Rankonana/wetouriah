@@ -29,50 +29,86 @@
                 android:visibility="gone"/>
 
             <TextView
+                android:id="@+id/tracking_numberLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tracking ID : "
+                android:textColor="@color/purple"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
                 android:id="@+id/tracking_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tracking ID:"
+                android:textColor="@color/purple"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="@color/black"/>
+                android:layout_toEndOf="@+id/tracking_numberLabel"
+/>
 
-            <LinearLayout
-                android:id="@+id/lyfromto"
+
+            <TextView
+                android:id="@+id/from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="From : "
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/purple"
+                android:layout_below="@+id/tracking_number"
+                />
+
+            <TextView
+                android:id="@+id/pickup_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tracking_number"
-                android:orientation="horizontal">
+                android:layout_toEndOf="@+id/from"
 
-                <TextView
-                    android:id="@+id/pickup_location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Pickup location"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    />
+                android:text="Pickup location"
+                android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/dropoff_location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Drop off location"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginStart="16dp" />
+            <TextView
+                android:id="@+id/to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="To : "
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/purple"
+                android:layout_below="@+id/pickup_location"
+                />
 
+            <TextView
+                android:id="@+id/dropoff_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/pickup_location"
+                android:layout_toEndOf="@+id/to"
+                android:text="Drop off location"
+                android:textSize="16sp" />
 
-            </LinearLayout>
+            <TextView
+                android:id="@+id/statusLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dropoff_location"
+                android:text="Status : "
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/purple"/>
 
             <TextView
                 android:id="@+id/status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/lyfromto"
+                android:layout_below="@+id/dropoff_location"
+                android:layout_toEndOf="@+id/statusLabel"
                 android:text="Status:"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                 />
 
 
         </RelativeLayout>

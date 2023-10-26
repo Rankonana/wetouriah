@@ -10,9 +10,20 @@
     <color name="purple">#8692f7</color>
     <color name="green">#4CAF50</color>
     <color name="red">#F44336</color>
+    <color name="littleblue">#118692F7</color>
+
 
     <color name="colorPrimary">#00796b</color>
     <color name="colorPrimaryDark">#00695C</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="darkBlue">#174EA6</color>
+    <color name="lightBlue">#E8F0FE</color>
+
+    <color name="lightRed">#FAD2CF</color>
+    <color name="darkRed">#A50E0E</color>
+    <color name="lightpurple">#EFF1FF</color>
+    <color name="fragmentHeaderTextColor">#202124</color>
+
 
 </resources>

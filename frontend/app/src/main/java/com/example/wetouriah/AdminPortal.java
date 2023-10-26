@@ -3,6 +3,7 @@ package com.example.wetouriah;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,18 +12,31 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,11 +52,53 @@ public class AdminPortal extends AppCompatActivity implements NavigationView.OnN
 
     RelativeLayout lyAllusers,lyAllCars, lyWarehouses,lyDriversLicenses;
 
+    List<UserItem> UserItems;
+    List<CarItem> carItems;
+
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
     TextView headerUsername;
 
+    FloatingActionButton mAdd_users;
+
+
+    // search users
+
+    AdapterAllUsers adapterAllUsers;
+    AdapterAllCars adapterAllCars;
+
+
+    EditText searchUsersEditText;
+      CardView lyFilterUsers;
+      ImageView imgFilterUsers;
+      CheckBox activeUserCheckBox;
+      CheckBox adminCheckBox,customerCheckBox, driverCheckBox, warehouseCheckBox;
+      Button btnApplyUsers, btnDiscardUsers;
+
+    // search cars
+    EditText searchCarsEditText;
+    CardView lyFilterCars;
+    ImageView imgFilterCars;
+    RadioGroup radioStatusCars;
+    RadioButton approvedCarCheckBox,notapprovedCarCheckBox;
+    Button btnDiscardCars, btnApplyCars;
+
+
+    // search warehouses
+    EditText searchwarehousesEditText;
+    CardView lyFilterwarehouses;
+    ImageView imgFilterwarehouses;
+    CheckBox chCctv,chArmedResponse,chFireSafety,chParkingSpace;
+    Button btnDiscardWarehouses, btnApplyWarehouses;
+
+
+    // search licenses
+    EditText searchLicensesEditText;
+    CardView lyFilterLicenses;
+    ImageView imgFilterLicenses;
+    CheckBox approvedlicenseCheckBox;
+    Button btnDiscardLicenses, btnApplyLicenses;
 
 
     @Override
@@ -73,6 +129,8 @@ public class AdminPortal extends AppCompatActivity implements NavigationView.OnN
         lyWarehouses = findViewById(R.id.lyWarehouses);
         lyDriversLicenses = findViewById(R.id.lyDriversLicenses);
 
+        mAdd_users = findViewById(R.id.add_users);
+
 
 
 
@@ -92,6 +150,382 @@ public class AdminPortal extends AppCompatActivity implements NavigationView.OnN
         lyAllusers.setVisibility(View.VISIBLE);
 
 
+        //Searching users
+        searchUsersEditText = findViewById(R.id.searchUsersEditText);
+        lyFilterUsers = findViewById(R.id.lyFilterUsers);
+        imgFilterUsers = findViewById(R.id.imgFilterUsers);
+        activeUserCheckBox= findViewById(R.id.activeUserCheckBox);
+        adminCheckBox= findViewById(R.id.adminCheckBox);
+        driverCheckBox= findViewById(R.id.driverCheckBox);
+        customerCheckBox = findViewById(R.id.customerCheckBox);
+        warehouseCheckBox= findViewById(R.id.warehouseCheckBox);
+        btnApplyUsers= findViewById(R.id.btnApplyUsers);
+        btnDiscardUsers = findViewById(R.id.btnDiscardUsers);
+
+
+
+        // search cars
+        searchCarsEditText= findViewById(R.id.searchCarsEditText);
+        lyFilterCars = findViewById(R.id.lyFilterCars);
+        imgFilterCars = findViewById(R.id.imgFilterCars);
+
+        radioStatusCars = findViewById(R.id.radioStatusCars);
+        approvedCarCheckBox = findViewById(R.id.approvedCarCheckBox);
+        notapprovedCarCheckBox = findViewById(R.id.notapprovedCarCheckBox);
+
+        
+        
+        btnDiscardCars = findViewById(R.id.btnDiscardCars);
+        btnApplyCars = findViewById(R.id.btnApplyCars);
+
+        // search warehouses
+        searchwarehousesEditText = findViewById(R.id.searchwarehousesEditText);
+        lyFilterwarehouses = findViewById(R.id.lyFilterwarehouses);
+        imgFilterwarehouses = findViewById(R.id.imgFilterwarehouses);
+        chCctv = findViewById(R.id.chCctv);
+        chArmedResponse= findViewById(R.id.chArmedResponse);
+        chFireSafety= findViewById(R.id.chFireSafety);
+        chParkingSpace = findViewById(R.id.chParkingSpace);
+        btnDiscardWarehouses= findViewById(R.id.btnDiscardWarehouses);
+        btnApplyWarehouses= findViewById(R.id.btnApplyWarehouses);
+
+        // search licenses
+        searchLicensesEditText = findViewById(R.id.searchLicensesEditText);
+        lyFilterLicenses = findViewById(R.id.lyFilterLicenses);
+        imgFilterLicenses = findViewById(R.id.imgFilterLicenses);
+        approvedlicenseCheckBox = findViewById(R.id.approvedlicenseCheckBox);
+        btnDiscardLicenses = findViewById(R.id.btnDiscardLicenses);
+        btnApplyLicenses = findViewById(R.id.btnApplyWarehouses);
+
+
+
+
+
+        searchUsersEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // This method is called before the text is changed.
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // This method is called as the text is changing.
+
+                //filterbyUsername(String.valueOf(charSequence) );
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // This method is called after the text has changed.
+//                String enteredText = editable.toString();
+//                FilterTextbox(enteredText);
+
+                if(editable != null ){
+                    filterdataUsers(editable.toString());
+
+                }
+
+
+            }
+        });
+
+        searchCarsEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // This method is called before the text is changed.
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // This method is called as the text is changing.
+
+                //filterbyUsername(String.valueOf(charSequence) );
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // This method is called after the text has changed.
+//                String enteredText = editable.toString();
+//                FilterTextbox(enteredText);
+
+                if(editable != null ){
+                    filterdataCars(editable.toString());
+
+                }
+
+
+            }
+        });
+
+        imgFilterUsers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int visibility = lyFilterUsers.getVisibility();
+                if (visibility == View.VISIBLE) {
+                    lyFilterUsers.setVisibility(View.GONE);
+                } else
+                    lyFilterUsers.setVisibility(View.VISIBLE);
+                }
+
+        });
+
+        imgFilterCars.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int visibility = lyFilterCars.getVisibility();
+                if (visibility == View.VISIBLE) {
+                    lyFilterCars.setVisibility(View.GONE);
+                } else
+                    lyFilterCars.setVisibility(View.VISIBLE);
+            }
+
+        });
+
+        imgFilterwarehouses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int visibility = lyFilterwarehouses.getVisibility();
+                if (visibility == View.VISIBLE) {
+                    lyFilterwarehouses.setVisibility(View.GONE);
+                } else
+                    lyFilterwarehouses.setVisibility(View.VISIBLE);
+            }
+
+        });
+
+        btnDiscardWarehouses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lyFilterwarehouses.setVisibility(View.GONE);
+            }
+
+        });
+        btnApplyWarehouses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lyFilterwarehouses.setVisibility(View.GONE);
+
+            }
+
+        });
+
+
+        imgFilterLicenses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int visibility = lyFilterLicenses.getVisibility();
+                if (visibility == View.VISIBLE) {
+                    lyFilterLicenses.setVisibility(View.GONE);
+                } else
+                    lyFilterLicenses.setVisibility(View.VISIBLE);
+            }
+
+        });
+
+        btnApplyUsers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lyFilterUsers.setVisibility(View.GONE);
+
+                if(searchUsersEditText.getText().length() >0){
+                    filterdataUsers(searchUsersEditText.getText().toString());
+                }else {
+                    filterdataUsers("");
+
+                }
+
+            }
+
+        });
+        btnDiscardUsers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lyFilterUsers.setVisibility(View.GONE);
+                activeUserCheckBox.setChecked(true);
+                adminCheckBox.setChecked(true);
+                customerCheckBox.setChecked(true);
+                driverCheckBox.setChecked(true);
+                warehouseCheckBox.setChecked(true);
+
+                if(searchUsersEditText.getText().length() >0){
+                    filterdataUsers(searchUsersEditText.getText().toString());
+                }else {
+                    filterdataUsers("");
+
+                }
+
+            }
+
+        });
+
+        btnDiscardCars.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lyFilterCars.setVisibility(View.GONE);
+                radioStatusCars.clearCheck();
+
+                if(searchCarsEditText.getText().length() >0){
+                    filterdataCars(searchCarsEditText.getText().toString());
+                }else {
+                    filterdataCars("");
+                }
+            }
+
+        });
+        btnApplyCars.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lyFilterCars.setVisibility(View.GONE);
+
+
+                if(searchCarsEditText.getText().length() >0){
+                    filterdataCars(searchCarsEditText.getText().toString());
+                }else {
+                    filterdataCars("");
+
+                }
+
+            }
+
+        });
+
+
+
+        mAdd_users.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent reg = new Intent(AdminPortal.this,Register.class);
+                startActivity(reg);
+                finish();
+
+
+            }
+        });
+
+
+    }
+
+
+
+    private void filterdataUsers(String text) {
+
+       // Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+
+
+        List<UserItem> filteredList = new ArrayList<UserItem>();
+
+        for (UserItem item : UserItems) {
+            try {
+                if (item.getUsername().toLowerCase().contains(text.toLowerCase()) ||
+                        item.getFirst_name().toLowerCase().contains(text.toLowerCase()) ||
+                        item.getLast_name().toLowerCase().contains(text.toLowerCase())  ||
+                        item.getAddress().toLowerCase().contains(text.toLowerCase())  ||
+                        item.getEmail().toLowerCase().contains(text.toLowerCase())
+
+                ) {
+                    filteredList.add(item);
+                }
+            }catch (Exception e) {
+                Log.e("AdminPortal", "Exception" + e.toString());
+
+            }
+
+        }
+
+        if (!activeUserCheckBox.isChecked()) {
+            // Filter the list to include items with status 1, 2, and 3
+            List<UserItem> UserItemItems = new ArrayList<>();
+            for (UserItem item : filteredList) {
+
+                String status = String.valueOf(item.getIs_active());
+                //Log.e("AdminPortal", "item.getIs_active()" + status);
+
+                if (status.equals("false")) {
+                    UserItemItems.add(item);
+                }
+            }
+            filteredList = UserItemItems;
+        }
+
+        List<UserItem> UserWithroles = new ArrayList<>();
+
+        for (UserItem user : filteredList) {
+            Log.e("AdminPortal", "filteredList" + filteredList.toString());
+
+            if ((adminCheckBox.isChecked() && user.getRole().equals("Admin")) ||
+                    (customerCheckBox.isChecked() && user.getRole().equals("Customer")) ||
+                    (driverCheckBox.isChecked() && user.getRole().equals("Driver")) ||
+                    (warehouseCheckBox.isChecked() && user.getRole().equals("WareHouse"))) {
+                UserWithroles.add(user);
+                Log.e("AdminPortal", "user" + user.toString());
+
+            }
+        }
+        Log.e("AdminPortal", "UserWithroles" + UserWithroles.toString());
+
+        filteredList = UserWithroles;
+
+
+        adapterAllUsers.SetFilteredList(filteredList);
+    }
+    private void filterdataCars(String text) {
+
+        // Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+
+        List<CarItem> filteredList =  new ArrayList<>();
+
+        for (CarItem item : carItems) {
+            try {
+                if (item.getCapacity().toLowerCase().contains(text.toLowerCase()) ||
+                        item.getLicense_plate().toLowerCase().contains(text.toLowerCase()) ||
+                        item.getMake ().toLowerCase().contains(text.toLowerCase())  ||
+                        item.getModel().toLowerCase().contains(text.toLowerCase())  ||
+                        item.getType().toLowerCase().contains(text.toLowerCase()) ||
+                         item.getYear().toLowerCase().contains(text.toLowerCase())
+
+                ) {
+                    filteredList.add(item);
+                }
+            }catch (Exception e) {
+                Log.e("AdminPortal", "Exception" + e.toString());
+
+            }
+
+        }
+
+        if (approvedCarCheckBox.isChecked()) {
+            // Filter the list to include items with status 1, 2, and 3
+            List<CarItem> CarItemItems = new ArrayList<>();
+            for (CarItem item : filteredList) {
+
+                String status = String.valueOf(item.getIs_approved());
+                //Log.e("AdminPortal", "item.getIs_active()" + status);
+
+                if (status.equals("true")) {
+                    CarItemItems.add(item);
+                }
+            }
+            filteredList = CarItemItems;
+        }
+
+        if (notapprovedCarCheckBox.isChecked()) {
+            // Filter the list to include items with status 1, 2, and 3
+            List<CarItem> CarItemItems = new ArrayList<>();
+            for (CarItem item : filteredList) {
+
+                String status = String.valueOf(item.getIs_approved());
+                //Log.e("AdminPortal", "item.getIs_active()" + status);
+
+                if (status.equals("false")) {
+                    CarItemItems.add(item);
+                }
+            }
+            filteredList = CarItemItems;
+        }
+        
+
+        adapterAllCars.SetFilteredList(filteredList);
     }
 
     public void mGetAllUsers(){
@@ -115,7 +549,7 @@ public class AdminPortal extends AppCompatActivity implements NavigationView.OnN
                     if (objects != null) {
                         RecyclerView recyclerView = findViewById(R.id.idAllusers);
 
-                        List<UserItem> UserItems = new ArrayList<UserItem>();
+                        UserItems = new ArrayList<UserItem>();
 
                         for (AllUsersResponse object : objects) {
                             String role = object.getRole().toString();
@@ -131,14 +565,18 @@ public class AdminPortal extends AppCompatActivity implements NavigationView.OnN
                             if (role.equals("4")) {
                                 role = "WareHouse";
                             }
-                            UserItems.add(new UserItem(object.getId().toString(),"username: "+object.getUsername(),"Address: "+ object.getAddress(),
-                                    "Firstname: "+object.getFirstName().toString(),"Lastname: "+object.getLastName(),"Email: "+ object.getEmail(),
-                                    object.getIsActive().toString(),object.getProfilePicture().toString(),"Role: "+role,"Phone: "+object.getPhoneNumber()));
+//                            UserItems.add(new UserItem(object.getId().toString(),"username: "+object.getUsername(),"Address: "+ object.getAddress(),
+//                                    "Firstname: "+object.getFirstName().toString(),"Lastname: "+object.getLastName(),"Email: "+ object.getEmail(),
+//                                    object.getIsActive().toString(),object.getProfilePicture().toString(),"Role: "+role,"Phone: "+object.getPhoneNumber()));
+
+                            UserItems.add(new UserItem(object.getId().toString(),object.getUsername(), object.getAddress(),
+                                    object.getFirstName().toString(),object.getLastName(),object.getEmail(),
+                                    object.getIsActive().toString(),object.getProfilePicture().toString(),role,object.getPhoneNumber()));
 
                         }
                         recyclerView.setLayoutManager(new LinearLayoutManager(AdminPortal.this));
 
-                        final AdapterAllUsers adapterAllUsers = new AdapterAllUsers(getApplicationContext(),UserItems);
+                        adapterAllUsers = new AdapterAllUsers(getApplicationContext(),UserItems);
                         recyclerView.setAdapter(adapterAllUsers);
 //                        recyclerView.setAdapter(new AdapterPickUpRequest(getApplicationContext(), UserItems));
 
@@ -191,10 +629,10 @@ public class AdminPortal extends AppCompatActivity implements NavigationView.OnN
                     if (objects != null) {
                         RecyclerView recyclerView = findViewById(R.id.idAllCars);
 
-                        List<CarItem> carItem = new ArrayList<CarItem>();
+                        carItems = new ArrayList<CarItem>();
 
                         for (CarResponse object : objects) {
-                            carItem.add(new CarItem(
+                            carItems.add(new CarItem(
                                     object.getId().toString(),
                                     object.getCarOwner().toString(),
                                     "Type: "+object.getType().toString(),
@@ -204,12 +642,12 @@ public class AdminPortal extends AppCompatActivity implements NavigationView.OnN
                                     "Model: "+object.getModel().toString(),
                                     "Year: "+object.getYear().toString(),
                                     "License Plate: "+object.getLicensePlate().toString(),
-                                    object.getIsApproved().toString()));
+                                    object.getIsApproved().toString(),object.getIsDefault().toString()));
 
                         }
                         recyclerView.setLayoutManager(new LinearLayoutManager(AdminPortal.this));
 
-                        final AdapterAllCars adapterAllCars = new AdapterAllCars(getApplicationContext(),carItem);
+                        adapterAllCars = new AdapterAllCars(getApplicationContext(),carItems);
                         recyclerView.setAdapter(adapterAllCars);
 //                        recyclerView.setAdapter(new AdapterPickUpRequest(getApplicationContext(), CarItems));
 
@@ -268,15 +706,8 @@ public class AdminPortal extends AppCompatActivity implements NavigationView.OnN
                                     object.getId().toString(),
                                     object.getLicenseOwner().toString(),
                                     object.getFullname().toString(),
-                                    object.getIdentityNumber().toString(),
-                                    object.getDateOfBirth().toString(),
                                     object.getLicenseNumber().toString(),
                                     object.getExpiryDate().toString(),
-                                    object.getCountryOfIssue().toString(),
-                                    object.getCode().toString(),
-                                    object.getRestrictions().toString(),
-                                    object.getGender().toString(),
-                                    object.getDateOfIssue().toString(),
                                     object.getUploadLicense().toString(),
                                     object.getIsApproved().toString()));
 

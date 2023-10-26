@@ -48,18 +48,22 @@
         android:text="color"
         android:visibility="gone"/>
 
+
+
     <TextView
         android:id="@+id/make"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/color"
-        android:text="make"/>
+        android:text="make"
+        android:textColor="@color/purple"
+        android:textSize="20dp"
+        android:textStyle="bold"/>
     <TextView
         android:id="@+id/model"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/color"
-        android:layout_toEndOf="@+id/make"
+        android:layout_below="@+id/make"
         android:text="model"/>
 
     <TextView
@@ -77,14 +81,15 @@
         android:layout_below="@+id/year"
         android:text="license_plate "
         />
+
+
     <CheckBox
         android:id="@+id/is_approved"
+        android:text="Approval Status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/license_plate"
-        android:text="Is approved "
-        android:enabled="false"
-        android:layout_marginTop="10dp"/>
+        android:layout_below="@+id/license_plate"
+        android:enabled="false" />
 
 
 

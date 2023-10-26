@@ -139,39 +139,23 @@ public class Chat extends AppCompatActivity {
         });
     }
 
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-            String role = sharedPreferences.getString("role", null);
-            if("1".equals(role)){
-
-                Intent intent = new Intent(this,AdminPortal.class);
-                startActivity(intent);
-                finish();
-
-            }
-            if("2".equals(role) ){
-                Intent intent = new Intent(this, CustomerPortal.class);
-                startActivity(intent);
-                finish();
-
-            }
-            if("3".equals(role)){
-                Intent intent = new Intent(this,DriverPortal.class);
-                startActivity(intent);
-                finish();
-
-            }
-            if("4".equals(role) ){
-                Intent intent = new Intent(this,WarehousePortal.class);
-                startActivity(intent);
-                finish();
-
-            }
-
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+
     }
 }

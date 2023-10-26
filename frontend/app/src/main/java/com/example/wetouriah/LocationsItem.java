@@ -7,12 +7,14 @@ public class LocationsItem implements Serializable {
     String location;
     String timestamp;
     String status ;
+    String estimated_arrival;
 
 
-    public LocationsItem(String location, String timestamp,String status) {
+    public LocationsItem(String location, String timestamp,String status,String estimated_arrival) {
         this.location = location;
         this.timestamp = timestamp;
         this.status = status;
+        this.estimated_arrival = estimated_arrival;
 
     }
 
@@ -38,5 +40,14 @@ public class LocationsItem implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+
+    public String getEstimatedArrival() {
+        return estimated_arrival;
+    }
+
+    public void setEstimatedArrival(String estimated_arrival) {
+        this.estimated_arrival = estimated_arrival;
     }
 }

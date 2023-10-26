@@ -14,25 +14,32 @@
         android:layout_height="wrap_content"
         >
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:maxWidth="200dp"
-            android:minHeight="200dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_baseline_person_24"
-            />
+        <RelativeLayout
+            android:id="@+id/uploadImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:maxWidth="200dp"
+                android:minHeight="200dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_baseline_person_24"
+                />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/selectImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="16dp"
+                app:srcCompat="@drawable/camera" />
 
 
-        <Button
-            android:id="@+id/selectImageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:layout_toEndOf="@+id/imageView"
-            android:text="Select Image"
-            />
+        </RelativeLayout>
+
 
 
 
@@ -40,7 +47,7 @@
             android:id="@+id/lytitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/imageView"
+            android:layout_below="@+id/uploadImage"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -126,30 +133,51 @@
                 android:hint="Email" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <CheckBox
-            android:id="@+id/status"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Status"
-            android:textSize="20dp"
-            android:layout_below="@+id/lyemail"/>
+            android:id="@+id/roleAndStatus"
+            android:layout_below="@+id/lyemail"
 
-        <TextView
-            android:id="@+id/role"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Role: Admin"
-            android:textSize="20dp"
-            android:layout_below="@+id/status"/>
+            android:visibility="gone">
+            <CheckBox
+                android:id="@+id/status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Account Status"
+                android:textSize="20dp"
+                android:enabled="false"/>
+
+            <TextView
+                android:id="@+id/role"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Role:"
+                android:textSize="20dp"
+                android:layout_below="@+id/status"/>
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/status"
+                android:layout_toEndOf="@+id/role"
+                android:enabled="false"
+                />
+
+        </RelativeLayout>
+
 
 
         <Button
             android:id="@+id/btnUpdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/role"
+            android:layout_below="@+id/roleAndStatus"
 
             android:text="Update" />
+
+
 
 
     </RelativeLayout>

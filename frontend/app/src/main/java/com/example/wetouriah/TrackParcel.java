@@ -1,6 +1,8 @@
 package com.example.wetouriah;
 
-import static com.example.wetouriah.CustomerPortal.NEXT_SCREEN;
+//import static com.example.wetouriah.CustomerPortal.NEXT_SCREEN;
+
+import static com.example.wetouriah.Constants.formatTrackingLogDateString;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +20,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -39,6 +42,10 @@ public class TrackParcel extends AppCompatActivity {
     EditText txtID;
     Button btnSearch;
 
+    TextView txtStatus,estTime;
+    PickUpRequestItem pickUpRequestItem;
+    String status_Intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,94 +59,157 @@ public class TrackParcel extends AppCompatActivity {
 
         cardSearch = findViewById(R.id.cardSearch);
         cardLocations = findViewById(R.id.cardLocations);
+        txtStatus = findViewById(R.id.txtStatus);
+        estTime = findViewById(R.id.estTime);
+        Intent intent = getIntent();
+        pickUpRequestItem = (PickUpRequestItem) intent.getSerializableExtra("model");
+
+        if (pickUpRequestItem != null) {
+
+            status_Intent = pickUpRequestItem.getStatus();
+
+            if(status_Intent.equals("1")){
+                status_Intent = "Pending";
+            }
+            if(status_Intent.equals("2")){
+                status_Intent = "Pick-up";
+            }
+            if(status_Intent.equals("3")){
+                status_Intent = "Delivered";
+            }
+            if(status_Intent.equals("4")){
+                status_Intent = "In-Transit";
+            }
+            if(status_Intent.equals("5")){
+                status_Intent = "Driver-assigned";
+            }
+            if(status_Intent.equals("6")){
+                status_Intent = "Out for Delivery";
+            }
+            if(status_Intent.equals("7")){
+                status_Intent = "Returned";
+            }
+
+            txtStatus.setText("Status: "+status_Intent);
+
+            txtID.setText(pickUpRequestItem.getTracking_number());
+
+
+
+        }
 
 
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cardSearch.setVisibility(View.GONE);
-                cardLocations.setVisibility(View.VISIBLE);
-//                loadLocation(txtID.getText().toString());
-                LoadLocations();
+
+                if(!txtID.getText().toString().trim().isEmpty()){
+
+                    cardSearch.setVisibility(View.GONE);
+                    cardLocations.setVisibility(View.VISIBLE);
+                    loadTracking(txtID.getText().toString());
+                }else {
+                    Toast.makeText(TrackParcel.this, "Enter tracking number", Toast.LENGTH_SHORT).show();
+
+                }
+
             }
         });
     }
 
 
 
-    private void LoadLocations(){
+    public void loadTracking(String tracking_number){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your actual base URL
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        RecyclerView recyclerView = findViewById(R.id.rvLocations);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(TrackParcel.this));
-
-        List<LocationsItem> LocationsItems = new ArrayList<LocationsItem>();
-
-        LocationsItems.add(new LocationsItem("Durban",
-                    "27 May\n 14:00","Pickup at proceesing facility")
-            );
-            LocationsItems.add(new LocationsItem("Bethlehem",
-                    "26 May\n 16:00","In Transit from the warehouse")
-            );
-            LocationsItems.add(new LocationsItem("Paul Ra",
-                    "26 May\n 09:00", "Pickuped from the Customer")
-            );
-        LocationsItems.add(new LocationsItem("Bloemfontein",
-                "25 May\n 12:00", "Pickuped from the Customer")
-        );
-        LocationsItems.add(new LocationsItem("kimberly",
-                "24 May\n 15:00", "Pickuped from the Customer")
-        );
-        LocationsItems.add(new LocationsItem("Matiele",
-                "23 May\n 16:00", "Pickuped from the Customer")
-        );
-        LocationsItems.add(new LocationsItem("KWT",
-                "19 May\n 14:00", "Pickuped from the Customer")
-        );
-        LocationsItems.add(new LocationsItem("East London",
-                "18 May\n 08:00", "Pickuped from the Customer")
-        );
-        LocationsItems.add(new LocationsItem("PE",
-                "12 May\n 09:00", "Pickuped from the Customer")
-        );
-        LocationsItems.add(new LocationsItem("Port St Johnss",
-                "09 May\n 09:00", "Pickuped from the Customer")
-        );
+        APIService apiService = retrofit.create(APIService.class);
 
 
-        final AdapterLocations adapterPickUpRequest = new AdapterLocations(getApplicationContext(),LocationsItems);
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        String user_id = sharedPreferences.getString("user_id", null);
 
-        recyclerView.setAdapter(adapterPickUpRequest);
+        RequestBody get_tracking_number= RequestBody.create(MediaType.parse("multipart/form-data"), tracking_number);
 
+
+        Call<List<TrackingLogResponse>> call = apiService.getTrackingLog(get_tracking_number);
+
+        call.enqueue(new Callback<List<TrackingLogResponse>>() {
+            @Override
+            public void onResponse(Call<List<TrackingLogResponse>> call, Response<List<TrackingLogResponse>> response) {
+                if (response.isSuccessful()) {
+                    List<TrackingLogResponse> objects = response.body();
+
+
+
+                    if (objects != null) {
+
+                        RecyclerView recyclerView = findViewById(R.id.rvLocations);
+
+                        List<LocationsItem> locationsItems = new ArrayList<LocationsItem>();
+
+
+                        for (TrackingLogResponse object : objects) {
+
+//                            locationsItems.add(new LocationsItem(object.getLocation(),
+//                                    object.getTimestamp(),object.getStatusName())
+//                            );
+
+                            locationsItems.add(new LocationsItem(object.getLocation(),
+                                    formatTrackingLogDateString(object.getTimestamp()),object.getStatusName(),object.getEstimatedArrival())
+                            );
+
+                        }
+                        if (!locationsItems.isEmpty()) {
+                            // Get the last item from the list
+                            LocationsItem lastItem = locationsItems.get(0);;
+
+                            // Get the status from the last item
+                            String status = lastItem.getStatus();
+
+                            // Display the status in a Toast message
+                            txtStatus.setText("Status: " + status);
+                            if(lastItem.getEstimatedArrival().contains("hrs")){
+                                estTime.setText("Estimated arrival time: "  + lastItem.getEstimatedArrival());
+
+                            }else {
+                                estTime.setVisibility(View.GONE);
+                            }
+                        }
+
+
+                        recyclerView.setLayoutManager(new LinearLayoutManager(TrackParcel.this));
+
+                        final AdapterLocations adapterPickUpRequest = new AdapterLocations(getApplicationContext(),locationsItems);
+                        recyclerView.setAdapter(adapterPickUpRequest);
+
+
+                    }else{
+                        Toast.makeText(TrackParcel.this, "objects null", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                } else {
+                    Toast.makeText(TrackParcel.this, "response not successfully", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+
+
+            @Override
+            public void onFailure(Call<List<TrackingLogResponse>> call, Throwable t) {
+                // Handle failure
+                Toast.makeText(TrackParcel.this, "failure", Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
     }
 
-//    public void loadLocation(String id) {
-//
-//        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
-//                .addConverterFactory(GsonConverterFactory.create()).build();
-//
-//        RequestBody pick_id= RequestBody.create(MediaType.parse("multipart/form-data"), id);
-//
-//        APIService apiService = retrofit.create(APIService.class);
-//        Call<PickupResponse> call = apiService.getPickUp(pick_id);
-//
-//        call.enqueue(new Callback<PickupResponse>() {
-//            @Override
-//            public void onResponse(Call<PickupResponse> call, Response<PickupResponse> response) {
-//
-//                if(response.isSuccessful()){
-//                    Toast.makeText(getApplicationContext(), "Your parcel is in: \n  "+response.body().getLastKnownLocation(), Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//            @Override
-//            public void onFailure(Call<PickupResponse> call, Throwable t) {
-//                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
-//
-//            }
-//        });
-//    }
+
 
     @Override
     public void onBackPressed() {

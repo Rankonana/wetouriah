@@ -13,6 +13,8 @@ import mailersend
 from mailersend import emails
 import random
 from django.http import JsonResponse
+import requests
+from requests.auth import HTTPBasicAuth
 
 
 import smtplib
@@ -36,6 +38,27 @@ import requests
 from dotenv import load_dotenv
 
 load_dotenv()
+
+
+###############
+
+#from __future__ import print_function
+
+import os.path
+
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+
+import base64
+from email.message import EmailMessage
+
+import google.auth
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+############
 
 #ref: https://python.plainenglish.io/role-based-authentication-and-authorization-with-djangorestframework-and-simplejwt-d9614d79995c
 
@@ -65,24 +88,57 @@ def login(request):
 
     if serializer.is_valid():
         status_code = status.HTTP_200_OK
-        user_id = User.objects.get(username=serializer.data['username']).id
+        try:
+            user_id = User.objects.get(username=serializer.data['username']).id
+            response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': 'login  success',
+                'access': serializer.data['access'],
+                'refresh': serializer.data['refresh'],
+                'authenticatedUser': {
+                    'id': user_id,
+                    'username': serializer.data['username'],
+                    'role': serializer.data['role']
+    
+                }
+            }
+            return Response(response, status=status_code)
+
+        except:
+            status_code = status.HTTP_200_OK
+            response = {
+                'success': False,
+                'statusCode': status_code,
+                'message': 'Invalid username or password ',
+                'access': "",
+                'refresh': "",
+                'authenticatedUser': {
+                    'id': "",
+                    'username': "",
+                    'role': ""
+    
+                }
+            }
+            return Response(response, status=status_code)
+
+
+    else:
+        status_code = status.HTTP_200_OK
         response = {
-            'success': True,
+            'success': False,
             'statusCode': status_code,
-            'message': 'User logged in successfully',
-            'access': serializer.data['access'],
-            'refresh': serializer.data['refresh'],
+            'message': 'Invalid usernmae or password ',
+            'access': "",
+            'refresh': "",
             'authenticatedUser': {
-                'id': user_id,
-                'username': serializer.data['username'],
-                'role': serializer.data['role']
+                'id': "",
+                'username': "",
+                'role': ""
  
             }
         }
-
         return Response(response, status=status_code)
-    else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['GET'])
 
@@ -130,10 +186,26 @@ def getUser(request):
 @api_view(['POST'])
 def create_user(request):
     serializer = CreateUserSerializer(data=request.data)
+    
     print(request.data)
-    print(serializer)
+    print(serializer.is_valid())
+    #print(serializer)
     if serializer.is_valid():
         serializer.save()
+        role = request.data.get('role')
+        email = request.data.get('email')
+        username = request.data.get('username')
+        password = request.data.get('password') 
+        title = request.data.get('title')
+        first_name = request.data.get('first_name')
+        print(role)
+        if(role == "1" ):
+            print("reached")
+            subject = "New Account Created on Wetouriah"
+            body = "Hello, "+ title + " " + first_name + "An account has been created on your behalf" +"\nYour credentials are:\n\nUsername: " + username + "\nPassword:  " +  password + "\n\n Login and change the password "
+            emailresponse = sendemail(email,subject,body)
+            print(emailresponse)
+
         status_code = status.HTTP_201_CREATED
         response = {
             'success': True,
@@ -199,7 +271,7 @@ def update_user(request):
 @api_view(['POST'])
 def reset_password(request):
     try:
-        user = User.objects.get(username=request.data.get('username'))
+        user = User.objects.get(username=request.data.get('username').lower())
         new_password = request.data.get('password')
         print(new_password)
         user.set_password(new_password)
@@ -222,48 +294,16 @@ def reset_password(request):
 
 
 @api_view(['POST'])
-def send_code(request):
+def sendPasswordResetCode(request):
 
-    random_number = ''.join(random.choices('0123456789', k=10))
+    random_number = ''.join(random.choices('0123456789', k=5))
     user =  User.objects.get(username=request.data.get('username'))
-    # reciveremail = user.email + "@careercrest.co.za"
 
-    try:
-        # api_key = "mlsn.947c076bab92b4fd1d98ee218a2beeecf1acce041e7dddb4af3fcb63f86210be"
 
-        # mailer = emails.NewEmail(api_key)
+    emailresponse = sendemail(str(user.email),"Reset Password","Hello " + user.username + " your reset code is : " + str(random_number))
 
-        # # define an empty dict to populate with mail values
-        # mail_body = {}
+    if emailresponse == "success":
 
-        # mail_from = {
-        #     "name": "code",
-        #     "email": "code@careercrest.co.za",
-        # }
-
-        # recipients = [
-        #     {
-        #         "name": user.first_name + " " + user.last_name,
-        #         "email": user.email,
-        #     }
-        # ]
-
-        # reply_to = [
-        #     {
-        #         "name": "Name",
-        #         "email": "reply@domain.com",
-        #     }
-        # ]
-
-        # mailer.set_mail_from(mail_from, mail_body)
-        # mailer.set_mail_to(recipients, mail_body)
-        # mailer.set_subject("Verification code: " + random_number, mail_body)
-        # #mailer.set_html_content("Your verfication code is:"+  random_number, mail_body)
-        # mailer.set_plaintext_content("Your verfication code is:"+  random_number, mail_body)
-        # mailer.set_reply_to(reply_to, mail_body)
-
-        # # using print() will also return status code and data
-        # mailer.send(mail_body)
         print(random_number)
         status_code = status.HTTP_201_CREATED
         response = {
@@ -272,14 +312,16 @@ def send_code(request):
                 'message': random_number,
             }
         return Response(response, status=status_code)
-    except:
+    else:
         status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         response = {
                 'success': True,
                 'statusCode': status_code,
-                'message': 'there was an error sending email',
+                'message': 'there was an error sending email' + str(emailresponse),
             }
         return Response(response, status=status_code)
+
+
 
 
 
@@ -531,7 +573,7 @@ def getAllDriverRequestPickups(request):
             # and the status is one of [1, 2, 3, 4, 5]
             request_pickups = RequestPickup.objects.filter(
                 courier=user,
-                status__in=[1,2,4,5,6,7,8,9,13,14,16]
+                status__in=[1,2,4,5,6,7,8,13,14,16]
             )
             
             serializer = RequestPickupSerializer(request_pickups, many=True)
@@ -882,3 +924,175 @@ def get_distance_andTime(request):
         }
         return Response(response, 404)
 
+@api_view(['POST'])
+def sendSMS(request):
+
+    recipient_number= request.data.get('recipient_number')
+    message= request.data.get('message')
+    from_warehouse= request.data.get('from_warehouse')
+    parcel_id= request.data.get('parcel_id')
+
+
+    if from_warehouse == "yes":
+        requestPickup = RequestPickup.objets.get(id=parcel_id)
+        recipient_number = requestPickup.customer.phone_number
+
+
+
+    print(request.data)
+    print(request.data.get('warehouse'))
+
+
+    smsresponse = fsendSMS(recipient_number,message) 
+    if smsresponse == "success":
+
+        print(message)
+        status_code = status.HTTP_201_CREATED
+        response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': "Message sent",
+            }
+        return Response(response, status=status_code)
+    else:
+        status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        print(smsresponse)
+        response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': 'there was an error sending sms',
+            }
+        return Response(response, status=status_code)
+
+
+@api_view(['POST'])
+def check_username_email(request):
+    username= request.data.get('username').lower()
+    email= request.data.get('email').lower()
+
+
+    if username != "":
+            
+            try:
+                user = User.objects.get(username=username)
+                status_code = status.HTTP_201_CREATED
+                response = {
+                    'success': True,
+                    'statusCode': status_code,
+                    'message': 'username is taken',
+                }
+                return Response(response, status=status_code)
+            except User.DoesNotExist:
+                status_code = status.HTTP_404_NOT_FOUND
+                response = {
+                    'success': True,
+                    'statusCode': status_code,
+                    'message': '',
+                }
+                return Response(response, status=status_code)   
+    if email != "":
+        try:
+            user = User.objects.get(email=email)
+            status_code = status.HTTP_201_CREATED
+            response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': 'email already exist',
+            }
+            return Response(response, status=status_code)
+        except User.DoesNotExist:
+            status_code = status.HTTP_404_NOT_FOUND
+            response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': '',
+            }
+            return Response(response, status=status_code)  
+    
+    
+
+
+
+
+def sendemail(recipient,subject,body):
+    
+    SCOPES = ['https://www.googleapis.com/auth/gmail.readonly','https://www.googleapis.com/auth/gmail.send']
+
+    #
+    """Shows basic usage of the Gmail API.
+    Lists the user's Gmail labels.
+    """
+    creds = None
+    # The file token.json stores the user's access and refresh tokens, and is
+    # created automatically when the authorization flow completes for the first
+    # time.
+    
+    if os.path.exists('token.json'):
+        print("no creds")
+        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+    # If there are no (valid) credentials available, let the user log in.
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                'credentials.json', SCOPES)
+            creds = flow.run_local_server(port=0)
+        # Save the credentials for the next run
+        with open('token.json', 'w') as token:
+            token.write(creds.to_json())
+
+    try:
+        service = build('gmail', 'v1', credentials=creds)
+        message = EmailMessage()
+
+        message.set_content(body)
+    
+
+        message['To'] = recipient
+        message['From'] = 'rankonanamokoena@gmail.com'
+        message['Subject'] = subject
+
+        # encoded message
+        encoded_message = base64.urlsafe_b64encode(message.as_bytes()) \
+            .decode()
+
+        create_message = {
+            'raw': encoded_message
+        }
+        # pylint: disable=E1101
+        send_message = (service.users().messages().send
+                        (userId="me", body=create_message).execute())
+        #print(F'Message Id: {send_message["id"]}')
+
+        return "success"
+    except HttpError as error:
+        return str(error)
+
+def fsendSMS(recipient_number,message):
+
+    apiKey = '7a53cdf3-85aa-4348-8a78-865ab8d295a0'
+    apiSecret = 'bf7354fb-9b2b-434a-b67b-ee6dd7b2dec5'
+
+    basic = HTTPBasicAuth(apiKey, apiSecret)
+
+    sendRequest = {
+        "messages": [{"content": message, "destination": recipient_number}]
+    }
+
+    try:
+        sendResponse = requests.post("https://rest.smsportal.com/bulkmessages",
+                                    auth=basic,
+                                    json=sendRequest)
+
+        if sendResponse.status_code == 200:
+            print("success:")
+            print(sendResponse.json())
+            return str("success")
+        else:
+            print("Failure:")
+            print(sendResponse.json())
+            return str("failure to send sms")
+    except Exception as e:
+        print(e)
+        return str(e)

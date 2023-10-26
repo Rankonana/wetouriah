@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -69,7 +70,18 @@ public class Login extends AppCompatActivity {
         btnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mLogin(edtUsername.getText().toString(),edtPassword.getText().toString());
+                if(edtUsername.getText().length() >0 && edtPassword.getText().length() >0){
+
+                    try{
+                        mLogin(edtUsername.getText().toString().toLowerCase(),edtPassword.getText().toString());
+
+                    }catch (Exception e){
+                        Toast.makeText(getApplicationContext(), "Please enter valid username and password", Toast.LENGTH_SHORT).show();
+
+                    }
+                }else {
+
+                }
             }
         });
 
@@ -131,8 +143,17 @@ public class Login extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
 
+                Log.e("Login", "response.isSuccessful() : " + String.valueOf(response.isSuccessful()));
+
                 if(response.isSuccessful()){
-                    if(response.body().getStatusCode().toString().equals("200")) {
+
+                    Log.e("Login", "response.isSuccessful() : " + String.valueOf(response.isSuccessful()));
+
+                    Log.e("Login", "response.body().getAccess().isEmpty() : " + String.valueOf(response.body().getAccess().isEmpty()));
+
+                    if(response.body().getAccess().length() > 0){
+
+                        Log.e("Login", "else " + String.valueOf(response.body().getAccess().isEmpty()));
 
                         SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -176,7 +197,11 @@ public class Login extends AppCompatActivity {
                         }
 
                     }else{
-                        Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
+
+                        //
+                        Log.e("Login", "inside if " + String.valueOf(response.body().getAccess().isEmpty()));
+
+                        Toast.makeText(getApplicationContext(), "Invalid username or password", Toast.LENGTH_SHORT).show();
 
                     }
                 }

@@ -1,27 +1,34 @@
 package com.example.wetouriah;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.drjacky.imagepicker.ImagePicker;
 import com.github.drjacky.imagepicker.constant.ImageProvider;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -38,11 +45,19 @@ public class Profile extends AppCompatActivity {
     private EditText email,  username, password,
             title, firstname, lastname, address, phone_number;
 
-    private Button selectImageButton,btnUpdate;
+    private Button btnUpdate;
     private String imagepath;
     private CheckBox status;
 
-    String user_id;
+    private FloatingActionButton selectImageButton;
+
+
+    String user_id,saved_username,role;
+    List<String> roleItems;
+    ArrayAdapter<String> roleAdapter;
+    Spinner spinner;
+
+    RelativeLayout roleAndStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +79,8 @@ public class Profile extends AppCompatActivity {
 
         status = findViewById(R.id.status);
 
+        roleAndStatus = findViewById(R.id.roleAndStatus);
+
 
 
         imageView = findViewById(R.id.imageView);
@@ -72,6 +89,27 @@ public class Profile extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         user_id = sharedPreferences.getString("user_id", null);
+        role = sharedPreferences.getString("role", null);
+        saved_username = sharedPreferences.getString("username", null);
+
+
+
+        roleItems = new ArrayList<>();
+        roleItems.add("Admin");
+        roleItems.add("Customer");
+        roleItems.add("Driver");
+        roleItems.add("WareHouse");
+
+        roleAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,roleItems);
+        roleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+
+        spinner = findViewById(R.id.spinner);
+        spinner.setAdapter(roleAdapter);
+
+
+
+
+
 
         try {
 
@@ -79,6 +117,17 @@ public class Profile extends AppCompatActivity {
             if(user != null){
                 user_id = user.getId().toString();
                 loadUser(user_id);
+
+                if (role.equals("1")) {
+                    roleAndStatus.setVisibility(View.VISIBLE);
+                }
+                if (saved_username.equals(user.username.toString())) {
+                    roleAndStatus.setVisibility(View.GONE);
+                }
+
+
+
+
             }
             else {
                 loadUser(user_id.toString());
@@ -90,14 +139,16 @@ public class Profile extends AppCompatActivity {
 
         }
 
+
+
         selectImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ImagePicker.Companion.with(Profile.this)
                         .crop()
-                        .cropOval()
+                        .galleryOnly()
                         .maxResultSize(512,512)
-                        .provider(ImageProvider.BOTH)
+                        .provider(ImageProvider.GALLERY)
                         .start();
 
             }
@@ -108,97 +159,79 @@ public class Profile extends AppCompatActivity {
             public void onClick(View v) {
                 String url = "http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/";
 
-                boolean isChecked = status.isChecked();
-
-                updateUserStatus( user_id.toString(), String.valueOf(isChecked));
 
 
-                updateUser(user_id,email.getText().toString(),
-                        title.getText().toString(),
-                        firstname.getText().toString(),
-                        lastname.getText().toString(),
-                        address.getText().toString(),
-                        phone_number.getText().toString());
+                String spinnerSelected = spinner.getSelectedItem().toString();
 
-            }
-        });
-    }
-    public void updateUserStatus(String id,String is_active ) {
+                if (spinnerSelected.equals("Admin")) {
+                    spinnerSelected = "1";
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
-                .addConverterFactory(GsonConverterFactory.create()).build();
-
-        RequestBody u_id = RequestBody.create(MediaType.parse("multipart/form-data"), id );
-        RequestBody u_active = RequestBody.create(MediaType.parse("multipart/form-data"), is_active );
-
-        APIService apiService = retrofit.create(APIService.class);
-        Call<APIResponse> call=  apiService.updateUserActive(u_id,u_active);
-
-        call.enqueue(new Callback<APIResponse>() {
-            @Override
-            public void onResponse(Call<APIResponse> call, Response<APIResponse> response) {
-                if(response.isSuccessful()){
-
-                    if(response.body().getStatusCode().toString().equals("201")) {
-                        Toast.makeText(getApplicationContext(), "active status updated", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(getApplicationContext(), "Error updating active status", Toast.LENGTH_SHORT).show();
-                    }
                 }
-            }
-            @Override
-            public void onFailure(Call<APIResponse> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
+                if (spinnerSelected.equals("Customer")) {
+                    spinnerSelected = "2";
+
+                }
+                if (spinnerSelected.equals("Driver")) {
+                    spinnerSelected = "3";
+
+                }
+                if (spinnerSelected.equals("WareHouse")) {
+                    spinnerSelected = "4";
+
+                }
+
+
+                if(imagepath != null && !imagepath.isEmpty()){
+
+
+                    updateUserWithImage(user_id,email.getText().toString(),
+                            title.getText().toString(),
+                            firstname.getText().toString(),
+                            lastname.getText().toString(),
+                            address.getText().toString(),
+                            phone_number.getText().toString(),spinnerSelected,String.valueOf(status.isChecked()));
+
+                }else{
+                    updateUserNoImage(user_id,email.getText().toString(),
+                            title.getText().toString(),
+                            firstname.getText().toString(),
+                            lastname.getText().toString(),
+                            address.getText().toString(),
+                            phone_number.getText().toString(),spinnerSelected,String.valueOf(status.isChecked()));
+
+
+                }
+
+
+
+
+
+
 
             }
         });
-
-
-
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Uri uri = data.getData();
-        imagepath = RealPathUtil.getRealPath(this,uri);
-        imageView.setImageURI(uri);
 
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-            String role = sharedPreferences.getString("role", null);
-
-            if (role.equals("1")) {
-                // Navigate to the CustomerPortal
-                Intent intent = new Intent(this, AdminPortal.class);
-                startActivity(intent);
-                finish();
-            }
-            // Check the user's role
-            if (role.equals("2")) {
-                // Navigate to the CustomerPortal
-                Intent intent = new Intent(this, CustomerPortal.class);
-                startActivity(intent);
-                finish();
-            }
-            if (role.equals("4")) {
-                // Navigate to the WarehousePortal
-                Intent intent = new Intent(this, WarehousePortal.class);
-                startActivity(intent);
-                finish();
+        if(data != null){
+            Uri uri = data.getData();
+            if(uri != null){
+                imagepath = RealPathUtil.getRealPath(this,uri);
+                imageView.setImageURI(uri);
             }
 
-            return true;
         }
-        return super.onOptionsItemSelected(item);
+
+
     }
-    public void updateUser(String id,
-                           String email,
-                           String title,String firstname,String lastname,
-                           String address,String phone_number) {
+
+    public void updateUserWithImage(String id,
+                                    String email,
+                                    String title,String firstname,String lastname,
+                                    String address,String phone_number,String role,String is_active) {
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
@@ -218,11 +251,72 @@ public class Profile extends AppCompatActivity {
         RequestBody user_address= RequestBody.create(MediaType.parse("multipart/form-data"), address);
         RequestBody user_phone_number = RequestBody.create(MediaType.parse("multipart/form-data"),phone_number);
 
+        RequestBody user_role = RequestBody.create(MediaType.parse("multipart/form-data"),role);
+        RequestBody user_status = RequestBody.create(MediaType.parse("multipart/form-data"),is_active);
+
+
         APIService apiService = retrofit.create(APIService.class);
         Call<APIResponse> call = apiService.updateUser(user_id,user_email,
-                user_title,imagefield,user_firstname,user_lastname,user_address,user_phone_number);
+                user_title,imagefield,user_firstname,user_lastname,user_address,user_phone_number,user_role,user_status);
 
 //        Toast.makeText(getApplicationContext(), "reached", Toast.LENGTH_SHORT).show();
+
+        call.enqueue(new Callback<APIResponse>() {
+            @Override
+            public void onResponse(Call<APIResponse> call, Response<APIResponse> response) {
+
+                if(response.isSuccessful()){
+//                    Toast.makeText(getApplicationContext(), "reached ", Toast.LENGTH_SHORT).show();
+
+                    if(response.body().getStatusCode().toString().equals("201")) {
+                        Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
+
+                    }else{
+                        Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<APIResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+    }
+
+    public void updateUserNoImage(String id,
+                                  String email,
+                                  String title,String firstname,String lastname,
+                                  String address,String phone_number,String role,String is_active) {
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
+                .addConverterFactory(GsonConverterFactory.create()).build();
+
+
+        RequestBody user_id = RequestBody.create(MediaType.parse("multipart/form-data"), id);
+
+        RequestBody user_email = RequestBody.create(MediaType.parse("multipart/form-data"), email);
+
+        RequestBody user_title= RequestBody.create(MediaType.parse("multipart/form-data"), title);
+        RequestBody user_firstname = RequestBody.create(MediaType.parse("multipart/form-data"), firstname);
+        RequestBody user_lastname = RequestBody.create(MediaType.parse("multipart/form-data"), lastname);
+        RequestBody user_address= RequestBody.create(MediaType.parse("multipart/form-data"), address);
+        RequestBody user_phone_number = RequestBody.create(MediaType.parse("multipart/form-data"),phone_number);
+
+        RequestBody user_role = RequestBody.create(MediaType.parse("multipart/form-data"),role);
+        RequestBody user_status = RequestBody.create(MediaType.parse("multipart/form-data"),is_active);
+
+
+
+
+        APIService apiService = retrofit.create(APIService.class);
+        Call<APIResponse> call = apiService.updateUserNoImage(user_id,user_email,
+                user_title,user_firstname,user_lastname,user_address,user_phone_number,user_role,user_status);
+
 
         call.enqueue(new Callback<APIResponse>() {
             @Override
@@ -274,9 +368,23 @@ public class Profile extends AppCompatActivity {
 //                    username.setText(response.body().getUsername());
                     title.setText(response.body().getTitle());
                     firstname.setText(response.body().getFirstName());
-                    lastname.setText(response.body().getLastname());
+                    lastname.setText(response.body().getLastName());
                     address.setText(response.body().getAddress());
                     phone_number.setText(response.body().getPhoneNumber());
+                    status.setChecked(response.body().getIsActive());
+
+                    spinner.setSelection( Integer.parseInt(response.body().getRole().toString())-1 );
+
+
+                    SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+                    String role = sharedPreferences.getString("role", null);
+
+                    if (role.equals("1")) {
+                        status.setEnabled(true);
+                        spinner.setEnabled(true);
+
+                    }
+
 
                 }
             }
@@ -289,6 +397,24 @@ public class Profile extends AppCompatActivity {
         });
 
 
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
 
     }
 }

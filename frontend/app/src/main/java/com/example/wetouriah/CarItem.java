@@ -15,10 +15,10 @@ public  class CarItem implements Serializable {
 
 
 
-    private String is_approved;
+    private String is_approved, is_default;
 
     public CarItem(String id, String car_owner, String type, String capacity, String color, String make,
-                   String model, String year, String license_plate,String is_approved) {
+                   String model, String year, String license_plate,String is_approved,String is_default) {
         this.id = id;
         this.car_owner = car_owner;
         this.type = type;
@@ -29,6 +29,7 @@ public  class CarItem implements Serializable {
         this.year = year;
         this.license_plate = license_plate;
         this.is_approved = is_approved;
+        this.is_default = is_default;
 
     }
 
@@ -42,6 +43,17 @@ public  class CarItem implements Serializable {
         this.is_approved = is_approved;
     }
 
+
+    //
+    public String getIs_Default() {
+        return is_default;
+    }
+
+    public void setIs_Default(String is_default) {
+        this.is_default = is_default;
+    }
+
+    //
     public String getId() {
         return id;
     }

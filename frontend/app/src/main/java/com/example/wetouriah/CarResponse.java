@@ -32,6 +32,9 @@ public class CarResponse {
     @SerializedName("is_approved")
     @Expose
     private Boolean isApproved;
+    @SerializedName("is_default")
+    @Expose
+    private Boolean isDefault;
     @SerializedName("car_owner")
     @Expose
     private Integer carOwner;
@@ -108,6 +111,17 @@ public class CarResponse {
         this.isApproved = isApproved;
     }
 
+    //
+    public Boolean getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(Boolean isDefault) {
+        this.isDefault = isDefault;
+    }
+
+
+    //
     public Integer getCarOwner() {
         return carOwner;
     }

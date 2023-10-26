@@ -74,7 +74,7 @@ class CourierAvailability(models.Model):
                 distance ,time = get_longest_arrival_time(self.location, pickup.dropoff_location, "AIzaSyCfiGeaaLSDtDpepqYFmc-vjFXlFys8lXs")
 
             
-            tracking_log = TrackingLog(pickup_request=pickup, location= str(pickup.courier.username) + ", " + str(pickup.courier.get_role_display()) ,estimated_arrival = format_seconds(time))
+            tracking_log = TrackingLog(pickup_request=pickup,status =pickup.status , location= str(pickup.courier.username) + ", " + str(pickup.courier.get_role_display()) ,estimated_arrival = format_seconds(time))
             tracking_log.save()
 
 class DriversLicense(models.Model):
@@ -191,13 +191,21 @@ class RequestPickup(models.Model):
                     location = self.dropoff_location
                 distance,time = get_longest_arrival_time(courier_availability.location, location, "AIzaSyCfiGeaaLSDtDpepqYFmc-vjFXlFys8lXs")
                 status = RequestPickupStatus.objects.get(status_name = self.status)
-
-                tracking_log = TrackingLog(
-                    pickup_request=self,
-                    location=str(self.courier.username) + ", " + str(self.courier.get_role_display()),
-                    status = status,
-                    estimated_arrival=format_seconds(time)
-                )
+                
+                if status.pk == 11:
+                    tracking_log = TrackingLog(
+                        pickup_request=self,
+                        location=str(self.customer.username) + ", " + str(self.customer.get_role_display()),
+                        status = status,
+                        estimated_arrival=format_seconds(time)
+                    )
+                else:
+                    tracking_log = TrackingLog(
+                        pickup_request=self,
+                        location= str(self.courier.username) + ", " + str(self.courier.get_role_display()),
+                        status = status,
+                        estimated_arrival=format_seconds(time)
+                    )
                 #print(status)
                 tracking_log.save()
     
@@ -209,12 +217,12 @@ class TrackingLog(models.Model):
     estimated_arrival = models.CharField(max_length=100,blank=True, null=True)
 
 
-    def save(self, *args, **kwargs):
-        # Check if the associated RequestPickup has a status set
-        if self.pickup_request.status:
-            self.status = self.pickup_request.status
+    # def save(self, *args, **kwargs):
+    #     # Check if the associated RequestPickup has a status set
+    #     if self.pickup_request.status:
+    #         self.status = self.pickup_request.status
 
-        super(TrackingLog, self).save(*args, **kwargs)
+    #     super(TrackingLog, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.pickup_request} - {self.location} - {self.timestamp}"

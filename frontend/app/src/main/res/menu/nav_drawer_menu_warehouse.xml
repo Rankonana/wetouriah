@@ -9,6 +9,24 @@
             android:id="@+id/nav_own_warehouse"
             android:icon="@drawable/warehouse"
             android:title="Your Warehouse" />
+
+        <item
+            android:id="@+id/sent"
+            android:icon="@drawable/outarrow"
+            android:title="sent"
+            android:visible="false"/>
+
+        <item
+            android:id="@+id/recievedCustomer"
+            android:icon="@drawable/inarrow"
+            android:title="Recieved From Customer"
+            android:visible="false"/>
+
+        <item
+            android:id="@+id/recievedDriver"
+            android:icon="@drawable/inarrow"
+            android:title="Recieved From Driver"
+            android:visible="false"/>
     </group>
 
     <item

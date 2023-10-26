@@ -6,77 +6,459 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     tools:context=".DriverPortal"
     tools:ignore="HardcodedText">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+
+    <RelativeLayout
+        android:id="@+id/lyPickRequestList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="visible"
         >
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_Undelivered"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Not Yet Delivered" />
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_Rated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Rated" />
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_AllPickupRequests"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="All Deliveries rated/unRated" />
 
-        </com.google.android.material.tabs.TabLayout>
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/loadingGif"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@raw/loadingloadingforever"
+            android:background="#fff"
+            />
+
+
 
         <RelativeLayout
-            android:id="@+id/lyAllUndelivered"
-            android:layout_width="match_parent"
-            android:layout_below="@+id/tab_layout"
-            android:layout_height="wrap_content">
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/idUndelivered"/>
+            android:id="@+id/lyNoJobs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone">
 
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/lyUnRated"
-            android:layout_width="match_parent"
-            android:layout_below="@+id/tab_layout"
-            android:layout_height="wrap_content">
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/msgNoJobs"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Sorry No jobs"
+                android:textSize="30dp"/>
 
-                android:id="@+id/idUnRated"/>
+
+
+            <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/nothing"
+                android:layout_below="@+id/msgNoJobs"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="#fff"
+                android:src="@raw/zerobean"
+                />
 
         </RelativeLayout>
 
+
+
+        <TextView
+            android:id="@+id/txtdeliveries"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Your itenerary"
+            android:textSize="30dp"/>
+
         <RelativeLayout
-            android:id="@+id/lyAllPickupRequests"
+            android:id="@+id/rlList"
             android:layout_width="match_parent"
-            android:layout_below="@+id/tab_layout"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_below="@+id/txtdeliveries"
+            android:visibility="visible">
+
+
+            <!-- Search Bar -->
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/lysearchDeliveriesEditText"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="300dp"
+
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxStrokeColor="@color/purple"
+                app:boxStrokeWidth="3dp"
+
+                app:startIconDrawable="@drawable/search">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/searchJobsEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_login"
+                    android:hint="Search by name, address" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <ImageView
+                android:id="@+id/imgFilterJobs"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_toEndOf="@+id/lysearchDeliveriesEditText"
+                android:src="@drawable/ic_baseline_sort_24" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/lyFilterJobs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lysearchDeliveriesEditText"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="30dp"
+                android:background="@drawable/custom_edittext"
+                android:visibility="gone"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="20dp"
+
+                >
+
+                <RelativeLayout
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/searchUsersEditText">
+
+                    <!-- Filter Section -->
+                    <TextView
+                        android:id="@+id/txtFilterStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="16dp"
+                        android:text="Filter by:"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <!-- Active Status -->
+
+                    <RelativeLayout
+                        android:id="@+id/rlSortAscRoute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txtFilterStatus"
+                        android:layout_centerHorizontal="true">
+
+                        <RelativeLayout
+                            android:id="@+id/rlAscDesc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/custom_edittext2">
+
+                            <TextView
+                                android:id="@+id/textViewLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="16dp"
+                                android:text="Date created:" />
+
+                            <RadioGroup
+                                android:id="@+id/radioSortGroup"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/textViewLabel">
+
+                                <RadioButton
+                                    android:id="@+id/radioSortAscending"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Ascending" />
+
+                                <RadioButton
+                                    android:id="@+id/radioSortDescending"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Descending" />
+                            </RadioGroup>
+
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rlBestRoute"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:layout_toEndOf="@+id/rlAscDesc"
+                            android:background="@drawable/custom_edittext2">
+
+                            <TextView
+                                android:id="@+id/textViewLabel2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="16dp"
+                                android:text="Route:" />
+
+                            <RadioGroup
+                                android:id="@+id/radioBestRouteGroup"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/textViewLabel2">
+
+                                <RadioButton
+                                    android:id="@+id/radioFindBestRoute"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Best Route" />
+                            </RadioGroup>
+
+
+                        </RelativeLayout>
+
+
+                    </RelativeLayout>
+
+
+                    <TextView
+                        android:id="@+id/txtPickDropbyStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rlSortAscRoute"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="16dp"
+                        android:text="Filter by Status: "
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <!-- Active Status -->
+
+                    <RadioGroup
+                        android:id="@+id/rgPickDropby"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txtPickDropbyStatus"
+                        android:layout_centerHorizontal="true"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rdpickup"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pickup"></RadioButton>
+
+                        <RadioButton
+                            android:id="@+id/rdDropoff"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Drop-off"></RadioButton>
+
+                    </RadioGroup>
+
+
+                    <RelativeLayout
+                        android:id="@+id/rlDiscardAppy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rgPickDropby"
+
+                        android:layout_centerHorizontal="true">
+
+                        <Button
+                            android:id="@+id/btnDiscardJobs"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:text="Discard" />
+
+                        <Button
+                            android:id="@+id/btnApplyJobs"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="16dp"
+                            android:layout_toEndOf="@+id/btnDiscardJobs"
+                            android:text="Apply" />
+
+                    </RelativeLayout>
+
+
+                </RelativeLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/idAllPickupRequests"/>
+
+                android:layout_below="@+id/lysearchDeliveriesEditText"
+                android:orientation="vertical"
+                android:padding="5dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <Button
+                android:id="@+id/btnNavigateAll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/recyclerView"
+                android:text="Navigate" />
+
+
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/rlMap"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/txtdeliveries"
+            android:visibility="gone">
+
+            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:map="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".AAATest" />
+
+            <Button
+                android:id="@+id/zoomInButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@id/map"
+                android:layout_alignTop="@+id/map"
+                android:text="+" />
+
+            <Button
+                android:id="@+id/zoomOutButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/zoomInButton"
+                android:layout_alignEnd="@id/map"
+                android:text="-" />
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/map_CardViewitem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                android:background="@android:color/white"
+                android:visibility="gone">
+
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/info_text2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Info Text"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:padding="16dp"
+                        android:visibility="gone"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="16dp">
+
+                        <Button
+                            android:id="@+id/button1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Full Details"
+                            android:textColor="@android:color/white"
+                            android:padding="8dp"
+                            android:layout_margin="5dp"
+                            android:layout_gravity="center" />
+
+                        <Button
+                            android:id="@+id/button2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Directions"
+                            android:textColor="@android:color/white"
+                            android:padding="8dp"
+                            android:layout_margin="5dp"
+                            android:layout_gravity="center"
+                            android:visibility="gone"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+
+
+        </RelativeLayout>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:menu="@menu/bottom_navigation_menu" />
 
 
 
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/lyAllCars"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+        <TextView
+            android:id="@+id/txtheadingCars"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cars"
+            android:textSize="36sp"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textColor="@color/purple"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_below="@+id/txtheadingCars"
+            android:layout_height="wrap_content"
+            android:id="@+id/idAllCars"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/mAdd_car"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="16dp"
+            app:srcCompat="@drawable/add" />
+
+    </RelativeLayout>
+
     <!-- Navigation Drawer -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"

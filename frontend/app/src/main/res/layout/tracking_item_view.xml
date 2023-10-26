@@ -18,36 +18,38 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            <TextView
-                android:id="@+id/status"
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
+                android:id="@+id/StatusTime"
                 android:layout_height="wrap_content"
-                android:text="Status"
-                android:textStyle="bold"
-                android:textColor="@color/purple"
-                />
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/status"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:text="Left TextView" />
+                <TextView
+                    android:id="@+id/timestamp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="Right TextView" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/location"
-                android:layout_below="@+id/status"
+                android:layout_below="@+id/StatusTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cape Town"
+                android:text="By: Rankonana, Driver"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 />
 
-            <TextView
-                android:id="@+id/timestamp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/status"
-                android:layout_alignParentEnd="true"
-                android:text="15:45 PM"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/purple"
-                />
+
 
         </RelativeLayout>
 

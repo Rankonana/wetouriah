@@ -3,8 +3,10 @@ package com.example.wetouriah;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -22,20 +24,24 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AddCar extends AppCompatActivity {
 
+    private static final String TAG = "AddCar";
+
     EditText car_owner,type,capacity,color, make, model,year,license_plate;
-    CheckBox is_approved;
+    CheckBox is_approved,is_default;
     Button btnAddCar;
 
     private APIService apiService;
 
-    String user_id,car_id;
+    String user_id,role,car_id;
+
+    CarItem car;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_car);
 
-        setTitle("Your Car");
+        setTitle("Your Vehicle");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         type = findViewById(R.id.type);
@@ -46,27 +52,38 @@ public class AddCar extends AppCompatActivity {
         year = findViewById(R.id.year);
         license_plate = findViewById(R.id.license_plate);
         is_approved = findViewById(R.id.is_approved);
+        is_default = findViewById(R.id.is_default);
         btnAddCar = findViewById(R.id.btnAddCar);
 
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         user_id = sharedPreferences.getString("user_id", null);
         car_id = sharedPreferences.getString("car_id", null);
-
+        role = sharedPreferences.getString("role", null);
 
 
         try {
 
 
-            CarItem car = (CarItem) getIntent().getSerializableExtra("car");
+            car = (CarItem) getIntent().getSerializableExtra("car");
             if(car != null){
+                Log.e(TAG, "car not null");
+
+                Log.e(TAG, car.getCar_owner().toString());
+                Log.e(TAG, car.getId().toString());
+                Log.e(TAG, String.valueOf(car));
+
                 user_id = car.getCar_owner().toString();
                 car_id =  car.getId().toString();
-                loadCar(user_id);
-                is_approved.setEnabled(true);
+                loadCar(car_id);
+
+                if (role.equals("1")) {
+                    is_approved.setEnabled(true);
+                }
             }
             else {
-                loadCar(user_id.toString());
+                Log.e(TAG, "car null");
+               // loadCar(car_id.toString());
 
             }
 
@@ -86,18 +103,21 @@ public class AddCar extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (!car_id.equals("-1")) {
+                Log.e(TAG, "car_id : " + car_id);
 
+                if(car != null) {
+                    Log.e(TAG, "car_id : " + car_id);
 
 
                     CarItem updateCarItem = new CarItem(car_id,user_id,type.getText().toString(),capacity.getText().toString(),color.getText().toString(),
-                            make.getText().toString(),model.getText().toString(),year.getText().toString(),license_plate.getText().toString(),is_approved.getText().toString());
+                            make.getText().toString(),model.getText().toString(),year.getText().toString(),license_plate.getText().toString(),String.valueOf(is_approved.isChecked()),String.valueOf(is_default.isChecked()));
                     mupdateCar(updateCarItem);
 
                 } else {
 
+                    Log.e(TAG, "car_id : " + car_id);
                     CarItem newCarItem = new CarItem(car_id,user_id,type.getText().toString(),capacity.getText().toString(),color.getText().toString(),
-                            make.getText().toString(),model.getText().toString(),year.getText().toString(),license_plate.getText().toString(),is_approved.getText().toString());
+                            make.getText().toString(),model.getText().toString(),year.getText().toString(),license_plate.getText().toString(),String.valueOf(is_approved.isChecked()),String.valueOf(is_default.isChecked()));
                     addCar(newCarItem);
 
                 }
@@ -109,12 +129,20 @@ public class AddCar extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
 
+    }
 
 
     private void addCar(CarItem carItem) {
@@ -129,14 +157,16 @@ public class AddCar extends AppCompatActivity {
         RequestBody get_year = RequestBody.create(MediaType.parse("multipart/form-data"), String.valueOf(carItem.getYear()));
         RequestBody get_icense_plate = RequestBody.create(MediaType.parse("multipart/form-data"), String.valueOf(carItem.getLicense_plate()));
         RequestBody get_is_approved = RequestBody.create(MediaType.parse("multipart/form-data"), String.valueOf(carItem.getIs_approved()));
+        RequestBody get_is_default = RequestBody.create(MediaType.parse("multipart/form-data"), String.valueOf(carItem.getIs_Default()));
+
         Call<CarResponse> call = apiService.addCar(get_car_owner,get_type,
-                get_capacity,get_color,get_make,get_model,get_year,get_icense_plate,get_is_approved);
+                get_capacity,get_color,get_make,get_model,get_year,get_icense_plate,get_is_approved,get_is_default);
 
         call.enqueue(new Callback<CarResponse>() {
             @Override
             public void onResponse(Call<CarResponse> call, Response<CarResponse> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Car added succesfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "vehicle added succesfully", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "there was error adding your car", Toast.LENGTH_SHORT).show();
                 }
@@ -162,18 +192,19 @@ public class AddCar extends AppCompatActivity {
         RequestBody get_year = RequestBody.create(MediaType.parse("multipart/form-data"), String.valueOf(carItem.getYear()));
         RequestBody get_icense_plate = RequestBody.create(MediaType.parse("multipart/form-data"), String.valueOf(carItem.getLicense_plate()));
         RequestBody get_is_approved = RequestBody.create(MediaType.parse("multipart/form-data"), String.valueOf(carItem.getIs_approved()));
+        RequestBody get_is_default = RequestBody.create(MediaType.parse("multipart/form-data"), String.valueOf(carItem.getIs_Default()));
 
         Call<CarResponse> call = apiService.updateCar(get_id,get_car_owner,get_type,
-                get_capacity,get_color,get_make,get_model,get_year,get_icense_plate,get_is_approved);
+                get_capacity,get_color,get_make,get_model,get_year,get_icense_plate,get_is_approved,get_is_default);
         call.enqueue(new Callback<CarResponse>() {
             @Override
             public void onResponse(Call<CarResponse> call, Response<CarResponse> response) {
                 if (response.isSuccessful()) {
 
-                    add_updateCar( user_id.toString(), String.valueOf(is_approved.isChecked()));
+//                    add_updateCar( car_id.toString(), String.valueOf(is_approved.isChecked()),String.valueOf(is_default.isChecked()));
 
 
-                    Toast.makeText(getApplicationContext(), "Car updated succesfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "vehicle updated succesfully", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "there was error updating your car", Toast.LENGTH_SHORT).show();
                 }
@@ -185,15 +216,15 @@ public class AddCar extends AppCompatActivity {
         });
     }
 
-    public void loadCar(String id) {
+    public void loadCar(String p_car_id) {
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
-        RequestBody user_id= RequestBody.create(MediaType.parse("multipart/form-data"), id);
+        RequestBody rb_car_id= RequestBody.create(MediaType.parse("multipart/form-data"), p_car_id);
 
         APIService apiService = retrofit.create(APIService.class);
-        Call<CarResponse> call = apiService.loadCar(user_id);
+        Call<CarResponse> call = apiService.loadCar(rb_car_id);
 
         call.enqueue(new Callback<CarResponse>() {
             @Override
@@ -209,30 +240,32 @@ public class AddCar extends AppCompatActivity {
                         year.setText(response.body().getYear());
                         license_plate.setText(response.body().getLicensePlate());
                         is_approved.setChecked(response.body().getIsApproved());
+                        is_default.setChecked(response.body().getIsDefault());
+
                         btnAddCar.setText("update");
 
-                        SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("car_id", response.body().getId().toString());
-                        editor.apply();
+//                        SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+//                        SharedPreferences.Editor editor = sharedPreferences.edit();
+//                        editor.putString("car_id", response.body().getId().toString());
+//                        editor.apply();
 
                     }else {
 
 
-                        SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("car_id", "-1");
-                        editor.apply();
+//                        SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+//                        SharedPreferences.Editor editor = sharedPreferences.edit();
+//                        editor.putString("car_id", "-1");
+//                        editor.apply();
                     }
 
 
 
                 }
                 else {
-                    SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("car_id", "-1");
-                    editor.apply();
+//                    SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = sharedPreferences.edit();
+//                    editor.putString("car_id", "-1");
+//                    editor.apply();
                 }
             }
 
@@ -244,16 +277,17 @@ public class AddCar extends AppCompatActivity {
 
     }
 
-    public void add_updateCar(String car_owner,String is_approved ) {
+    public void add_updateCar(String car_id,String is_approved,String is_default ) {
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
-        RequestBody c_wcar_owner = RequestBody.create(MediaType.parse("multipart/form-data"), car_owner );
+        RequestBody c_car_id = RequestBody.create(MediaType.parse("multipart/form-data"), car_id );
         RequestBody c_is_approved = RequestBody.create(MediaType.parse("multipart/form-data"), is_approved );
+        RequestBody c_is_default = RequestBody.create(MediaType.parse("multipart/form-data"), is_default );
 
         APIService apiService = retrofit.create(APIService.class);
-        Call<APIResponse> call=  apiService.updateCarApproval(c_wcar_owner,c_is_approved);
+        Call<APIResponse> call=  apiService.updateCarApproval(c_car_id,c_is_approved,c_is_default);
 
         call.enqueue(new Callback<APIResponse>() {
 

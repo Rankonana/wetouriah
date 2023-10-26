@@ -33,8 +33,15 @@ public class AdapterLocations extends RecyclerView.Adapter<LocationsViewHolder> 
     public void onBindViewHolder(@NonNull LocationsViewHolder holder, int position) {
 
         LocationsItem item = locationsItems.get(position);
-        holder.status.setText(locationsItems.get(position).getStatus().toString());
-        holder.location.setText("Location: "+ locationsItems.get(position).getLocation().toString());
+
+        if(locationsItems.get(position).getStatus() !=null){
+            holder.status.setText(locationsItems.get(position).getStatus().toString());
+
+        }else {
+            holder.status.setVisibility(View.GONE);
+
+        }
+        holder.location.setText("By: "+ locationsItems.get(position).getLocation().toString());
         holder.timestamp.setText(locationsItems.get(position).getTimestamp().toString());
 
 

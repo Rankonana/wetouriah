@@ -1,11 +1,9 @@
 package com.example.wetouriah;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class RequestPickupResponse {
-
 
     @SerializedName("id")
     @Expose
@@ -16,9 +14,6 @@ public class RequestPickupResponse {
     @SerializedName("request_time")
     @Expose
     private String requestTime;
-    @SerializedName("date_and_time_pickup")
-    @Expose
-    private String dateAndTimePickup;
     @SerializedName("recipient_name")
     @Expose
     private String recipientName;
@@ -27,28 +22,43 @@ public class RequestPickupResponse {
     private String recipientPhone;
     @SerializedName("pickup_location")
     @Expose
-    private Object pickupLocation;
+    private String pickupLocation;
     @SerializedName("dropoff_location")
     @Expose
-    private Object dropoffLocation;
+    private String dropoffLocation;
     @SerializedName("volume")
     @Expose
-    private Object volume;
+    private String volume;
     @SerializedName("weight")
     @Expose
     private String weight;
+    @SerializedName("parcel_description")
+    @Expose
+    private String parcelDescription;
     @SerializedName("price_to_pay")
     @Expose
-    private Object priceToPay;
-    @SerializedName("status")
+    private String priceToPay;
+    @SerializedName("duration")
     @Expose
-    private Integer status;
+    private String duration;
+    @SerializedName("rating")
+    @Expose
+    private Integer rating;
+    @SerializedName("start_datetime")
+    @Expose
+    private String startDatetime;
+    @SerializedName("end_datetime")
+    @Expose
+    private String endDatetime;
     @SerializedName("customer")
     @Expose
     private Integer customer;
-    @SerializedName("images")
+    @SerializedName("status")
     @Expose
-    private List<Integer> images;
+    private Integer status;
+    @SerializedName("car")
+    @Expose
+    private Integer car;
 
     public Integer getId() {
         return id;
@@ -74,14 +84,6 @@ public class RequestPickupResponse {
         this.requestTime = requestTime;
     }
 
-    public String getDateAndTimePickup() {
-        return dateAndTimePickup;
-    }
-
-    public void setDateAndTimePickup(String dateAndTimePickup) {
-        this.dateAndTimePickup = dateAndTimePickup;
-    }
-
     public String getRecipientName() {
         return recipientName;
     }
@@ -98,27 +100,27 @@ public class RequestPickupResponse {
         this.recipientPhone = recipientPhone;
     }
 
-    public Object getPickupLocation() {
+    public String getPickupLocation() {
         return pickupLocation;
     }
 
-    public void setPickupLocation(Object pickupLocation) {
+    public void setPickupLocation(String pickupLocation) {
         this.pickupLocation = pickupLocation;
     }
 
-    public Object getDropoffLocation() {
+    public String getDropoffLocation() {
         return dropoffLocation;
     }
 
-    public void setDropoffLocation(Object dropoffLocation) {
+    public void setDropoffLocation(String dropoffLocation) {
         this.dropoffLocation = dropoffLocation;
     }
 
-    public Object getVolume() {
+    public String getVolume() {
         return volume;
     }
 
-    public void setVolume(Object volume) {
+    public void setVolume(String volume) {
         this.volume = volume;
     }
 
@@ -130,20 +132,52 @@ public class RequestPickupResponse {
         this.weight = weight;
     }
 
-    public Object getPriceToPay() {
+    public String getParcelDescription() {
+        return parcelDescription;
+    }
+
+    public void setParcelDescription(String parcelDescription) {
+        this.parcelDescription = parcelDescription;
+    }
+
+    public String getPriceToPay() {
         return priceToPay;
     }
 
-    public void setPriceToPay(Object priceToPay) {
+    public void setPriceToPay(String priceToPay) {
         this.priceToPay = priceToPay;
     }
 
-    public Integer getStatus() {
-        return status;
+    public String getDuration() {
+        return duration;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
+    public String getStartDatetime() {
+        return startDatetime;
+    }
+
+    public void setStartDatetime(String startDatetime) {
+        this.startDatetime = startDatetime;
+    }
+
+    public String getEndDatetime() {
+        return endDatetime;
+    }
+
+    public void setEndDatetime(String endDatetime) {
+        this.endDatetime = endDatetime;
     }
 
     public Integer getCustomer() {
@@ -154,11 +188,20 @@ public class RequestPickupResponse {
         this.customer = customer;
     }
 
-    public List<Integer> getImages() {
-        return images;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setImages(List<Integer> images) {
-        this.images = images;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
+
+    public Integer getCar() {
+        return car;
+    }
+
+    public void setCar(Integer car) {
+        this.car = car;
+    }
+
 }

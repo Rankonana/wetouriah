@@ -116,9 +116,9 @@ public class Deliver extends AppCompatActivity {
             public void onClick(View view) {
                 ImagePicker.Companion.with(Deliver.this)
                         .crop()
-                        .cropOval()
+                        .galleryOnly()
                         .maxResultSize(512,512)
-                        .provider(ImageProvider.BOTH)
+                        .provider(ImageProvider.GALLERY)
                         .start();
             }
         });
@@ -127,7 +127,7 @@ public class Deliver extends AppCompatActivity {
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                  addRatig( String.valueOf(itemId) , String.valueOf(ratingBar.getRating()));
+                addRatig( String.valueOf(itemId) , String.valueOf(ratingBar.getRating()));
             }
         });
 
@@ -213,17 +213,26 @@ public class Deliver extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Uri uri = data.getData();
-        imageUris.add(uri);
-        ImageView imageView = new ImageView(this);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        layoutParams.setMargins(0, 8, 0, 0);
-        imageView.setLayoutParams(layoutParams);
-        imageView.setImageURI(uri);
-        layoutImages.addView(imageView);
+
+        if(data != null){
+            Uri uri = data.getData();
+            if(uri != null){
+                imageUris.add(uri);
+                ImageView imageView = new ImageView(this);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                );
+                layoutParams.setMargins(0, 8, 0, 0);
+                imageView.setLayoutParams(layoutParams);
+                imageView.setImageURI(uri);
+                layoutImages.addView(imageView);
+            }
+
+        }
+
+
+
 
 
     }

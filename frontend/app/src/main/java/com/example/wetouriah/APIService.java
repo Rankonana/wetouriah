@@ -5,9 +5,6 @@ import java.util.List;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -18,9 +15,58 @@ import retrofit2.http.Query;
 public interface APIService {
 
 //    https://www.youtube.com/watch?v=DCo1nLUGq8I&ab_channel=WaleedTalha
+
+    @Multipart
+    @POST("send-sms/")
+    Call<APIResponse> apiSendSMS(@Part("recipient_number") RequestBody recipient_number,
+                                                @Part("message") RequestBody message,
+                                 @Part("from_warehouse") RequestBody from_warehouse,
+                                 @Part("parcel_id") RequestBody parcel_id);
+
+
+    @Multipart
+    @POST("delete-requestpickup/")
+    Call<APIResponse> deletePickupRequest(@Part("id") RequestBody id);
+
+    @Multipart
+    @POST("courier-availability/")
+    Call<APIResponse> apiLocationAndAvailabilty(@Part("courier") RequestBody courier,
+                                                @Part("available") RequestBody available,
+                                                @Part("location") RequestBody location);
+    @Multipart
+    @POST("check-user-email/")
+    Call<APIResponse> apiCheckUsernameEmail(@Part("username") RequestBody username,
+                                                @Part("email") RequestBody email);
+    @Multipart
+    @POST("get-distance-and-time/")
+    Call<APIResponse> apiDistanceAndTime(@Part("startLocation") RequestBody startLocation,
+                                                @Part("endLocation") RequestBody endLocation);
+
+    @Multipart
+    @POST("accept-decline-parcel/")
+    Call<APIResponse> apiAcceptDeclineJob(@Part("courier") RequestBody courier,
+                                                @Part("requestPickup") RequestBody requestPickup,
+                                                @Part("status") RequestBody status);
+
+    @Multipart
+    @POST("check-job-offers/")
+    Call<RequestPickupResponse> apiCheckJobOffers(@Part("courier") RequestBody courier);
+
+    @Multipart
+    @POST("get-courier-availability/")
+    Call<APIResponse> apiGetAvailibility(@Part("courier") RequestBody courier);
+
+    @Multipart
+    @POST("tracking-log/")
+    Call<List<TrackingLogResponse>> getTrackingLog(@Part("tracking_number") RequestBody tracking_number);
+
+    @Multipart
+    @POST("get-all-request-pickup-images/")
+    Call<List<ImagesResponse>> getAllImages(@Part("tracking_number") RequestBody tracking_number);
+
     @Multipart
     @POST("create-user/")
-    Call<AddUserResponse> addUser(@Part("email") RequestBody email,
+    Call<AddUserResponse> addUserWithImage(@Part("email") RequestBody email,
                                   @Part("role") RequestBody role,
                           @Part("username") RequestBody username,
                           @Part("password") RequestBody password,
@@ -29,10 +75,24 @@ public interface APIService {
 
                          @Part MultipartBody.Part profile_picture,
 
-                          @Part("firstname") RequestBody firstname,
-                          @Part("lastname") RequestBody lastname,
+                          @Part("first_name") RequestBody firstname,
+                          @Part("last_name") RequestBody lastname,
                           @Part("address") RequestBody address,
                           @Part("phone_number") RequestBody phone_number);
+
+    @Multipart
+    @POST("create-user/")
+    Call<AddUserResponse> addUserNoImage(@Part("email") RequestBody email,
+                                           @Part("role") RequestBody role,
+                                           @Part("username") RequestBody username,
+                                           @Part("password") RequestBody password,
+
+                                           @Part("title") RequestBody title,
+
+                                           @Part("first_name") RequestBody firstname,
+                                           @Part("last_name") RequestBody lastname,
+                                           @Part("address") RequestBody address,
+                                           @Part("phone_number") RequestBody phone_number);
     @Multipart
     @PUT("update-user/")
     Call<APIResponse> updateUser(@Part("id") RequestBody id,@Part("email") RequestBody email,
@@ -41,10 +101,35 @@ public interface APIService {
 
                                   @Part MultipartBody.Part profile_picture,
 
-                                  @Part("firstname") RequestBody firstname,
-                                  @Part("lastname") RequestBody lastname,
+                                  @Part("first_name") RequestBody firstname,
+                                  @Part("last_name") RequestBody lastname,
                                   @Part("address") RequestBody address,
-                                  @Part("phone_number") RequestBody phone_number);
+                                  @Part("phone_number") RequestBody phone_number,
+                                 @Part("role") RequestBody role,
+                                 @Part("is_active") RequestBody is_active);
+
+    @Multipart
+    @PUT("update-user/")
+    Call<APIResponse> updateUserNoImage(@Part("id") RequestBody id,@Part("email") RequestBody email,
+
+                                 @Part("title") RequestBody title,
+                                 @Part("first_name") RequestBody firstname,
+                                 @Part("last_name") RequestBody lastname,
+                                 @Part("address") RequestBody address,
+                                 @Part("phone_number") RequestBody phone_number,
+                                 @Part("role") RequestBody role,
+                                 @Part("is_active") RequestBody is_active);
+
+
+    @Multipart
+    @POST("reset-password/")
+    Call<APIResponse> changePassword(@Part("username") RequestBody username,
+                                 @Part("password") RequestBody password);
+
+
+    @Multipart
+    @POST("send-code/")
+    Call<APIResponse> sendCode(@Part("username") RequestBody username);
 
     @Multipart
     @POST("token/")
@@ -66,52 +151,150 @@ public interface APIService {
                                      @Part("armed_response") RequestBody armed_response,
                                      @Part("fire_safety_and_management") RequestBody fire_safety_and_management,
                                      @Part("parking_space") RequestBody parking_space,
-                                     @Part("operating_hours") RequestBody operating_hours);
+                                     @Part("operating_hours") RequestBody operating_hours,
+                                   @Part("is_approved") RequestBody is_approved);
 
     @Multipart
     @PUT("add-update-warehouse/")
-    Call<APIResponse> updateWarehouse(@Part("id") RequestBody warehouse_id,
-                                   @Part("warehouse_owner") RequestBody warehouse_owner,
-                                   @Part MultipartBody.Part image,
-                                   @Part("address") RequestBody address,
-                                   @Part("volume") RequestBody volume,
-                                   @Part("cctv") RequestBody cctv,
-                                   @Part("armed_response") RequestBody armed_response,
-                                   @Part("fire_safety_and_management") RequestBody fire_safety_and_management,
-                                   @Part("parking_space") RequestBody parking_space,
-                                   @Part("operating_hours") RequestBody operating_hours);
+    Call<APIResponse> updateWarehouseWithImage(@Part("id") RequestBody warehouse_id,
+                                             @Part("warehouse_owner") RequestBody warehouse_owner,
+                                            @Part MultipartBody.Part image,
+                                             @Part("address") RequestBody address,
+                                             @Part("volume") RequestBody volume,
+                                             @Part("cctv") RequestBody cctv,
+                                             @Part("armed_response") RequestBody armed_response,
+                                             @Part("fire_safety_and_management") RequestBody fire_safety_and_management,
+                                             @Part("parking_space") RequestBody parking_space,
+                                             @Part("operating_hours") RequestBody operating_hours,
+                                             @Part("is_approved") RequestBody is_approved);
 
     @Multipart
     @PUT("add-update-warehouse/")
     Call<APIResponse> updateWarehouseNoImage(@Part("id") RequestBody warehouse_id,
-                                      @Part("warehouse_owner") RequestBody warehouse_owner,
-                                      @Part("address") RequestBody address,
-                                      @Part("volume") RequestBody volume,
-                                      @Part("cctv") RequestBody cctv,
-                                      @Part("armed_response") RequestBody armed_response,
-                                      @Part("fire_safety_and_management") RequestBody fire_safety_and_management,
-                                      @Part("parking_space") RequestBody parking_space,
-                                      @Part("operating_hours") RequestBody operating_hours);
+                                             @Part("warehouse_owner") RequestBody warehouse_owner,
+                                              @Part("address") RequestBody address,
+                                              @Part("volume") RequestBody volume,
+                                              @Part("cctv") RequestBody cctv,
+                                              @Part("armed_response") RequestBody armed_response,
+                                              @Part("fire_safety_and_management") RequestBody fire_safety_and_management,
+                                              @Part("parking_space") RequestBody parking_space,
+                                              @Part("operating_hours") RequestBody operating_hours,
+                                             @Part("is_approved") RequestBody is_approved);
 
-//    @Multipart
-//    @GET("get-warehouse/")
-//    Call<WarehouseResponse> getWarehouse(@Part("id") RequestBody id);
+    @Multipart
+    @POST("add-update-warehouse/")
+    Call<APIResponse> addWarehouseNoImage(@Part("warehouse_owner") RequestBody warehouse_owner,
+                                             @Part("address") RequestBody address,
+                                             @Part("volume") RequestBody volume,
+                                             @Part("cctv") RequestBody cctv,
+                                             @Part("armed_response") RequestBody armed_response,
+                                             @Part("fire_safety_and_management") RequestBody fire_safety_and_management,
+                                             @Part("parking_space") RequestBody parking_space,
+                                             @Part("operating_hours") RequestBody operating_hours,
+                                             @Part("is_approved") RequestBody is_approved);
+
+    @Multipart
+    @POST("add-update-warehouse/")
+    Call<APIResponse> addWarehouseWithImage(@Part("warehouse_owner") RequestBody warehouse_owner,
+                                            @Part MultipartBody.Part image,
+                                          @Part("address") RequestBody address,
+                                          @Part("volume") RequestBody volume,
+                                          @Part("cctv") RequestBody cctv,
+                                          @Part("armed_response") RequestBody armed_response,
+                                          @Part("fire_safety_and_management") RequestBody fire_safety_and_management,
+                                          @Part("parking_space") RequestBody parking_space,
+                                          @Part("operating_hours") RequestBody operating_hours,
+                                          @Part("is_approved") RequestBody is_approved);
+
 
     @Multipart
     @POST("add-update-requestpickup/")
-    Call<APIResponse> addPickRequest(@Part("date_and_time_pickup") RequestBody date_and_time_pickup,
+    Call<APIResponse> addNoImagesPickRequest(@Part("customer") RequestBody customer,
+                                           @Part("tracking_number") RequestBody tracking_number,
                                            @Part("recipient_name") RequestBody recipient_name,
-                                           @Part("recipient_phone") RequestBody recipient_phone,
+                                     @Part("recipient_phone") RequestBody recipient_phone,
 
-                                           @Part("pickup_location") RequestBody pickup_location,
+
+                                     @Part("pickup_location") RequestBody pickup_location,
                                            @Part("dropoff_location") RequestBody dropoff_location,
 
                                            @Part("volume") RequestBody volume,
                                            @Part("weight") RequestBody weight,
 
+                                           @Part("parcel_description") RequestBody parcel_description,
                                            @Part("price_to_pay") RequestBody price_to_pay,
-                                           @Part("customer") RequestBody customer);
+                                     @Part("status") RequestBody status);
 
+    @Multipart
+    @POST("add-update-requestpickup/")
+    Call<APIResponse> addWithImagesPickRequest(@Part("customer") RequestBody customer,
+                                             @Part("tracking_number") RequestBody tracking_number,
+                                             @Part("recipient_name") RequestBody recipient_name,
+                                             @Part("recipient_phone") RequestBody recipient_phone,
+
+
+                                             @Part("pickup_location") RequestBody pickup_location,
+                                             @Part("dropoff_location") RequestBody dropoff_location,
+
+                                             @Part("volume") RequestBody volume,
+                                             @Part("weight") RequestBody weight,
+
+                                             @Part("parcel_description") RequestBody parcel_description,
+                                             @Part("price_to_pay") RequestBody price_to_pay,
+                                             @Part("status") RequestBody status,
+                                               @Part List<MultipartBody.Part> images);
+
+
+    @Multipart
+    @PUT("add-update-requestpickup/")
+    Call<APIResponse> updateNoImagesPickRequest(@Part("id") RequestBody id,
+                                        @Part("customer") RequestBody customer,
+                                        @Part("tracking_number") RequestBody tracking_number,
+                                         @Part("recipient_name") RequestBody recipient_name,
+                                         @Part("recipient_phone") RequestBody recipient_phone,
+
+
+                                         @Part("pickup_location") RequestBody pickup_location,
+                                         @Part("dropoff_location") RequestBody dropoff_location,
+
+                                         @Part("volume") RequestBody volume,
+                                         @Part("weight") RequestBody weight,
+
+                                         @Part("parcel_description") RequestBody parcel_description,
+                                         @Part("price_to_pay") RequestBody price_to_pay);
+
+    @Multipart
+    @PUT("add-update-requestpickup/")
+    Call<APIResponse> updateWithImagesPickRequest(@Part("id") RequestBody id,
+                                                @Part("customer") RequestBody customer,
+                                                @Part("tracking_number") RequestBody tracking_number,
+                                                @Part("recipient_name") RequestBody recipient_name,
+                                                @Part("recipient_phone") RequestBody recipient_phone,
+
+
+                                                @Part("pickup_location") RequestBody pickup_location,
+                                                @Part("dropoff_location") RequestBody dropoff_location,
+
+                                                @Part("volume") RequestBody volume,
+                                                @Part("weight") RequestBody weight,
+
+                                                @Part("parcel_description") RequestBody parcel_description,
+                                                @Part("price_to_pay") RequestBody price_to_pay,
+                                                  @Part List<MultipartBody.Part> images);
+    @Multipart
+    @PUT("add-update-requestpickup/")
+    Call<APIResponse> ratePickRequest(@Part("tracking_number") RequestBody tracking_number,
+                                      @Part("rating") RequestBody  rating);
+
+    @Multipart
+    @PUT("add-update-requestpickup/")
+    Call<APIResponse> setStatusPickRequest(@Part("tracking_number") RequestBody tracking_number,
+                                      @Part("status") RequestBody  status);
+
+
+
+    @POST("get-all-request-pickup-status/")
+    Call<List<RequestPickupStatusResponse>> getPickRequestStatus();
 
 
     @Multipart
@@ -131,7 +314,8 @@ public interface APIService {
                                  @Part("model") RequestBody model,
                                  @Part("year") RequestBody year,
                                  @Part("license_plate") RequestBody licensePlate,
-                                 @Part("is_approved") RequestBody isApproved);
+                                 @Part("is_approved") RequestBody isApproved,
+                                 @Part("is_default") RequestBody is_default);
 
 
 
@@ -148,41 +332,51 @@ public interface APIService {
                                           @Part("model") RequestBody model,
                                           @Part("year") RequestBody year,
                                           @Part("license_plate") RequestBody licensePlate,
-                                          @Part("is_approved") RequestBody isApproved);
+                                          @Part("is_approved") RequestBody isApproved,
+                                 @Part("is_default") RequestBody is_default);
 
 
 
     @Multipart
     @POST("add-update-drivers-license/")
-    Call<DriversLicenseResponse> addDriversLicense(
+    Call<DriversLicenseResponse> addDriversLicenseWithImage(
                                                    @Part("license_owner") RequestBody license_owner,
                                                    @Part("fullname") RequestBody fullname,
-                                                   @Part("identity_number") RequestBody identity_number,
-                                                   @Part("date_of_birth") RequestBody date_of_birth,
                                                    @Part("license_number") RequestBody license_number,
                                                    @Part("expiry_date") RequestBody expiry_date,
-                                                   @Part("country_of_issue") RequestBody country_of_issue,
-                                                   @Part("code") RequestBody code,
-                                                   @Part("restrictions") RequestBody restrictions,
-                                                   @Part("gender") RequestBody gender,
-                                                   @Part("date_of_issue") RequestBody date_of_issue,
-                                                   @Part("uploadLicense") RequestBody uploadLicense);
+                                                   @Part MultipartBody.Part uploadLicense,
+                                                   @Part("is_approved") RequestBody is_approved);
     @Multipart
-    @PUT("add-update-car/")
-    Call<DriversLicenseResponse> updateDriversLicense( @Part("id") RequestBody id,
+    @POST("add-update-drivers-license/")
+    Call<DriversLicenseResponse> addDriversLicenseNoImage(
+            @Part("license_owner") RequestBody license_owner,
+            @Part("fullname") RequestBody fullname,
+            @Part("license_number") RequestBody license_number,
+            @Part("expiry_date") RequestBody expiry_date,
+            @Part("is_approved") RequestBody is_approved);
+
+    @Multipart
+    @PUT("add-update-drivers-license/")
+    Call<DriversLicenseResponse> updateDriversLicenseWithImage( @Part("id") RequestBody id,
                                  @Part("license_owner") RequestBody license_owner,
                                  @Part("fullname") RequestBody fullname,
-                                 @Part("identity_number") RequestBody identity_number,
-                                 @Part("date_of_birth") RequestBody date_of_birth,
+
                                  @Part("license_number") RequestBody license_number,
                                  @Part("expiry_date") RequestBody expiry_date,
-                                 @Part("country_of_issue") RequestBody country_of_issue,
-                                 @Part("code") RequestBody code,
-                                 @Part("restrictions") RequestBody restrictions,
-                               @Part("gender") RequestBody gender,
-                               @Part("date_of_issue") RequestBody date_of_issue,
-                               @Part("uploadLicense") RequestBody uploadLicense,
+
+                                                                @Part MultipartBody.Part uploadLicense ,
                                                        @Part("is_approved") RequestBody is_approved);
+
+
+    @Multipart
+    @PUT("add-update-drivers-license/")
+    Call<DriversLicenseResponse> updateDriversLicenseNoImage( @Part("id") RequestBody id,
+                                                              @Part("license_owner") RequestBody license_owner,
+                                                              @Part("fullname") RequestBody fullname,
+                                                              @Part("license_number") RequestBody license_number,
+                                                              @Part("expiry_date") RequestBody expiry_date,
+                                                              @Part("is_approved") RequestBody is_approved);
+
 
     @Multipart
     @POST("get-car/")
@@ -197,8 +391,6 @@ public interface APIService {
     @POST("track-parcel/")
     Call<PickupResponse> getPickUp(@Part("id") RequestBody id);
 
-//    @GET("warehouses/") // Replace "endpoint" with your actual API endpoint
-//    Call<List<WarehouseResponse>> getWarehousesObjects();
 
     @GET("warehouses/") // Replace "endpoint" with your actual API endpoint
     Call<List<WarehouseResponse>> getWarehousesObjects(@Query("address") String address);
@@ -229,11 +421,15 @@ public interface APIService {
 //    @GET("all-requestpickups-by-user/") // Replace "endpoint" with your actual API endpoint
 //    Call<List<RequestPickupResponse>> getObjects();
 
-    @GET("users/") // Replace "endpoint" with your actual API endpoint
+    @POST("users/") // Replace "endpoint" with your actual API endpoint
     Call<List<AllUsersResponse>> getAllUSerObjects();
 
-    @GET("cars/") // Replace "endpoint" with your actual API endpoint
+    @POST("cars/") // Replace "endpoint" with your actual API endpoint
     Call<List<CarResponse>> getAllCarObjects();
+
+    @Multipart
+    @POST("cars/") // Replace "endpoint" with your actual API endpoint
+    Call<List<CarResponse>> getAllUserCarsObjects(@Part("driver") RequestBody driver);
 
     @GET("warehouses/") // Replace "endpoint" with your actual API endpoint
     Call<List<WarehouseResponse>> getAllWareHouseObjects();
@@ -245,25 +441,17 @@ public interface APIService {
 
 
 
-    @Multipart
-    @PUT("add-update-warehouse/")
-    Call<APIResponse> updateWarehouseApproval(@Part("id") RequestBody id,
-                                        @Part("warehouse_owner") RequestBody warehouse_owner,
-                                              @Part("is_approved") RequestBody is_approved
-    );
+
 
     @Multipart
     @PUT("add-update-car/")
-    Call<APIResponse> updateCarApproval(@Part("car_owner") RequestBody car_owner,
-                                              @Part("is_approved") RequestBody is_approved
+    Call<APIResponse> updateCarApproval(@Part("id") RequestBody id,
+                                              @Part("is_approved") RequestBody is_approved,
+                                        @Part("is_default") RequestBody is_default
     );
 
 
-    @Multipart
-    @PUT("add-update-drivers-license/")
-    Call<APIResponse> updateLicenseApproval(@Part("license_owner") RequestBody license_owner,
-                                        @Part("is_approved") RequestBody is_approved
-    );
+
 
     @Multipart
     @PUT("update-user/")
@@ -271,49 +459,22 @@ public interface APIService {
                                         @Part("is_active") RequestBody is_active
     );
 
-    @Multipart
-    @GET("all-requestpickups-by-user/")
-    Call<List<RequestPickupResponse>> getPickupRequest(@Part("customer") RequestBody customer,
-                                                       @Part("keyword") RequestBody keyword,
-                                                       @Part("is_picked") RequestBody is_picked);
+
 
     @Multipart
     @POST("all-requestpickups-by-user/") // Replace "endpoint" with your actual API endpoint
     Call<List<RequestPickupResponse>> getAllUserRequest(@Part("customer") RequestBody customer);
 
     @Multipart
-    @POST("all-undelivered-requestpickups-by-user/") // Replace "endpoint" with your actual API endpoint
-    Call<List<RequestPickupResponse>> getUnDeliveredObjects(@Part("customer") RequestBody customer);
-
-    @Multipart
-    @POST("all-unrated-requestpickups-by-user/") // Replace "endpoint" with your actual API endpoint
-    Call<List<RequestPickupResponse>> getUnRatedObjects(@Part("customer") RequestBody customer);
-
-    @Multipart
-    @POST("get-pickup-id-from-requestpickup-id/")
-    Call<PickupResponse> getPickupIDfromRequestpickup(@Part("request_pickup") RequestBody request_pickup);
-
-
-    @Multipart
-    @POST("all-undelivered-requestpickups-by-driver/") // Replace "endpoint" with your actual API endpoint
-    Call<List<RequestPickupResponse>> getUnDeliveredDriverObjects(@Part("user_id") RequestBody user_id);
-
-    @Multipart
-    @POST("all-unrated-requestpickups-by-driver/") // Replace "endpoint" with your actual API endpoint
-    Call<List<RequestPickupResponse>> getUnRatedDriverObjects(@Part("user_id") RequestBody user_id);
-
+    @POST("get-single-requestpickup/") // Replace "endpoint" with your actual API endpoint
+    Call<RequestPickupResponse> apiGetSingleRequestPickup(@Part("tracking_number") RequestBody tracking_number);
+//
     @Multipart
     @POST("all-requestpickups-by-driver/") // Replace "endpoint" with your actual API endpoint
-    Call<List<RequestPickupResponse>> getAllDriverObjects(@Part("user_id") RequestBody user_id);
+    Call<List<RequestPickupResponse>> getAllDriverRequest(@Part("driver") RequestBody driver);
 
-    @Multipart
-    @POST("driver-notification/")
-    Call<RequestPickupResponse> checkTaskAssignment(@Part("user_id") RequestBody user_id);
 
-    @Multipart
-    @POST("decline-accept-job/")
-    Call<APIResponse> acceptDeclineJob(@Part("requestPickup_id") RequestBody requestPickup_id,
-                                                 @Part("accept_decline") RequestBody accept_decline);
+
 
     @Multipart
     @POST("add-delivery-proof-images/")
@@ -327,6 +488,12 @@ public interface APIService {
     @Multipart
     @POST("get-delivery-images-and-rating/")
     Call<DeliveryImagesAndRatingResponse> getImagesAndRating(@Part("pickup") RequestBody request_pickup_id);
+
+
+
+    @Multipart
+    @POST("driver-pickup-and-dropff-locations/") // Replace "endpoint" with your actual API endpoint
+    Call<List<RoutesResponse>> getAllRoutes(@Part("driver") RequestBody driver);
 
 
 
