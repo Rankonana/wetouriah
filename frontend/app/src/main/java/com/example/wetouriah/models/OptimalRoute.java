@@ -2,6 +2,7 @@ package com.example.wetouriah.models;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -37,29 +38,16 @@ public class OptimalRoute  {
 
     private static final String TAG = "OptimalRoute";
 
-    private static class DistanceCallbackImpl implements DistanceCallback {
-        private double distance;
+    static String setInsideRetrofit ="0";
 
-        @Override
-        public void onDistanceReceived(double distance) {
-            Log.e(TAG,  "DistanceCallbackImpl onDistanceReceived" + String.valueOf(distance) );
+    static Handler handler;
+    static Runnable runnable;
+    static boolean isHandlerRunning = true;
 
-            this.distance = distance;
-        }
+//    List<PickUpRequestItem,String> parcelAndDistance;
 
-        @Override
-        public void onDistanceError(Throwable t) {
-            // Handle the error here, e.g., log the error or take appropriate action.
-            Log.e(TAG,  "DistanceCallbackImpl onDistanceError" + t.toString() );
 
-        }
 
-        public double getDistance() {
-            Log.e(TAG,  "DistanceCallbackImpl getDistance" + String.valueOf(distance) );
-
-            return distance;
-        }
-    }
 
 
     public static List<PickUpRequestItem> findOptimalRoute(List<PickUpRequestItem> parcels, String startingLocation) {
@@ -77,18 +65,24 @@ public class OptimalRoute  {
 
                 if(parcel.getStatus().equals("5") ||  parcel.getStatus().equals("8")  ){
 
-                    double distance = calculateDistance(currentLocation, parcel.getPickup_location());
+
+                    getDistance(currentLocation, parcel.getPickup_location());
+                    double distance = Double.parseDouble(setInsideRetrofit);
                     if (distance < shortestDistance) {
                         nearestParcel = parcel;
                         shortestDistance = distance;
                     }
 
+
                 }else{
-                    double distance = calculateDistance(currentLocation, parcel.getDropoff_location());
+
+                    getDistance(currentLocation, parcel.getDropoff_location());
+                    double distance = Double.parseDouble(setInsideRetrofit);
                     if (distance < shortestDistance) {
                         nearestParcel = parcel;
                         shortestDistance = distance;
                     }
+
 
                 }
 
@@ -118,20 +112,9 @@ public class OptimalRoute  {
         return optimalRoute;
     }
 
-    private static double calculateDistance(String location1, String location2) {
 
-        DistanceCallbackImpl callback = new DistanceCallbackImpl();
-        getDistance(location1,location2, callback);
-        double distance = callback.getDistance();
 
-        double randomValue = Math.random() * 100;
-//        Log.e(TAG,  " from callback : " + String.valueOf(distance) );
-//        Log.e(TAG,  " randomValue : " + String.valueOf(randomValue) );
-
-        return randomValue;
-    }
-
-    private static void getDistance(String startLocation, String endLocation, DistanceCallback callback) {
+    private static void getDistance(String startLocation, String endLocation) {
         //Log.e(TAG,  " start getDistance "  );
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -151,15 +134,16 @@ public class OptimalRoute  {
             public void onResponse(Call<APIResponse> call, Response<APIResponse> response) {
                 if (response.isSuccessful()) {
                     double distance = parseDistance(response.body().getMessage());
-                    Log.e(TAG,  " inside api: " + String.valueOf(distance) );
+                    Log.e(TAG,  "1. inside api: " + String.valueOf(distance) );
 
-                    callback.onDistanceReceived(distance); // Pass the distance to the callback
+                    setInsideRetrofit = String.valueOf(distance);
+
                 }
             }
 
             @Override
             public void onFailure(Call<APIResponse> call, Throwable t) {
-                callback.onDistanceError(t); // Notify the callback about the error
+                Log.e(TAG,  String.valueOf(t) );
             }
         });
     }
@@ -182,11 +166,7 @@ public class OptimalRoute  {
     }
 
 
-    //callback interface
-    interface DistanceCallback {
-        void onDistanceReceived(double distance);
-        void onDistanceError(Throwable t);
-    }
+
 
 
 }

@@ -403,7 +403,7 @@ public class CustomerPortal extends AppCompatActivity  implements NavigationView
 
     public void mAddpickRequest(String date_and_time_pickup,String  recipient_name, String  recipient_phone,String pickup_location,String dropoff_location, String volume,String weight,String calulatedPrice,String customer) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         RequestBody pick_date_and_time_pickup = RequestBody.create(MediaType.parse("multipart/form-data"), date_and_time_pickup);
@@ -463,7 +463,7 @@ public class CustomerPortal extends AppCompatActivity  implements NavigationView
 
     public void mGetAllPickRequest(){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/") // Replace with your actual base URL
+                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your actual base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

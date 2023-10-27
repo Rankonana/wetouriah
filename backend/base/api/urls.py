@@ -25,6 +25,8 @@ urlpatterns = [
     path('get-user/', views.getUser),
     path('create-user/', views.create_user),
     path('check-user-email/', views.check_username_email),
+    path('get-user-address/', views.get_user_address),
+
 
     path('update-user/', views.update_user),
     path('reset-password/', views.reset_password),
@@ -54,6 +56,8 @@ urlpatterns = [
     path('add-update-requestpickup/', views.requestpickup_detail),
     path('delete-requestpickup/', views.requestpickup_delete),
     path('tracking-log/', views.getTrackingLog),
+    path('check-parcel-exist/', views.check_tracking_log),
+
     path('get-all-request-pickup-status/', views.getAllRequestPickupStatus),
     path('get-all-request-pickup-images/', views.getImages),
 

@@ -88,7 +88,8 @@ public class TitleOnAmap extends AppCompatActivity implements OnMapReadyCallback
                     warehouseAddresses = new ArrayList<>();
                     if (objects != null) {
                         for (WarehouseResponse object : objects) {
-                            warehouseAddresses.add(object.getAddress().toString());
+                            warehouseAddresses.add("Warehouse ID: "+ object.getId().toString() + "\n"+
+                                   "Addresses: \n"+ object.getAddress().toString());
                         }
                     }
                     processAddresses(warehouseAddresses);

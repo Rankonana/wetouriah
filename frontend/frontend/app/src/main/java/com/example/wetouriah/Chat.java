@@ -64,7 +64,7 @@ public class Chat extends AppCompatActivity {
     }
     public void sendMessage(String pickup,String sender,String message ) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         RequestBody pickup_pickup = RequestBody.create(MediaType.parse("multipart/form-data"), pickup);
@@ -108,7 +108,7 @@ public class Chat extends AppCompatActivity {
 
     public void mGetMessages(String pickup) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         RequestBody get_pickup= RequestBody.create(MediaType.parse("multipart/form-data"), pickup);

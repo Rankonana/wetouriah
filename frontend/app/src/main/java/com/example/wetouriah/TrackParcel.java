@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +46,8 @@ public class TrackParcel extends AppCompatActivity {
     TextView txtStatus,estTime;
     PickUpRequestItem pickUpRequestItem;
     String status_Intent;
+
+    String parcelExist="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,15 +107,42 @@ public class TrackParcel extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(!txtID.getText().toString().trim().isEmpty()){
+                if( txtID.getText().length() >0){
+                    mCheckParcelExistence(txtID.getText().toString());
 
-                    cardSearch.setVisibility(View.GONE);
-                    cardLocations.setVisibility(View.VISIBLE);
-                    loadTracking(txtID.getText().toString());
+
+                    ////
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(parcelExist.length() >0){
+                                Toast.makeText(TrackParcel.this, parcelExist, Toast.LENGTH_SHORT).show();
+
+                                parcelExist = "";
+
+                            }else{
+                                cardSearch.setVisibility(View.GONE);
+                                cardLocations.setVisibility(View.VISIBLE);
+                                loadTracking(txtID.getText().toString());
+
+                            }
+
+                        }
+                    },3000);
+
+                    ////
+
+
+
                 }else {
                     Toast.makeText(TrackParcel.this, "Enter tracking number", Toast.LENGTH_SHORT).show();
 
                 }
+
+
+
+
 
             }
         });
@@ -209,7 +239,32 @@ public class TrackParcel extends AppCompatActivity {
 
     }
 
+    public void mCheckParcelExistence(String tracking_number) {
 
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
+                .addConverterFactory(GsonConverterFactory.create()).build();
+
+        RequestBody g_tracking_number= RequestBody.create(MediaType.parse("multipart/form-data"), tracking_number);
+
+        APIService apiService = retrofit.create(APIService.class);
+        Call<APIResponse> call = apiService.apiCheckParcelExistence(g_tracking_number);
+
+        call.enqueue(new Callback<APIResponse>() {
+            @Override
+            public void onResponse(Call<APIResponse> call, Response<APIResponse> response) {
+
+                if(response.isSuccessful()){
+                    parcelExist = response.body().getMessage();
+                    //Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<APIResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
 
     @Override
     public void onBackPressed() {

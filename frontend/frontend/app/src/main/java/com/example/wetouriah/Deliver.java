@@ -178,7 +178,7 @@ public class Deliver extends AppCompatActivity {
 
 
                 //
-                Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
+                Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
                         .addConverterFactory(GsonConverterFactory.create()).build();
 
                 File file = new File(imagepath);
@@ -233,7 +233,7 @@ public class Deliver extends AppCompatActivity {
 
     public void mDelivered(String request_pickup_id) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
 
@@ -274,7 +274,7 @@ public class Deliver extends AppCompatActivity {
 
     public void addRatig(String request_pickup,String rating ) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
 
@@ -316,7 +316,7 @@ public class Deliver extends AppCompatActivity {
 
     public void setImagesAndARating(String request_pickup) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         RequestBody pick_request_pickup = RequestBody.create(MediaType.parse("multipart/form-data"), request_pickup);

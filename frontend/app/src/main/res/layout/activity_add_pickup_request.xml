@@ -7,11 +7,17 @@
     tools:context=".AddPickupRequest"
     android:padding="20dp">
 
-<ScrollView
+
+
+
+    <ScrollView
     android:id="@+id/lyLocationsWightVolume"
     android:visibility="visible"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
+
+
 
     <RelativeLayout
 
@@ -123,6 +129,8 @@
 
 
     </RelativeLayout>
+
+
 
 </ScrollView>
 
@@ -332,6 +340,253 @@
 
 
 </ScrollView>
+
+<androidx.cardview.widget.CardView
+    android:id="@+id/qaMapOrAddress"
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="30dp"
+    app:cardCornerRadius="30dp"
+    app:cardElevation="20dp"
+    android:background="@drawable/custom_edittext">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:padding="24dp">
+
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+         <Button
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/btnQaClose"
+                android:text="X"
+                android:textSize="18sp"
+                android:backgroundTint="@color/red"
+                app:cornerRadius = "20dp"/>
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Destination"
+                android:id="@+id/qaloginText"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:textColor="@color/purple"/>
+
+
+
+        </RelativeLayout>
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:id="@+id/btnEnterAnAddress"
+            android:text="Enter an Address"
+            android:textSize="18sp"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="@color/purple"
+            app:cornerRadius = "20dp"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:id="@+id/btnChooseWarehouse"
+            android:text="Choose a Warehoose"
+            android:textSize="18sp"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="@color/purple"
+            app:cornerRadius = "20dp"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
+
+
+<androidx.cardview.widget.CardView
+    android:id="@+id/enterAnAddress"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="10dp"
+    android:visibility="gone"
+    android:background="@drawable/custom_edittext">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:padding="24dp">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/btnABack"
+                android:text="X"
+                android:textSize="18sp"
+                android:backgroundTint="@color/red"
+                app:cornerRadius = "20dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enter an address"
+                android:id="@+id/txtEnterAnAddress"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:textColor="@color/purple"/>
+
+
+
+        </RelativeLayout>
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/lyaAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_login"
+
+            app:startIconDrawable="@drawable/baseline_assistant_direction_24"
+            app:boxStrokeColor="@color/purple"
+            app:boxStrokeWidth="3dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusBottomEnd="10dp"
+
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/aDestination"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_login"
+                android:hint="Destination"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnAOk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+
+            android:text="OK" />
+
+
+
+
+
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
+
+<androidx.cardview.widget.CardView
+    android:id="@+id/enterAWarehouse"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="20dp"
+    android:background="@drawable/custom_edittext"
+    android:visibility="gone">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:padding="24dp">
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <Button
+                android:id="@+id/BtnWarehousesList"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="X"
+                android:textSize="18sp"
+                android:backgroundTint="@color/red"
+                app:cornerRadius = "20dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Select a Warehouse"
+                android:id="@+id/txtSelectAWarehouse"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:textColor="@color/purple"/>
+
+
+
+
+        </RelativeLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/lyaWarehouse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_login"
+
+            app:startIconDrawable="@drawable/baseline_assistant_direction_24"
+            app:boxStrokeColor="@color/purple"
+            app:boxStrokeWidth="3dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusBottomEnd="10dp"
+
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/aWarehouse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_login"
+                android:hint="Search by ID or Address"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rvWarehouses"/>
+
+
+
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
 
 
 </RelativeLayout>

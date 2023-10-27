@@ -92,7 +92,7 @@ public class Profile extends AppCompatActivity {
                 SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
                 String user_id = sharedPreferences.getString("user_id", null);
 
-                String url = "https://" + Constants.SERVER_IP_ADDRESS+ "/api/";
+                String url = "https://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/";
 
                 updateUser(user_id,email.getText().toString(),
                         title.getText().toString(),
@@ -140,7 +140,7 @@ public class Profile extends AppCompatActivity {
                         String title,String firstname,String lastname,
                         String address,String phone_number) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         File file = new File(imagepath);
@@ -196,7 +196,7 @@ public class Profile extends AppCompatActivity {
 
     public void loadUser(String id) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         RequestBody user_id= RequestBody.create(MediaType.parse("multipart/form-data"), id);

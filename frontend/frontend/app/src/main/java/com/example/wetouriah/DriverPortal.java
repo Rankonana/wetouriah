@@ -218,7 +218,7 @@ public class DriverPortal extends AppCompatActivity implements NavigationView.On
 
 //    public void mGetPickRequestUnDelivered(){
 //        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/") // Replace with your actual base URL
+//                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your actual base URL
 //                .addConverterFactory(GsonConverterFactory.create())
 //                .build();
 //
@@ -283,7 +283,7 @@ public class DriverPortal extends AppCompatActivity implements NavigationView.On
 
 //    public void mGetPickRequestUnRated(){
 //        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/") // Replace with your actual base URL
+//                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your actual base URL
 //                .addConverterFactory(GsonConverterFactory.create())
 //                .build();
 //
@@ -349,7 +349,7 @@ public class DriverPortal extends AppCompatActivity implements NavigationView.On
 
 //    public void mGetPickRequestAll(){
 //        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/") // Replace with your actual base URL
+//                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your actual base URL
 //                .addConverterFactory(GsonConverterFactory.create())
 //                .build();
 //
@@ -459,7 +459,7 @@ public class DriverPortal extends AppCompatActivity implements NavigationView.On
 //        SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
 //        String user_id = sharedPreferences.getString("user_id", null);
 //
-//        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
+//        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
 //                .addConverterFactory(GsonConverterFactory.create()).build();
 //
 //        RequestBody get_driver= RequestBody.create(MediaType.parse("multipart/form-data"), user_id);

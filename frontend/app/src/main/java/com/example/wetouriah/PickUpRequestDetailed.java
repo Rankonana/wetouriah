@@ -133,7 +133,7 @@ public class PickUpRequestDetailed extends AppCompatActivity {
     List<RequestPickupStatusItem> statusList;
     StatusSpinnerAdapter adapterStatus;
 
-    String from_warehouse_pick_drop = "No";
+    String selected_status = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -375,17 +375,21 @@ public class PickUpRequestDetailed extends AppCompatActivity {
             public void onClick(View view) {
                 //Toast.makeText(PickUpRequestDetailed.this, "Code sent", Toast.LENGTH_SHORT).show();
 
-                mSendSMS(pickUpRequestItem.getRecipient_phone().toString(), smsMessage,from_warehouse_pick_drop,pickUpRequestItem.getId().toString());
+                mSendSMS(pickUpRequestItem.getRecipient_phone().toString(), smsMessage,selected_status,pickUpRequestItem.getId().toString());
                 lySendCode.setVisibility(View.GONE);
                 lyVerifyCode.setVisibility(View.VISIBLE);
+                Toast.makeText(getApplicationContext(),"Code: " +  sDeliveryCode, Toast.LENGTH_LONG).show();
+
 
             }
         });
         btnResend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),"Code: " +  sDeliveryCode, Toast.LENGTH_LONG).show();
+
                 Toast.makeText(PickUpRequestDetailed.this, "Code resent again", Toast.LENGTH_SHORT).show();
-                mSendSMS(pickUpRequestItem.getRecipient_phone().toString(), smsMessage,from_warehouse_pick_drop,pickUpRequestItem.getId().toString());
+                mSendSMS(pickUpRequestItem.getRecipient_phone().toString(), smsMessage,selected_status,pickUpRequestItem.getId().toString());
 
             }
         });
@@ -533,7 +537,7 @@ public class PickUpRequestDetailed extends AppCompatActivity {
                     lyChangeStatus.setVisibility(View.GONE);
                     lySignIn.setVisibility(View.VISIBLE);
 //                    Toast.makeText(PickUpRequestDetailed.this, "Code resent again", Toast.LENGTH_SHORT).show();
-                    mSendSMS(pickUpRequestItem.getRecipient_phone().toString(), smsMessage,from_warehouse_pick_drop,pickUpRequestItem.getId().toString());
+                    mSendSMS(pickUpRequestItem.getRecipient_phone().toString(), smsMessage,selected_status,pickUpRequestItem.getId().toString());
 
                 }
             });
@@ -666,6 +670,7 @@ public class PickUpRequestDetailed extends AppCompatActivity {
                     if(statusID.equals("2")||  statusID.equals("3") || statusID.equals("9") || statusID.equals("11")){
 
 
+                        selected_status = statusID;
 
 
                         lyChangeStatus.setVisibility(View.GONE);
@@ -1049,7 +1054,7 @@ public class PickUpRequestDetailed extends AppCompatActivity {
             destLng = destLatLng.longitude;
         }
 
-        Uri uri = Uri.parse("http://maps.google.com/maps?saddr=" + originLat + "," + originLng + "&daddr=" + destLat + "," + destLng);
+        Uri uri = Uri.parse("https://maps.google.com/maps?saddr=" + originLat + "," + originLng + "&daddr=" + destLat + "," + destLng);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         intent.setPackage("com.google.android.apps.maps");
 

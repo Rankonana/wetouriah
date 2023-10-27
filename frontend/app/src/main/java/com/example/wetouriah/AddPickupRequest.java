@@ -7,7 +7,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -19,6 +21,8 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -81,6 +85,18 @@ public class AddPickupRequest extends AppCompatActivity {
     private ArrayList<ImageItem> LocalimageItems;
     boolean containsTargetImage = false;
 
+    CardView qaMapOrAddress,enterAnAddress,enterAWarehouse;
+    Button btnQaClose,btnChooseWarehouse, btnEnterAnAddress,btnABack,btnAOk;
+    Button BtnWarehousesList;
+
+
+    List<WareHouseItemAdmin> wareHouseItemAdmin;
+    RecyclerView recyclerView ;
+    AdapterPickWarehouse adapterAllWarehouses;
+    EditText aWarehouse, aDestination;
+
+
+
 
 
     @Override
@@ -111,8 +127,8 @@ public class AddPickupRequest extends AppCompatActivity {
 
 
         lyImages =  findViewById(R.id.lyImages);
-        layoutImages = findViewById(R.id.layout_images);
-        imageView = findViewById(R.id.image_view);
+//        layoutImages = findViewById(R.id.layout_images);
+//        imageView = findViewById(R.id.image_view);
         btn_add_more = findViewById(R.id.btn_add_more);
 
         imageUris = new ArrayList<>();
@@ -128,14 +144,114 @@ public class AddPickupRequest extends AppCompatActivity {
         recipient_phone = findViewById(R.id.recipient_phone);
         btnAddPickRequest = findViewById(R.id.btnAddPickRequest);
 
+        qaMapOrAddress = findViewById(R.id.qaMapOrAddress);
+        btnChooseWarehouse= findViewById(R.id.btnChooseWarehouse);
+        btnEnterAnAddress= findViewById(R.id.btnEnterAnAddress);
+
+        aWarehouse = findViewById(R.id.aWarehouse);
+        aDestination = findViewById(R.id.aDestination);
+        enterAnAddress = findViewById(R.id.enterAnAddress);
+        enterAWarehouse = findViewById(R.id.enterAWarehouse);
+        recyclerView = findViewById(R.id.rvWarehouses);
+        btnABack  = findViewById(R.id.btnABack);
+        btnAOk  = findViewById(R.id.btnAOk);
+        btnQaClose = findViewById(R.id.btnQaClose);
+        BtnWarehousesList = findViewById(R.id.BtnWarehousesList);
+
 
         Intent intent = getIntent();
         pickUpRequestItem = (PickUpRequestItem) intent.getSerializableExtra("model");
 
-
-
         LoadPickUpRequest();
+        mGetAllWarehouses();
+        mGetUserAddress();
 
+        aWarehouse.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // This method is called before the text is changed.
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // This method is called as the text is changing.
+
+                //filterbyUsername(String.valueOf(charSequence) );
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // This method is called after the text has changed.
+//                String enteredText = editable.toString();
+//                FilterTextbox(enteredText);
+
+                if(editable != null ){
+                    filterdataWarehouses(editable.toString());
+
+                }
+
+
+            }
+        });
+        dropoff_location.setFocusable(false);
+        dropoff_location.setFocusableInTouchMode(false);
+
+        BtnWarehousesList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enterAWarehouse.setVisibility(View.GONE);
+            }
+        });
+        dropoff_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qaMapOrAddress.setVisibility(View.VISIBLE);
+            }
+        });
+
+        btnQaClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qaMapOrAddress.setVisibility(View.GONE);
+            }
+        });
+
+        btnABack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enterAnAddress.setVisibility(View.GONE);
+            }
+        });
+        btnAOk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(aDestination.getText().length() >0){
+                        dropoff_location.setText(aDestination.getText().toString());
+                        enterAnAddress.setVisibility(View.GONE);
+
+                    }else {
+                        Toast.makeText(AddPickupRequest.this, "Enter an address", Toast.LENGTH_SHORT).show();
+
+
+                    }
+                }
+            });
+
+
+        btnChooseWarehouse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qaMapOrAddress.setVisibility(View.GONE);
+                enterAWarehouse.setVisibility(View.VISIBLE);
+            }
+        });
+        btnEnterAnAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qaMapOrAddress.setVisibility(View.GONE);
+                enterAnAddress.setVisibility(View.VISIBLE);
+            }
+        });
 
 
         btnShowPrice.setOnClickListener(new View.OnClickListener() {
@@ -438,16 +554,6 @@ public class AddPickupRequest extends AppCompatActivity {
         RequestBody pick_price_to_pay = RequestBody.create(MediaType.parse("multipart/form-data"), price_to_pay);
         RequestBody pick_status = RequestBody.create(MediaType.parse("multipart/form-data"), status);
 
-
-//        List<MultipartBody.Part> imageParts = new ArrayList<>();
-//
-//        // Add images to the list
-//        for (String imagePath : imagePaths) {
-//            File imageFile = new File(imagePath);
-//            RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), imageFile);
-//            MultipartBody.Part imagePart = MultipartBody.Part.createFormData("images", imageFile.getName(), requestBody);
-//            imageParts.add(imagePart);
-//        }
 
         List<MultipartBody.Part> imageParts = new ArrayList<>();
         if (!imageUris.isEmpty()) {
@@ -888,40 +994,118 @@ public class AddPickupRequest extends AppCompatActivity {
 
     }
 
-    //
-//    private void createNotification() {
-//        // Create a notification channel
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            NotificationChannel channel = new NotificationChannel("my_channel", "My Channel", NotificationManager.IMPORTANCE_DEFAULT);
-//            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-//            notificationManager.createNotificationChannel(channel);
-//        }
-//
-//        // Create an explicit intent for the target activity
-//        Intent intent = new Intent(this, AddPickupRequest.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        //intent.putExtra(NEXT_SCREEN, pickUpRequestItem);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-//
-//
-//        // Get the custom sound URI from the resource
-////        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-//        Uri soundUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.success);
-//
-//
-//        // Create a notification
-//        Notification notification = new NotificationCompat.Builder(this, "my_channel")
-//                .setContentTitle("My Notification")
-//                .setContentText("You have unrated delivery")
-//                .setSmallIcon(R.drawable.notification)
-//                .setContentIntent(pendingIntent)
-//                .setAutoCancel(true)
-//                .build();
-//
-//        // Notify the user
-//        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-//        notificationManager.notify(0, notification);
-//    }
-//
+    public void mGetAllWarehouses(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/") // Replace with your actual base URL
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        APIService apiService = retrofit.create(APIService.class);
+
+        Call<List<WarehouseResponse>> call = apiService.getAllWareHouseObjects();
+
+
+        call.enqueue(new Callback<List<WarehouseResponse>>() {
+            @Override
+            public void onResponse(Call<List<WarehouseResponse>> call, Response<List<WarehouseResponse>> response) {
+                if (response.isSuccessful()) {
+
+                    List<WarehouseResponse> objects = response.body();
+
+                    if (objects != null) {
+
+                        wareHouseItemAdmin = new ArrayList<WareHouseItemAdmin>();
+
+                        for (WarehouseResponse object : objects) {
+                            wareHouseItemAdmin.add(new WareHouseItemAdmin(object.getId().toString(),"",object.getAddress(),object.getVolume(),object.getCctv().toString(),
+                                    object.getArmedResponse().toString(),object.getFireSafetyAndManagement().toString(),object.getParkingSpace().toString(),
+                                    object.getIsApproved().toString(),object.getOperatingHours(),object.getWarehouseOwner().toString()) );
+
+                        }
+                        recyclerView.setLayoutManager(new LinearLayoutManager(AddPickupRequest.this));
+
+                        adapterAllWarehouses = new AdapterPickWarehouse(getApplicationContext(),wareHouseItemAdmin);
+                        recyclerView.setAdapter(adapterAllWarehouses);
+
+                        adapterAllWarehouses.setOnClickListener(new AdapterPickWarehouse.OnClickListener() {
+                            @Override
+                            public void onClick(int position, WareHouseItemAdmin model) {
+
+                                dropoff_location.setText(model.getAddress().toString());
+                                enterAWarehouse.setVisibility(View.GONE);
+
+                            }
+                        });
+
+                    }
+
+                } else {
+                    // Handle error
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<WarehouseResponse>> call, Throwable t) {
+                // Handle failure
+            }
+        });
+
+    }
+
+
+    private void filterdataWarehouses(String text) {
+
+
+        List<WareHouseItemAdmin> filteredList = new ArrayList<WareHouseItemAdmin>();
+
+        for (WareHouseItemAdmin item : wareHouseItemAdmin) {
+            try {
+                if (item.getId().toLowerCase().contains(text.toLowerCase()) ||
+                        item.getAddress().toLowerCase().contains(text.toLowerCase())
+
+                ) {
+                    filteredList.add(item);
+                }
+            }catch (Exception e) {
+                Log.e("AddPickuprequest", "Exception" + e.toString());
+
+            }
+
+        }
+
+        adapterAllWarehouses.SetFilteredList(filteredList);
+    }
+
+    public void mGetUserAddress() {
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
+                .addConverterFactory(GsonConverterFactory.create()).build();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", null);
+
+        RequestBody g_username= RequestBody.create(MediaType.parse("multipart/form-data"), username);
+
+        APIService apiService = retrofit.create(APIService.class);
+        Call<APIResponse> call = apiService.apiGetUserAddress(g_username);
+
+        call.enqueue(new Callback<APIResponse>() {
+            @Override
+            public void onResponse(Call<APIResponse> call, Response<APIResponse> response) {
+
+                if(response.isSuccessful()){
+                    if(response.body().getMessage().length() >0){
+                        pickup_location.setText(response.body().getMessage());
+
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<APIResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
 
 }

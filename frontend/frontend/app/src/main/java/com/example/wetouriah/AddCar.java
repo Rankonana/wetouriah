@@ -56,7 +56,7 @@ public class AddCar extends AppCompatActivity {
         }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/") // Replace with your API base URL
+                .baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/") // Replace with your API base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -172,7 +172,7 @@ public class AddCar extends AppCompatActivity {
 
     public void loadCar(String id) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         RequestBody user_id= RequestBody.create(MediaType.parse("multipart/form-data"), id);

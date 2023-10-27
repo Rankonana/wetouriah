@@ -536,13 +536,13 @@ def warehouse_detail(request):
 
 @api_view(['POST'])
 def getAllUserRequestPickups(request):
-    print(request.data)
+    # print(request.data)
     customer = request.data.get('customer', '')
 
     requestpickups = RequestPickup.objects.all()
 
     if customer != '':
-        print('not empty')
+        # print('not empty')
         requestpickups = requestpickups.filter(Q(customer=customer))
 
     requestpickups = requestpickups.order_by('-request_time')
@@ -929,13 +929,37 @@ def sendSMS(request):
 
     recipient_number= request.data.get('recipient_number')
     message= request.data.get('message')
-    from_warehouse= request.data.get('from_warehouse')
+    selected_status = request.data.get('selected_status')
     parcel_id= request.data.get('parcel_id')
 
 
-    if from_warehouse == "yes":
+    #Pickup from customer
+    if selected_status == "1":
         requestPickup = RequestPickup.objets.get(id=parcel_id)
         recipient_number = requestPickup.customer.phone_number
+
+    #Pickup from warehouse
+    if selected_status == "2":
+        requestPickup = RequestPickup.objets.get(id=parcel_id)
+        recipient_number = requestPickup.customer.phone_number
+
+    #droff at recipient
+    if selected_status == "3":
+        requestPickup = RequestPickup.objets.get(id=parcel_id)
+        recipient_number = requestPickup.recipient_phone
+
+    #dropff at warehouse
+    if selected_status == "4":
+        requestPickup = RequestPickup.objets.get(id=parcel_id)
+        dropoff_location_address = requestPickup.dropoff_location
+        wareHouse = WareHouse.objets.get(address=dropoff_location_address)
+        recipient_number = wareHouse.warehouse_owner.phone_number
+    
+    #Collection by  recipient
+    if status == "4":
+        requestPickup = RequestPickup.objets.get(id=parcel_id)
+        recipient_number = requestPickup.recipient_phone
+    
 
 
 
@@ -1009,8 +1033,67 @@ def check_username_email(request):
             }
             return Response(response, status=status_code)  
     
-    
+@api_view(['POST'])
+def check_tracking_log(request):
+    tracking_number= request.data.get('tracking_number').upper()
+    try:
+        requestPickup = RequestPickup.objects.get(tracking_number=tracking_number)
+        status_code = status.HTTP_200_OK
+        response = {
+            'success': True,
+            'statusCode': status_code,
+            'message': '',
+        }
+        return Response(response, status=status_code)
+    except RequestPickup.DoesNotExist:
+        status_code = status.HTTP_200_OK
+        response = {
+            'success': True,
+            'statusCode': status_code,
+            'message': 'Parcel does not exist',
+        }
+        return Response(response, status=status_code) 
 
+@api_view(['POST'])
+def get_user_address(request):
+    username= request.data.get('username')
+    print(username)
+
+    try:
+        user = User.objects.get(username=username)
+        print(print)
+
+        print(username)
+        print(user.address)
+        print(user.role)
+        if user.role ==2:
+            status_code = status.HTTP_200_OK
+            response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': user.address,
+            }
+            print(response)
+            return Response(response, status=status_code)
+        else:
+            wareHouse  = WareHouse.objects.get(warehouse_owner=user)
+            status_code = status.HTTP_200_OK
+            response = {
+                'success': True,
+                'statusCode': status_code,
+                'message': wareHouse.address,
+            }
+            print(response)
+            return Response(response, status=status_code)
+
+    except User.DoesNotExist:
+        status_code = status.HTTP_200_OK
+        response = {
+            'success': True,
+            'statusCode': status_code,
+            'message': '',
+        }
+        return Response(response, status=status_code) 
 
 
 

@@ -70,7 +70,7 @@ public class AdapterAllUsers extends RecyclerView.Adapter<AllUsersViewHolder> {
 
     public void updateUserStatus(String id,String is_active ) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ "/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://" + Constants.SERVER_IP_ADDRESS+ ":8000/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         RequestBody u_id = RequestBody.create(MediaType.parse("multipart/form-data"), id );

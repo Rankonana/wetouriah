@@ -14,7 +14,7 @@ import retrofit2.http.Query;
 
 public interface APIService {
 
-//    https://www.youtube.com/watch?v=DCo1nLUGq8I&ab_channel=WaleedTalha
+//    http://www.youtube.com/watch?v=DCo1nLUGq8I&ab_channel=WaleedTalha
 
     @Multipart
     @POST("send-sms/")
@@ -37,6 +37,12 @@ public interface APIService {
     @POST("check-user-email/")
     Call<APIResponse> apiCheckUsernameEmail(@Part("username") RequestBody username,
                                                 @Part("email") RequestBody email);
+    @Multipart
+    @POST("get-user-address/")
+    Call<APIResponse> apiGetUserAddress(@Part("username") RequestBody username);
+    @Multipart
+    @POST("check-parcel-exist/")
+    Call<APIResponse> apiCheckParcelExistence(@Part("tracking_number") RequestBody tracking_number);
     @Multipart
     @POST("get-distance-and-time/")
     Call<APIResponse> apiDistanceAndTime(@Part("startLocation") RequestBody startLocation,
